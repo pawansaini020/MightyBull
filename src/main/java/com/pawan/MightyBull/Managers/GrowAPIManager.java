@@ -1,9 +1,13 @@
 package com.pawan.MightyBull.Managers;
 
 import com.pawan.MightyBull.WebClients.GrowWebClient;
+import com.pawan.MightyBull.dto.grow.GrowStockDetails;
 import com.pawan.MightyBull.dto.grow.GrowStocks;
 import com.pawan.MightyBull.dto.grow.request.GrowStockRequest;
+import com.pawan.MightyBull.services.grow.StockDetailsService;
+import com.pawan.MightyBull.services.grow.StockPriceService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,10 +25,16 @@ import java.util.Map;
 public class GrowAPIManager {
 
     private final GrowWebClient growWebClient;
+    private final StockDetailsService stockDetailsService;
+    private final StockPriceService stockPriceService;
 
     @Autowired
-    private GrowAPIManager(GrowWebClient growWebClient) {
+    private GrowAPIManager(GrowWebClient growWebClient,
+                           StockDetailsService stockDetailsService,
+                           StockPriceService stockPriceService) {
         this.growWebClient = growWebClient;
+        this.stockDetailsService = stockDetailsService;
+        this.stockPriceService = stockPriceService;
     }
 
     public void getAllStockDetails() {
@@ -42,6 +52,11 @@ public class GrowAPIManager {
         objFilters.put("MARKET_CAP", marketCabRange);
         GrowStockRequest request = new GrowStockRequest(listFilters, objFilters, 0, 15, "NA", "ASC");
         GrowStocks growStocks = growWebClient.getAllStockDetails(request);
-        log.info("Grow stocks: {}", growStocks);
+        if(CollectionUtils.isNotEmpty(growStocks.getRecords())) {
+            for(GrowStockDetails growStockDetails : growStocks.getRecords()) {
+                stockDetailsService.persistGrowStockDetails(growStockDetails);
+                stockPriceService.persistGrowStockPriceDetails(growStockDetails);
+            }
+        }
     }
 }

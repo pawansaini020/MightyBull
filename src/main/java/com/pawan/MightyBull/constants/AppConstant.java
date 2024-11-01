@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
  */
 public class AppConstant {
 
+    public static final String NON_NULL_COLLECTION_ELEMENTS_MESSAGE = "Collection %s must contain non-null elements";
+
     public static class DateFormat {
         public static final String DATE_TIME_FORMAT = "dd/MM/yyyy HH/mm/ss";
         public static final String DATE_DAY_TIME_FORMAT = "dd MMM yyyy HH:mm";
