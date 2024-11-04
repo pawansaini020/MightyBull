@@ -14,4 +14,9 @@ public class ApiEndpointConstant {
         public static final String STOCK_DATA = "/stocks_data/v1";
         public static final String ALL_STOCKS = "/all_stocks";
     }
+
+    public static class Screener {
+        public static final String BASE = "/v1/api/screener";
+        public static final String STOCK_DETAILS = "/stock-details";
+    }
 }

@@ -13,7 +13,7 @@ public interface Dao<T, ID> {
 
     Optional<T> get(@NonNull ID id);
 
-    Optional<T> getByNseScriptCode(@NonNull String evenId);
+    Optional<T> getByStockId(@NonNull String evenId);
 
     List<T> getAll();
 

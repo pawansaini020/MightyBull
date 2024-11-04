@@ -31,8 +31,8 @@ public class StockDetailsDao implements Dao<StockDetailsEntity, Long> {
     }
 
     @Override
-    public Optional<StockDetailsEntity> getByNseScriptCode(@NonNull String nseScriptCode) {
-        return repository.findByNseScriptCode(nseScriptCode);
+    public Optional<StockDetailsEntity> getByStockId(@NonNull String stockId) {
+        return repository.findByNseScriptCode(stockId);
     }
 
     @Override

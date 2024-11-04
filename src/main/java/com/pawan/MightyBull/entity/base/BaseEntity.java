@@ -1,4 +1,4 @@
-package com.pawan.MightyBull.entity;
+package com.pawan.MightyBull.entity.base;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;

@@ -1,5 +1,6 @@
 package com.pawan.MightyBull.entity;
 
+import com.pawan.MightyBull.entity.base.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;

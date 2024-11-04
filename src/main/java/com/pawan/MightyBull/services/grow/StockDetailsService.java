@@ -27,7 +27,7 @@ public class StockDetailsService {
     }
 
     public void persistGrowStockDetails(GrowStockDetails stockDetails) {
-        Optional<StockDetailsEntity> stockDetailsEntity = stockDetailsDao.getByNseScriptCode(stockDetails.getNseScriptCode());
+        Optional<StockDetailsEntity> stockDetailsEntity = stockDetailsDao.getByStockId(stockDetails.getNseScriptCode());
         if(stockDetailsEntity.isEmpty()) {
             StockDetailsEntity entity = StockDetailsMapper.INSTANCE.mapDtoToEntity(stockDetails);
             stockDetailsDao.save(entity);

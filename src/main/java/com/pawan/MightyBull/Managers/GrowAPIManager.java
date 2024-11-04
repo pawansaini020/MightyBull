@@ -6,6 +6,7 @@ import com.pawan.MightyBull.dto.grow.GrowStocks;
 import com.pawan.MightyBull.dto.grow.request.GrowStockRequest;
 import com.pawan.MightyBull.services.grow.StockDetailsService;
 import com.pawan.MightyBull.services.grow.StockPriceService;
+import com.pawan.MightyBull.utils.GsonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,12 +51,22 @@ public class GrowAPIManager {
         marketCabRange.put("max", 3000000000000000L);
         marketCabRange.put("min", 0L);
         objFilters.put("MARKET_CAP", marketCabRange);
-        GrowStockRequest request = new GrowStockRequest(listFilters, objFilters, 0, 15, "NA", "ASC");
-        GrowStocks growStocks = growWebClient.getAllStockDetails(request);
-        if(CollectionUtils.isNotEmpty(growStocks.getRecords())) {
-            for(GrowStockDetails growStockDetails : growStocks.getRecords()) {
-                stockDetailsService.persistGrowStockDetails(growStockDetails);
-                stockPriceService.persistGrowStockPriceDetails(growStockDetails);
+        for(int i=10; i<293; i++) {
+            try {
+                GrowStockRequest request = new GrowStockRequest(listFilters, objFilters, i, 15, "NA", "ASC");
+                GrowStocks growStocks = growWebClient.getAllStockDetails(request);
+                if (CollectionUtils.isNotEmpty(growStocks.getRecords())) {
+                    for (GrowStockDetails growStockDetails : growStocks.getRecords()) {
+                        try {
+                            stockDetailsService.persistGrowStockDetails(growStockDetails);
+                            stockPriceService.persistGrowStockPriceDetails(growStockDetails);
+                        } catch (Exception e) {
+                            log.error("Error occurred while persisting stock: {}", GsonUtils.getGson().toJson(growStockDetails), e);
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                log.error("Error occurred while persisting stock for: {}", i, e);
             }
         }
     }

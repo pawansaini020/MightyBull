@@ -28,7 +28,7 @@ public class StockPriceService {
     }
 
     public void persistGrowStockPriceDetails(GrowStockDetails stockDetails) {
-        Optional<StockPriceEntity> stockPriceEntity = stockPriceDao.getByNseScriptCode(stockDetails.getNseScriptCode());
+        Optional<StockPriceEntity> stockPriceEntity = stockPriceDao.getByStockId(stockDetails.getNseScriptCode());
         GrowLivePriceDto livePriceDto = stockDetails.getLivePriceDto();
         if(stockPriceEntity.isEmpty()) {
             StockPriceEntity entity = StockPriceMapper.INSTANCE.mapDtoToEntity(stockDetails.getLivePriceDto());

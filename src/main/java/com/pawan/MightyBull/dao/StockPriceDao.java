@@ -31,8 +31,8 @@ public class StockPriceDao implements Dao<StockPriceEntity, Long> {
     }
 
     @Override
-    public Optional<StockPriceEntity> getByNseScriptCode(@NonNull String symbol) {
-        return repository.findBySymbol(symbol);
+    public Optional<StockPriceEntity> getByStockId(@NonNull String stockId) {
+        return repository.findBySymbol(stockId);
     }
 
     @Override

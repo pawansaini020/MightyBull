@@ -72,7 +72,7 @@ public class TestController {
 //            GrowStockDetails growStockDetails = GsonUtils.getGson().fromJson(request, GrowStockDetails.class);
 //            stockDetailsService.persistGrowStockDetails(growStockDetails);
 //            stockPriceService.persistGrowStockPriceDetails(growStockDetails);
-            growAPIManager.getAllStockDetails();
+//            growAPIManager.getAllStockDetails();
         } catch (Exception e) {
             log.error("Error occurred while persisting price: ", e);
         }

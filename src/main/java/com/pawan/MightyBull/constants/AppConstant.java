@@ -19,4 +19,15 @@ public class AppConstant {
         private DateFormat() {
         }
     }
+
+    public static class RequestHeader {
+        public static final String REQUEST_ID = "X-Request-ID";
+        public static final String SD_TOKEN = "x-sd-token";
+
+        public static final String MIS_TOKEN = "x-mis-token";
+        public static final String AUTHORIZATION = "Authorization";
+
+        private RequestHeader() {
+        }
+    }
 }
