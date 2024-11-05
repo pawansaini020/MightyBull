@@ -50,4 +50,8 @@ public class StockDetailsDao implements Dao<StockDetailsEntity, Long> {
         Assert.noNullElements(entities, String.format(AppConstant.NON_NULL_COLLECTION_ELEMENTS_MESSAGE, "StockDetailsEntity"));
         return repository.saveAll(entities);
     }
+
+    public List<String> getAllStockId() {
+        return repository.findAllDistinctNseScriptCode();
+    }
 }

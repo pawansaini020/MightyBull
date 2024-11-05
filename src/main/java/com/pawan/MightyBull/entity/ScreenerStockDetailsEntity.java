@@ -13,6 +13,7 @@ import lombok.Setter;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -39,6 +40,12 @@ public class ScreenerStockDetailsEntity extends BaseEntity<Long> {
 
     @Column(name = "nse_code")
     private String nseCode;
+
+    @Column(name = "company_id")
+    private Long companyId;
+
+    @Column(name = "warehouse_id")
+    private Long warehouseId;
 
     @Column(name = "market_cap")
     private Double marketCap;
@@ -72,31 +79,31 @@ public class ScreenerStockDetailsEntity extends BaseEntity<Long> {
 
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "peer_comparison", columnDefinition = "jsonb")
-    private Map<String, Map<String, Double>> peerComparison;
+    private LinkedHashMap<String, Map<String, Double>> peerComparison;
 
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "quarterly_results", columnDefinition = "jsonb")
-    private Map<String, Map<String, Double>> quarterlyResults;
+    private LinkedHashMap<String, Map<String, Double>> quarterlyResults;
 
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "profit_and_loss", columnDefinition = "jsonb")
-    private Map<String, Map<String, Double>> profitAndLoss;
+    private LinkedHashMap<String, Map<String, Double>> profitAndLoss;
 
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "balance_sheet", columnDefinition = "jsonb")
-    private Map<String, Map<String, Double>> balanceSheet;
+    private LinkedHashMap<String, Map<String, Double>> balanceSheet;
 
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "cash_flows", columnDefinition = "jsonb")
-    private Map<String, Map<String, Double>> cashFlows;
+    private LinkedHashMap<String, Map<String, Double>> cashFlows;
 
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "ratios", columnDefinition = "jsonb")
-    private Map<String, Map<String, Double>> ratios;
+    private LinkedHashMap<String, Map<String, Double>> ratios;
 
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "shareholding_pattern", columnDefinition = "jsonb")
-    private Map<String, Map<String, Double>> shareholdingPattern;
+    private LinkedHashMap<String, Map<String, Double>> shareholdingPattern;
 
     public void setRequiredDetails(ScreenerStockDetails stockDetails) {
         this.setMarketCap(stockDetails.getMarketCap());

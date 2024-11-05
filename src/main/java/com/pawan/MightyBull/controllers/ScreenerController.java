@@ -5,12 +5,12 @@ import com.pawan.MightyBull.dto.grow.Screener.ScreenerStockDetails;
 import com.pawan.MightyBull.dto.grow.response.SuccessResponse;
 import com.pawan.MightyBull.services.screener.ScreenerService;
 import com.pawan.MightyBull.utils.GsonUtils;
+import com.pawan.MightyBull.utils.StockUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -30,9 +30,10 @@ public class ScreenerController {
     }
 
     @PostMapping(value = ApiEndpointConstant.Screener.STOCK_DETAILS)
-    public SuccessResponse<?> addStockDetails(@RequestParam(value = "stock_id") String stockId,
-                                         @RequestBody ScreenerStockDetails stockDetails) {
-        log.info("SCREENER_CONTROLLER ::: Received request for adding stock details for stockId: {}, stockData: {}", stockId, GsonUtils.getGson().toJson(stockDetails));
+    public SuccessResponse<?> addStockDetails(@RequestBody ScreenerStockDetails stockDetails) {
+        log.info("SCREENER_CONTROLLER ::: Received request for adding stock details for stockData: {}", GsonUtils.getGson().toJson(stockDetails));
+        String stockId = StockUtils.getStockId(stockDetails.getBseCode(), stockDetails.getNseCode());
+        stockDetails.setStockId(stockId);
         screenerService.addStockDetails(stockId, stockDetails);
         return new SuccessResponse<>("SUCCESS");
     }

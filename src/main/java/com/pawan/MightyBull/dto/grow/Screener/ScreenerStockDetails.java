@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -21,6 +22,8 @@ public class ScreenerStockDetails {
     private String name;
     private Long bseCode;
     private String nseCode;
+    private Long companyId;
+    private Long warehouseId;
     private Double marketCap;
     private Double currentPrice;
     private Double high;
@@ -31,11 +34,11 @@ public class ScreenerStockDetails {
     private Double roce;
     private Double roe;
     private Double faceValue;
-    private Map<String, Map<String, Double>> peerComparison;
-    private Map<String, Map<String, Double>> quarterlyResults;
-    private Map<String, Map<String, Double>> profitAndLoss;
-    private Map<String, Map<String, Double>> balanceSheet;
-    private Map<String, Map<String, Double>> cashFlows;
-    private Map<String, Map<String, Double>> ratios;
-    private Map<String, Map<String, Double>> shareholdingPattern;
+    private LinkedHashMap<String, Map<String, Double>> peerComparison;
+    private LinkedHashMap<String, Map<String, Double>> quarterlyResults;
+    private LinkedHashMap<String, Map<String, Double>> profitAndLoss;
+    private LinkedHashMap<String, Map<String, Double>> balanceSheet;
+    private LinkedHashMap<String, Map<String, Double>> cashFlows;
+    private LinkedHashMap<String, Map<String, Double>> ratios;
+    private LinkedHashMap<String, Map<String, Double>> shareholdingPattern;
 }

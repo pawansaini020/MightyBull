@@ -2,8 +2,10 @@ package com.pawan.MightyBull.repository;
 
 import com.pawan.MightyBull.entity.StockDetailsEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -14,4 +16,7 @@ import java.util.Optional;
 public interface StockDetailsRepository extends JpaRepository<StockDetailsEntity, Long> {
 
     Optional<StockDetailsEntity> findByNseScriptCode(String eventId);
+
+    @Query("SELECT DISTINCT s.nseScriptCode FROM StockDetailsEntity s WHERE s.nseScriptCode IS NOT NULL")
+    List<String> findAllDistinctNseScriptCode();
 }

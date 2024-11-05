@@ -30,10 +30,10 @@ public class SuccessResponse<T> extends BaseResponse<T> {
         this.pagination = pagination;
     }
 
-    public SuccessResponse(List<String> messages) {
-        this.status = SUCCESS_STATUS;
-        this.messages = messages;
-    }
+//    public SuccessResponse(List<String> messages) {
+//        this.status = SUCCESS_STATUS;
+//        this.messages = messages;
+//    }
 
     public SuccessResponse(T data, List<String> messages) {
         this.status = SUCCESS_STATUS;
