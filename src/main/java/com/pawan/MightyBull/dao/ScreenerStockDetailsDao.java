@@ -3,8 +3,11 @@ package com.pawan.MightyBull.dao;
 import com.pawan.MightyBull.constants.AppConstant;
 import com.pawan.MightyBull.entity.ScreenerStockDetailsEntity;
 import com.pawan.MightyBull.repository.ScreenerStockDetailsRepository;
+import com.pawan.MightyBull.utils.StockUtils;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
@@ -49,5 +52,10 @@ public class ScreenerStockDetailsDao implements Dao<ScreenerStockDetailsEntity, 
     public List<ScreenerStockDetailsEntity> saveAll(@NonNull List<ScreenerStockDetailsEntity> entities) {
         Assert.noNullElements(entities, String.format(AppConstant.NON_NULL_COLLECTION_ELEMENTS_MESSAGE, "StockDetailsEntity"));
         return repository.saveAll(entities);
+    }
+
+    public Page<ScreenerStockDetailsEntity> getStockByDividend(Integer pageNumber, Integer pageSize) {
+        Sort sort = Sort.by(Sort.Direction.DESC, "dividendYield");
+        return repository.findAll(StockUtils.getPageable(pageNumber, pageSize, sort));
     }
 }

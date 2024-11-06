@@ -79,31 +79,31 @@ public class ScreenerStockDetailsEntity extends BaseEntity<Long> {
 
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "peer_comparison", columnDefinition = "jsonb")
-    private LinkedHashMap<String, Map<String, Double>> peerComparison;
+    private Map<String, Map<String, Double>> peerComparison;
 
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "quarterly_results", columnDefinition = "jsonb")
-    private LinkedHashMap<String, Map<String, Double>> quarterlyResults;
+    private Map<String, Map<String, Double>> quarterlyResults;
 
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "profit_and_loss", columnDefinition = "jsonb")
-    private LinkedHashMap<String, Map<String, Double>> profitAndLoss;
+    private Map<String, Map<String, Double>> profitAndLoss;
 
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "balance_sheet", columnDefinition = "jsonb")
-    private LinkedHashMap<String, Map<String, Double>> balanceSheet;
+    private Map<String, Map<String, Double>> balanceSheet;
 
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "cash_flows", columnDefinition = "jsonb")
-    private LinkedHashMap<String, Map<String, Double>> cashFlows;
+    private Map<String, Map<String, Double>> cashFlows;
 
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "ratios", columnDefinition = "jsonb")
-    private LinkedHashMap<String, Map<String, Double>> ratios;
+    private Map<String, Map<String, Double>> ratios;
 
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "shareholding_pattern", columnDefinition = "jsonb")
-    private LinkedHashMap<String, Map<String, Double>> shareholdingPattern;
+    private Map<String, Map<String, Double>> shareholdingPattern;
 
     public void setRequiredDetails(ScreenerStockDetails stockDetails) {
         this.setMarketCap(stockDetails.getMarketCap());

@@ -15,7 +15,7 @@ import java.util.Optional;
 @Repository
 public interface StockDetailsRepository extends JpaRepository<StockDetailsEntity, Long> {
 
-    Optional<StockDetailsEntity> findByNseScriptCode(String eventId);
+    Optional<StockDetailsEntity> findByStockId(String eventId);
 
     @Query("SELECT DISTINCT s.nseScriptCode FROM StockDetailsEntity s WHERE s.nseScriptCode IS NOT NULL")
     List<String> findAllDistinctNseScriptCode();

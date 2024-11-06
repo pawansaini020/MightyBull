@@ -2,11 +2,13 @@ package com.pawan.MightyBull.controllers;
 
 import com.pawan.MightyBull.constants.ApiEndpointConstant;
 import com.pawan.MightyBull.dto.grow.response.SuccessResponse;
-import com.pawan.MightyBull.services.grow.StockDetailsService;
+import com.pawan.MightyBull.services.grow.GrowService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -15,19 +17,27 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Slf4j
 @RestController
-@RequestMapping(value = ApiEndpointConstant.Grow.BASE)
+@RequestMapping(value = ApiEndpointConstant.Grow.GROW_BASE)
 public class GrowController {
 
-    private final StockDetailsService stockDetailsService;
+    private final GrowService growService;
 
     @Autowired
-    public GrowController(StockDetailsService stockDetailsService) {
-        this.stockDetailsService = stockDetailsService;
+    public GrowController(GrowService growService) {
+        this.growService = growService;
+    }
+
+    @PostMapping(value = ApiEndpointConstant.Grow.SYNC_STOCKS)
+    public SuccessResponse<?> syncStockDetails(@RequestParam(value = "start_page") Integer startPage,
+                                               @RequestParam(value = "end_page") Integer endPage) {
+        log.info("GROW_CONTROLLER ::: Received request for getting stock details for: {}, {}", startPage, endPage);
+        growService.syncStockDetails(startPage, endPage);
+        return new SuccessResponse<>("Success");
     }
 
     @GetMapping(value = ApiEndpointConstant.Grow.ALL_STOCKS)
-    public SuccessResponse<?> addStockDetails() {
+    public SuccessResponse<?> getStockDetails() {
         log.info("GROW_CONTROLLER ::: Received request for getting stock details");
-        return new SuccessResponse<>(stockDetailsService.getStockId());
+        return new SuccessResponse<>(growService.getStockId());
     }
 }

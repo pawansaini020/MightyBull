@@ -23,6 +23,9 @@ import lombok.Setter;
 @Builder
 public class StockPriceEntity extends BaseEntity<Long> {
 
+    @Column(name = "stock_id")
+    private String stockId;
+
     @Column(name = "type")
     private String type;
 

@@ -1,5 +1,6 @@
 package com.pawan.MightyBull.services.grow;
 
+import com.pawan.MightyBull.Managers.GrowAPIManager;
 import com.pawan.MightyBull.dao.StockDetailsDao;
 import com.pawan.MightyBull.dto.grow.GrowStockDetails;
 import com.pawan.MightyBull.entity.StockDetailsEntity;
@@ -21,14 +22,17 @@ import java.util.Optional;
 public class StockDetailsService {
 
     private final StockDetailsDao stockDetailsDao;
+    private final GrowAPIManager growAPIManager;
 
     @Autowired
-    public StockDetailsService(StockDetailsDao stockDetailsDao) {
+    public StockDetailsService(StockDetailsDao stockDetailsDao,
+                               GrowAPIManager growAPIManager) {
         this.stockDetailsDao = stockDetailsDao;
+        this.growAPIManager = growAPIManager;
     }
 
     public void persistGrowStockDetails(GrowStockDetails stockDetails) {
-        Optional<StockDetailsEntity> stockDetailsEntity = stockDetailsDao.getByStockId(stockDetails.getNseScriptCode());
+        Optional<StockDetailsEntity> stockDetailsEntity = stockDetailsDao.getByStockId(stockDetails.getStockId());
         if(stockDetailsEntity.isEmpty()) {
             StockDetailsEntity entity = StockDetailsMapper.INSTANCE.mapDtoToEntity(stockDetails);
             stockDetailsDao.save(entity);

@@ -17,6 +17,7 @@ import java.io.Serializable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GrowStockDetails extends BaseDto implements Serializable {
 
+    private String stockId;
     private String isin;
     private String growwContractId;
     private String companyName;

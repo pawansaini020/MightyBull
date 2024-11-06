@@ -34,11 +34,11 @@ public class ScreenerStockDetails {
     private Double roce;
     private Double roe;
     private Double faceValue;
-    private LinkedHashMap<String, Map<String, Double>> peerComparison;
-    private LinkedHashMap<String, Map<String, Double>> quarterlyResults;
-    private LinkedHashMap<String, Map<String, Double>> profitAndLoss;
-    private LinkedHashMap<String, Map<String, Double>> balanceSheet;
-    private LinkedHashMap<String, Map<String, Double>> cashFlows;
-    private LinkedHashMap<String, Map<String, Double>> ratios;
-    private LinkedHashMap<String, Map<String, Double>> shareholdingPattern;
+    private Map<String, Map<String, Double>> peerComparison;
+    private Map<String, Map<String, Double>> quarterlyResults;
+    private Map<String, Map<String, Double>> profitAndLoss;
+    private Map<String, Map<String, Double>> balanceSheet;
+    private Map<String, Map<String, Double>> cashFlows;
+    private Map<String, Map<String, Double>> ratios;
+    private Map<String, Map<String, Double>> shareholdingPattern;
 }

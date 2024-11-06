@@ -17,6 +17,7 @@ import java.io.Serializable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GrowLivePriceDto extends BaseDto implements Serializable {
 
+    private String stockId;
     private String type;
     private String symbol;
     private Long tsInMillis;
