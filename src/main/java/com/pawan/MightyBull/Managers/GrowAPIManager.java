@@ -27,7 +27,7 @@ public class GrowAPIManager {
         this.growWebClient = growWebClient;
     }
 
-    public void getAllStockDetails() {
+    public GrowStocks getAllStockDetails(int pageNumber, int pageSize) {
         Map<String, List<String>> listFilters = new HashMap<>();
         listFilters.put("INDUSTRY", new ArrayList<>());
         listFilters.put("INDEX", new ArrayList<>());
@@ -40,8 +40,7 @@ public class GrowAPIManager {
         marketCabRange.put("max", 3000000000000000L);
         marketCabRange.put("min", 0L);
         objFilters.put("MARKET_CAP", marketCabRange);
-        GrowStockRequest request = new GrowStockRequest(listFilters, objFilters, 0, 15, "NA", "ASC");
-        GrowStocks growStocks = growWebClient.getAllStockDetails(request);
-        log.info("Grow stocks: {}", growStocks);
+        GrowStockRequest request = new GrowStockRequest(listFilters, objFilters, pageNumber, pageSize, "NA", "ASC");
+        return growWebClient.getAllStockDetails(request);
     }
 }

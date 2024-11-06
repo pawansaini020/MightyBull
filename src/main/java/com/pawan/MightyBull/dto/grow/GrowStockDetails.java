@@ -15,13 +15,16 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class GrowStockDetails implements Serializable {
+public class GrowStockDetails extends BaseDto implements Serializable {
 
+    private String stockId;
+    private String isin;
+    private String growwContractId;
     private String companyName;
     private String companyShortName;
     private String searchId;
     private Integer industryCode;
-    private Integer bseScriptCode;
+    private Long bseScriptCode;
     private String nseScriptCode;
     private Double yearlyHighPrice;
     private Double yearlyLowPrice;
