@@ -1,9 +1,7 @@
 package com.pawan.MightyBull.mapper;
 
-import com.pawan.MightyBull.dto.grow.GrowStockDetails;
-import com.pawan.MightyBull.dto.grow.Screener.ScreenerStockDetails;
+import com.pawan.MightyBull.dto.Screener.ScreenerStockDetails;
 import com.pawan.MightyBull.entity.ScreenerStockDetailsEntity;
-import com.pawan.MightyBull.entity.StockDetailsEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

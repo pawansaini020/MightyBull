@@ -1,6 +1,6 @@
 package com.pawan.MightyBull.entity;
 
-import com.pawan.MightyBull.dto.grow.Screener.ScreenerStockDetails;
+import com.pawan.MightyBull.dto.Screener.ScreenerStockDetails;
 import com.pawan.MightyBull.entity.base.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,7 +13,6 @@ import lombok.Setter;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**

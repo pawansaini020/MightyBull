@@ -1,6 +1,7 @@
 package com.pawan.MightyBull.dto.grow;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.pawan.MightyBull.dto.BaseDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

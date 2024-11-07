@@ -1,4 +1,4 @@
-package com.pawan.MightyBull.dto.grow;
+package com.pawan.MightyBull.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

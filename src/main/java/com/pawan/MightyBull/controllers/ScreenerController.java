@@ -1,8 +1,8 @@
 package com.pawan.MightyBull.controllers;
 
 import com.pawan.MightyBull.constants.ApiEndpointConstant;
-import com.pawan.MightyBull.dto.grow.Screener.ScreenerStockDetails;
-import com.pawan.MightyBull.dto.grow.response.SuccessResponse;
+import com.pawan.MightyBull.dto.Screener.ScreenerStockDetails;
+import com.pawan.MightyBull.dto.response.SuccessResponse;
 import com.pawan.MightyBull.services.screener.ScreenerService;
 import com.pawan.MightyBull.utils.GsonUtils;
 import com.pawan.MightyBull.utils.StockUtils;

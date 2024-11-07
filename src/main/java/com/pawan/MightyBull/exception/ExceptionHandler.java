@@ -1,7 +1,7 @@
 package com.pawan.MightyBull.exception;
 
-import com.pawan.MightyBull.dto.grow.response.ErrorResponse;
-import com.pawan.MightyBull.dto.grow.response.FailureResponse;
+import com.pawan.MightyBull.dto.response.ErrorResponse;
+import com.pawan.MightyBull.dto.response.FailureResponse;
 import com.pawan.MightyBull.enums.ExceptionType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

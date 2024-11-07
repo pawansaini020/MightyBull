@@ -1,4 +1,4 @@
-package com.pawan.MightyBull.dto.grow.Screener;
+package com.pawan.MightyBull.dto.Screener;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;

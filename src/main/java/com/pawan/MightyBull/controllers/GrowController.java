@@ -1,7 +1,7 @@
 package com.pawan.MightyBull.controllers;
 
 import com.pawan.MightyBull.constants.ApiEndpointConstant;
-import com.pawan.MightyBull.dto.grow.response.SuccessResponse;
+import com.pawan.MightyBull.dto.response.SuccessResponse;
 import com.pawan.MightyBull.services.grow.GrowService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.pawan.MightyBull.dto.grow.response;
+package com.pawan.MightyBull.dto.response;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
