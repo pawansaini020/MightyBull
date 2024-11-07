@@ -28,4 +28,9 @@ public class ApiEndpointConstant {
 
         public static final String HIGH_DIVIDEND = "/high_dividend";
     }
+
+    public static class Scoring {
+        public static final String BASE = "/v1/api/scoring";
+        public static final String CALCULATE_SCORE = "/calculate_score";
+    }
 }

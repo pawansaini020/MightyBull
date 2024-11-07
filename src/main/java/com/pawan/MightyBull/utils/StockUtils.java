@@ -24,4 +24,11 @@ public class StockUtils {
     public static Pageable getPageable(int pageNumber, int pageSize, Sort sort) {
         return PageRequest.of(pageNumber, pageSize, sort);
     }
+
+    public static Double getOrDefault(Double value) {
+        if(value==null) {
+            return 0d;
+        }
+        return value;
+    }
 }
