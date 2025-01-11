@@ -24,6 +24,8 @@ public class ScreenerStockDetails {
     private String nseCode;
     private Long companyId;
     private Long warehouseId;
+    private String sector;
+    private String industry;
     private Double marketCap;
     private Double currentPrice;
     private Double high;

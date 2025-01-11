@@ -46,6 +46,12 @@ public class ScreenerStockDetailsEntity extends BaseEntity<Long> {
     @Column(name = "warehouse_id")
     private Long warehouseId;
 
+    @Column(name = "sector")
+    private String sector;
+
+    @Column(name = "industry")
+    private String industry;
+
     @Column(name = "market_cap")
     private Double marketCap;
 
@@ -105,6 +111,10 @@ public class ScreenerStockDetailsEntity extends BaseEntity<Long> {
     private Map<String, Map<String, Double>> shareholdingPattern;
 
     public void setRequiredDetails(ScreenerStockDetails stockDetails) {
+        this.setCompanyId(stockDetails.getCompanyId());
+        this.setWarehouseId(stockDetails.getWarehouseId());
+        this.setSector(stockDetails.getSector());
+        this.setIndustry(stockDetails.getIndustry());
         this.setMarketCap(stockDetails.getMarketCap());
         this.setCurrentPrice(stockDetails.getCurrentPrice());
         this.setHigh(stockDetails.getHigh());

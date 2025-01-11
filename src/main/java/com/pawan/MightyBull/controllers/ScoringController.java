@@ -39,6 +39,7 @@ public class ScoringController {
     public SuccessResponse<?> syncStockScore(@RequestParam(value = "stock_id") String stockId,
                                              @RequestBody StockScoreInfoDTO scoreInfoDTO) {
         log.info("SCORING_CONTROLLER ::: Received request for syncing score for: {}, {}", stockId, GsonUtils.getGson().toJson(scoreInfoDTO));
+        scoringService.syncStockScore(scoreInfoDTO.getScoreInfo());
         return new SuccessResponse<>("Success");
     }
 }

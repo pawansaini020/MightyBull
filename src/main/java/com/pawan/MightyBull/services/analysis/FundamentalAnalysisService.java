@@ -31,36 +31,36 @@ public class FundamentalAnalysisService {
         this.camundaWebClient = camundaWebClient;
     }
 
-    public int calculateScore(ScreenerStockDetailsEntity entity) {
+    public StockScoreDTO calculateScore(ScreenerStockDetailsEntity entity) {
         StockScoreData stockScoreData = new StockScoreData();
-        int marketCapScore = calculateMarketCapScore(entity.getMarketCap(), stockScoreData);
-        int priceScore = calculatePriceScore(entity.getCurrentPrice(), entity.getHigh(), entity.getLow(), stockScoreData);
-        int peScore = calculatePEScore(entity.getStockPE(), stockScoreData);
-        int dividendYieldScore = calculateDividendYieldScore(entity.getDividendYield(), stockScoreData);
-        int roceScore = calculateROCEScore(entity.getRoce(), stockScoreData);
-        int rocScore = calculateROCScore(entity.getRoe(), stockScoreData);
-        int quarterlyProfitScore = calculateQuarterlyProfitScore(entity.getQuarterlyResults(), stockScoreData);
-        int profitAndLossScore = calculateProfitAndLossScore(entity.getProfitAndLoss(), stockScoreData);
-        int balanceSheetScore = calculateBalanceSheetScore(entity.getBalanceSheet(), stockScoreData);
-        int cashFlowsScore = calculateCashFlowsScore(entity.getCashFlows(), stockScoreData);
-        int debtorDaysScore = calculateDebtorDaysScore(entity.getRatios(), stockScoreData);
-        int yearlyROCEScore = calculateYearlyROCEScore(entity.getRatios(), stockScoreData);
-        int shareholdingPatternScore = calculateShareholdingPatternScore(entity.getShareholdingPattern(), stockScoreData);
-        int totalScore = marketCapScore + priceScore + peScore + dividendYieldScore + roceScore + rocScore + quarterlyProfitScore + profitAndLossScore + balanceSheetScore + cashFlowsScore + debtorDaysScore + yearlyROCEScore + shareholdingPatternScore;
+        double marketCapScore = calculateMarketCapScore(entity.getMarketCap(), stockScoreData);
+        double priceScore = calculatePriceScore(entity.getCurrentPrice(), entity.getHigh(), entity.getLow(), stockScoreData);
+        double peScore = calculatePEScore(entity.getStockPE(), stockScoreData);
+        double dividendYieldScore = calculateDividendYieldScore(entity.getDividendYield(), stockScoreData);
+        double roceScore = calculateROCEScore(entity.getRoce(), stockScoreData);
+        double rocScore = calculateROCScore(entity.getRoe(), stockScoreData);
+        double quarterlyProfitScore = calculateQuarterlyProfitScore(entity.getQuarterlyResults(), stockScoreData);
+        double profitAndLossScore = calculateProfitAndLossScore(entity.getProfitAndLoss(), stockScoreData);
+        double balanceSheetScore = calculateBalanceSheetScore(entity.getBalanceSheet(), stockScoreData);
+        double cashFlowsScore = calculateCashFlowsScore(entity.getCashFlows(), stockScoreData);
+        double debtorDaysScore = calculateDebtorDaysScore(entity.getRatios(), stockScoreData);
+        double yearlyROCEScore = calculateYearlyROCEScore(entity.getRatios(), stockScoreData);
+        double shareholdingPatternScore = calculateShareholdingPatternScore(entity.getShareholdingPattern(), stockScoreData);
+        double totalScore = marketCapScore + priceScore + peScore + dividendYieldScore + roceScore + rocScore + quarterlyProfitScore + profitAndLossScore + balanceSheetScore + cashFlowsScore + debtorDaysScore + yearlyROCEScore + shareholdingPatternScore;
         log.info("Stock score for: {} totalScore: {} : marketCapScore: {}, priceScore: {}, peScore: {}, dividendYieldScore: {}, roceScore: {}, rocScore: {}, " +
                         "quarterlyProfitScore: {}, profitAndLossScore: {}, balanceSheetScore: {}, cashFlowsScore: {}, debtorDaysScore: {}, yearlyROCEScore: {}, shareholdingPatternScore: {}",
                 entity.getName(), totalScore, marketCapScore, priceScore, peScore, dividendYieldScore, roceScore, rocScore, quarterlyProfitScore, profitAndLossScore, balanceSheetScore, cashFlowsScore, debtorDaysScore, yearlyROCEScore, shareholdingPatternScore);
 
         ScoreScoreConfigDTO configDTO = new ScoreScoreConfigDTO(true, true, true,true,true,true,true,true,true,true,true,true,true);
-        StockScoreDTO scoreDTO = new StockScoreDTO();
+        StockScoreDTO scoreDTO = new StockScoreDTO(entity.getStockId(), marketCapScore, priceScore, peScore, dividendYieldScore, roceScore, rocScore, quarterlyProfitScore, profitAndLossScore, balanceSheetScore, cashFlowsScore, debtorDaysScore, yearlyROCEScore, shareholdingPatternScore, totalScore);
         scoreDTO.setStockId(entity.getStockId());
         StockScoreInfoDTO scoreInfoDTO = StockScoreInfoDTO.builder()
                 .data(stockScoreData)
                 .scoreInfo(scoreDTO)
                 .rules(configDTO)
                 .build();
-        camundaWebClient.calculateScore(scoreInfoDTO);
-        return totalScore;
+//        camundaWebClient.calculateScore(scoreInfoDTO);
+        return scoreDTO;
     }
 
     private int calculateMarketCapScore(Double marketCap, StockScoreData stockScoreData) {

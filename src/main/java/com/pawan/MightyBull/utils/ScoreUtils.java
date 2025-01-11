@@ -16,7 +16,7 @@ public class ScoreUtils {
         try {
             for(ScoreRule rule : rules) {
                 if(rule.getFrom() <= value && value <= rule.getTo()) {
-                    return rule.getScore();
+                    return (int) (rule.getScore() * rule.getWeight());
                 }
             }
         } catch (Exception e) {

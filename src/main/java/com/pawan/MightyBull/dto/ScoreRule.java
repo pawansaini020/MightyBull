@@ -16,4 +16,5 @@ public class ScoreRule {
     private int from;
     private int to;
     private int score;
+    private double weight;
 }

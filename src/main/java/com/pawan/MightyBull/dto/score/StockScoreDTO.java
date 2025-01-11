@@ -2,6 +2,7 @@ package com.pawan.MightyBull.dto.score;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.pawan.MightyBull.entity.StockScoreEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,4 +35,21 @@ public class StockScoreDTO {
     private Double yearlyRoceScore;
     private Double shareholdingPatternScore;
     private Double score;
+
+    public void updateScore(StockScoreEntity entity) {
+        entity.setScore(this.score);
+        entity.setMarketCapScore(this.marketCapScore);
+        entity.setPriceScore(this.priceScore);
+        entity.setPeScore(this.peScore);
+        entity.setDividendYieldScore(this.dividendYieldScore);
+        entity.setRoceScore(this.roceScore);
+        entity.setRocScore(this.rocScore);
+        entity.setQuarterlyProfitScore(this.quarterlyProfitScore);
+        entity.setProfitAndLossScore(this.profitAndLossScore);
+        entity.setBalanceSheetScore(this.balanceSheetScore);
+        entity.setCashFlowScore(this.cashFlowScore);
+        entity.setDebtorDaysScore(this.debtorDaysScore);
+        entity.setYearlyRoceScore(this.yearlyRoceScore);
+        entity.setShareholdingPatternScore(this.shareholdingPatternScore);
+    }
 }

@@ -1,7 +1,11 @@
 package com.pawan.MightyBull.services;
 
 import com.pawan.MightyBull.dao.ScreenerStockDetailsDao;
+import com.pawan.MightyBull.dao.StockScoreDao;
+import com.pawan.MightyBull.dto.score.StockScoreDTO;
 import com.pawan.MightyBull.entity.ScreenerStockDetailsEntity;
+import com.pawan.MightyBull.entity.StockScoreEntity;
+import com.pawan.MightyBull.mapper.StockScoreMapper;
 import com.pawan.MightyBull.services.analysis.FundamentalAnalysisService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,19 +23,36 @@ public class ScoringService {
 
     private ScreenerStockDetailsDao screenerStockDetailsDao;
     private FundamentalAnalysisService fundamentalAnalysisService;
+    private StockScoreDao stockScoreDao;
 
     @Autowired
     private ScoringService(ScreenerStockDetailsDao screenerStockDetailsDao,
-                           FundamentalAnalysisService fundamentalAnalysisService) {
+                           FundamentalAnalysisService fundamentalAnalysisService,
+                           StockScoreDao stockScoreDao) {
         this.screenerStockDetailsDao = screenerStockDetailsDao;
         this.fundamentalAnalysisService = fundamentalAnalysisService;
+        this.stockScoreDao = stockScoreDao;
     }
 
-    public int generateStockScore(String stockId) {
+    public StockScoreDTO generateStockScore(String stockId) {
         Optional<ScreenerStockDetailsEntity> stockDetailsEntity = screenerStockDetailsDao.getByStockId(stockId);
         if(stockDetailsEntity.isPresent()) {
-            return fundamentalAnalysisService.calculateScore(stockDetailsEntity.get());
+            StockScoreDTO scoreInfo = fundamentalAnalysisService.calculateScore(stockDetailsEntity.get());
+            syncStockScore(scoreInfo);
+            return scoreInfo;
         }
-        return 0;
+        return new StockScoreDTO();
+    }
+
+    public void syncStockScore(StockScoreDTO scoreInfo) {
+        Optional<StockScoreEntity> stockScoreEntity = stockScoreDao.getByStockId(scoreInfo.getStockId());
+        StockScoreEntity entity = null;
+        if(stockScoreEntity.isPresent()) {
+            entity = stockScoreEntity.get();
+            scoreInfo.updateScore(entity);
+        } else {
+            entity = StockScoreMapper.INSTANCE.mapDtoToEntity(scoreInfo);
+        }
+        stockScoreDao.save(entity);
     }
 }
