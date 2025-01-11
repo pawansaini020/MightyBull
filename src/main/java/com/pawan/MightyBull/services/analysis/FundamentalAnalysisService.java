@@ -1,10 +1,16 @@
 package com.pawan.MightyBull.services.analysis;
 
+import com.pawan.MightyBull.WebClients.CamundaWebClient;
 import com.pawan.MightyBull.constants.FundamentalAnalysisScoreRules;
+import com.pawan.MightyBull.dto.score.ScoreScoreConfigDTO;
+import com.pawan.MightyBull.dto.score.StockScoreDTO;
+import com.pawan.MightyBull.dto.score.StockScoreData;
+import com.pawan.MightyBull.dto.score.StockScoreInfoDTO;
 import com.pawan.MightyBull.entity.ScreenerStockDetailsEntity;
 import com.pawan.MightyBull.utils.ScoreUtils;
 import com.pawan.MightyBull.utils.StockUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -18,28 +24,47 @@ import java.util.Map;
 @Service
 public class FundamentalAnalysisService {
 
+    private final CamundaWebClient camundaWebClient;
+
+    @Autowired
+    private FundamentalAnalysisService(CamundaWebClient camundaWebClient) {
+        this.camundaWebClient = camundaWebClient;
+    }
+
     public int calculateScore(ScreenerStockDetailsEntity entity) {
-        int marketCapScore = calculateMarketCapScore(entity.getMarketCap());
-        int priceScore = calculatePriceScore(entity.getCurrentPrice(), entity.getHigh(), entity.getLow());
-        int peScore = calculatePEScore(entity.getStockPE());
-        int dividendYieldScore = calculateDividendYieldScore(entity.getDividendYield());
-        int roceScore = calculateROCEScore(entity.getRoce());
-        int rocScore = calculateROCScore(entity.getRoe());
-        int quarterlyProfitScore = calculateQuarterlyProfitScore(entity.getQuarterlyResults());
-        int profitAndLossScore = calculateProfitAndLossScore(entity.getProfitAndLoss());
-        int balanceSheetScore = calculateBalanceSheetScore(entity.getBalanceSheet());
-        int cashFlowsScore = calculateCashFlowsScore(entity.getCashFlows());
-        int debtorDaysScore = calculateDebtorDaysScore(entity.getRatios());
-        int yearlyROCEScore = calculateYearlyROCEScore(entity.getRatios());
-        int shareholdingPatternScore = calculateShareholdingPatternScore(entity.getShareholdingPattern());
+        StockScoreData stockScoreData = new StockScoreData();
+        int marketCapScore = calculateMarketCapScore(entity.getMarketCap(), stockScoreData);
+        int priceScore = calculatePriceScore(entity.getCurrentPrice(), entity.getHigh(), entity.getLow(), stockScoreData);
+        int peScore = calculatePEScore(entity.getStockPE(), stockScoreData);
+        int dividendYieldScore = calculateDividendYieldScore(entity.getDividendYield(), stockScoreData);
+        int roceScore = calculateROCEScore(entity.getRoce(), stockScoreData);
+        int rocScore = calculateROCScore(entity.getRoe(), stockScoreData);
+        int quarterlyProfitScore = calculateQuarterlyProfitScore(entity.getQuarterlyResults(), stockScoreData);
+        int profitAndLossScore = calculateProfitAndLossScore(entity.getProfitAndLoss(), stockScoreData);
+        int balanceSheetScore = calculateBalanceSheetScore(entity.getBalanceSheet(), stockScoreData);
+        int cashFlowsScore = calculateCashFlowsScore(entity.getCashFlows(), stockScoreData);
+        int debtorDaysScore = calculateDebtorDaysScore(entity.getRatios(), stockScoreData);
+        int yearlyROCEScore = calculateYearlyROCEScore(entity.getRatios(), stockScoreData);
+        int shareholdingPatternScore = calculateShareholdingPatternScore(entity.getShareholdingPattern(), stockScoreData);
         int totalScore = marketCapScore + priceScore + peScore + dividendYieldScore + roceScore + rocScore + quarterlyProfitScore + profitAndLossScore + balanceSheetScore + cashFlowsScore + debtorDaysScore + yearlyROCEScore + shareholdingPatternScore;
         log.info("Stock score for: {} totalScore: {} : marketCapScore: {}, priceScore: {}, peScore: {}, dividendYieldScore: {}, roceScore: {}, rocScore: {}, " +
                         "quarterlyProfitScore: {}, profitAndLossScore: {}, balanceSheetScore: {}, cashFlowsScore: {}, debtorDaysScore: {}, yearlyROCEScore: {}, shareholdingPatternScore: {}",
                 entity.getName(), totalScore, marketCapScore, priceScore, peScore, dividendYieldScore, roceScore, rocScore, quarterlyProfitScore, profitAndLossScore, balanceSheetScore, cashFlowsScore, debtorDaysScore, yearlyROCEScore, shareholdingPatternScore);
+
+        ScoreScoreConfigDTO configDTO = new ScoreScoreConfigDTO(true, true, true,true,true,true,true,true,true,true,true,true,true);
+        StockScoreDTO scoreDTO = new StockScoreDTO();
+        scoreDTO.setStockId(entity.getStockId());
+        StockScoreInfoDTO scoreInfoDTO = StockScoreInfoDTO.builder()
+                .data(stockScoreData)
+                .scoreInfo(scoreDTO)
+                .rules(configDTO)
+                .build();
+        camundaWebClient.calculateScore(scoreInfoDTO);
         return totalScore;
     }
 
-    private int calculateMarketCapScore(Double marketCap) {
+    private int calculateMarketCapScore(Double marketCap, StockScoreData stockScoreData) {
+        stockScoreData.setMarketCap(marketCap);
         int score = 0;
         if(marketCap!=null) {
             score = ScoreUtils.calculateScore(marketCap, FundamentalAnalysisScoreRules.MARKET_CAB_RULES);
@@ -47,48 +72,53 @@ public class FundamentalAnalysisService {
         return score;
     }
 
-    private int calculatePriceScore(Double currentPrice, Double highPrice, Double lowPrice) {
+    private int calculatePriceScore(Double currentPrice, Double highPrice, Double lowPrice, StockScoreData stockScoreData) {
         int score = 0;
         if(currentPrice!=null && highPrice!=null && lowPrice!=null) {
             double priceIncrement = ((currentPrice-lowPrice) / (highPrice-lowPrice))*100;
             score = ScoreUtils.calculateScore(priceIncrement, FundamentalAnalysisScoreRules.PRICE_RULES);
+            stockScoreData.setPrice(priceIncrement);
         }
         return score;
     }
 
-    private int calculatePEScore(Double stockPE) {
+    private int calculatePEScore(Double stockPE, StockScoreData stockScoreData) {
         int score = 0;
         if(stockPE!=null) {
             score = ScoreUtils.calculateScore(stockPE, FundamentalAnalysisScoreRules.PE_RULES);
+            stockScoreData.setPe(stockPE);
         }
         return score;
     }
 
-    private int calculateDividendYieldScore(Double dividendYield) {
+    private int calculateDividendYieldScore(Double dividendYield, StockScoreData stockScoreData) {
         int score = 0;
         if(dividendYield!=null) {
             score = ScoreUtils.calculateScore(dividendYield, FundamentalAnalysisScoreRules.DIVIDEND_YIELD_RULES);
+            stockScoreData.setDividendYield(dividendYield);
         }
         return score;
     }
 
-    private int calculateROCEScore(Double roce) {
+    private int calculateROCEScore(Double roce, StockScoreData stockScoreData) {
         int score = 0;
         if(roce!=null) {
             score = ScoreUtils.calculateScore(roce, FundamentalAnalysisScoreRules.ROCE_RULES);
+            stockScoreData.setRoce(roce);
         }
         return score;
     }
 
-    private int calculateROCScore(Double roc) {
+    private int calculateROCScore(Double roc, StockScoreData stockScoreData) {
         int score = 0;
         if(roc!=null) {
             score = ScoreUtils.calculateScore(roc, FundamentalAnalysisScoreRules.ROC_RULES);
+            stockScoreData.setRoc(roc);
         }
         return score;
     }
 
-    private int calculateQuarterlyProfitScore(Map<String, Map<String, Double>> quarterlyProfit) {
+    private int calculateQuarterlyProfitScore(Map<String, Map<String, Double>> quarterlyProfit, StockScoreData stockScoreData) {
         int score = 0;
         if(quarterlyProfit!=null && quarterlyProfit.get("Profit before tax") != null) {
             Map<String, Double> netProfit = quarterlyProfit.get("Profit before tax");
@@ -121,7 +151,7 @@ public class FundamentalAnalysisService {
                 Double profit11 = quarter11 == 0 ? 0 : ((quarter12-quarter11) / Math.abs(quarter11)) * 100;
                 Double profit12 = quarter12 == 0 ? 0 : ((quarter13-quarter12) / Math.abs(quarter12)) * 100;
                 Double profit13 = quarter13 == 0 ? 0 : ((quarter14-quarter13) / Math.abs(quarter13)) * 100;
-
+                stockScoreData.setQuarterlyProfit(profit13);
                 if(profit12>0 && profit13>0) {
                     score = (
                             ScoreUtils.calculateScore(profit1, FundamentalAnalysisScoreRules.QUARTERLY_PROFIT_RULES) +
@@ -144,7 +174,7 @@ public class FundamentalAnalysisService {
         return score;
     }
 
-    private int calculateProfitAndLossScore(Map<String, Map<String, Double>> profitAndLoss) {
+    private int calculateProfitAndLossScore(Map<String, Map<String, Double>> profitAndLoss, StockScoreData stockScoreData) {
         int score = 0;
         if(profitAndLoss!=null && profitAndLoss.get("Net Profit") != null) {
             Map<String, Double> netProfit = profitAndLoss.get("Net Profit");
@@ -173,7 +203,7 @@ public class FundamentalAnalysisService {
                 Double profit9 = year9 == 0 ? 0 : ((year10-year9) / Math.abs(year9)) * 100;
                 Double profit10 = year10 == 0 ? 0 : ((year11-year10) / Math.abs(year10)) * 100;
                 Double profit11 = year11 == 0 ? 0 : ((year12-year11) / Math.abs(year11)) * 100;
-
+                stockScoreData.setProfitAndLoss(profit11);
                 if(year11>0) {
                     score = (
                             ScoreUtils.calculateScore(profit1, FundamentalAnalysisScoreRules.PROFIT_AND_LOSS_RULES) +
@@ -194,7 +224,7 @@ public class FundamentalAnalysisService {
         return score;
     }
 
-    private int calculateBalanceSheetScore(Map<String, Map<String, Double>> balanceSheet) {
+    private int calculateBalanceSheetScore(Map<String, Map<String, Double>> balanceSheet, StockScoreData stockScoreData) {
         int score = 0;
         if(balanceSheet!=null && balanceSheet.get("Net Profit") != null) {
             Map<String, Double> totalAssets = balanceSheet.get("Total Assets");
@@ -223,7 +253,7 @@ public class FundamentalAnalysisService {
                 Double growth9 = year9 == 0 ? 0 : ((year10-year9) / Math.abs(year9)) * 100;
                 Double growth10 = year10 == 0 ? 0 : ((year11-year10) / Math.abs(year10)) * 100;
                 Double growth11 = year11 == 0 ? 0 : ((year12-year11) / Math.abs(year11)) * 100;
-
+                stockScoreData.setBalanceSheet(growth11);
                 if(year11>0) {
                     score = (
                             ScoreUtils.calculateScore(growth1, FundamentalAnalysisScoreRules.BALANCE_SHEET_RULES) +
@@ -244,7 +274,7 @@ public class FundamentalAnalysisService {
         return score;
     }
 
-    private int calculateCashFlowsScore(Map<String, Map<String, Double>> cashFlow) {
+    private int calculateCashFlowsScore(Map<String, Map<String, Double>> cashFlow, StockScoreData stockScoreData) {
         int score = 0;
         if(cashFlow!=null && cashFlow.get("Net Cash Flow") != null) {
             Map<String, Double> netValue = cashFlow.get("Net Cash Flow");
@@ -274,6 +304,7 @@ public class FundamentalAnalysisService {
                 Double growth10 = year10 == 0 ? 0 : ((year11-year10) / Math.abs(year10)) * 100;
                 Double growth11 = year11 == 0 ? 0 : ((year12-year11) / Math.abs(year11)) * 100;
 
+                stockScoreData.setCashFlow(growth11);
                 if(year11>0) {
                     score = (
                             ScoreUtils.calculateScore(growth1, FundamentalAnalysisScoreRules.CASH_FLOWS_RULES) +
@@ -294,7 +325,7 @@ public class FundamentalAnalysisService {
         return score;
     }
 
-    private int calculateDebtorDaysScore(Map<String, Map<String, Double>> debtorDays) {
+    private int calculateDebtorDaysScore(Map<String, Map<String, Double>> debtorDays, StockScoreData stockScoreData) {
         int score = 0;
         if(debtorDays!=null && debtorDays.get("Debtor Days") != null) {
             Map<String, Double> netValue = debtorDays.get("Debtor Days");
@@ -324,6 +355,7 @@ public class FundamentalAnalysisService {
                 Double growth10 = year10 == 0 ? 0 : ((year11-year10) / Math.abs(year10)) * 100;
                 Double growth11 = year11 == 0 ? 0 : ((year12-year11) / Math.abs(year11)) * 100;
 
+                stockScoreData.setDebtorDays(growth11);
                 if(year11>0) {
                     score = (
                             ScoreUtils.calculateScore(growth1, FundamentalAnalysisScoreRules.DEBTOR_DAYS_RULES) +
@@ -344,7 +376,7 @@ public class FundamentalAnalysisService {
         return score;
     }
 
-    private int calculateYearlyROCEScore(Map<String, Map<String, Double>> ratios) {
+    private int calculateYearlyROCEScore(Map<String, Map<String, Double>> ratios, StockScoreData stockScoreData) {
         int score = 0;
         if(ratios!=null && ratios.get("ROCE %") != null) {
             Map<String, Double> netValue = ratios.get("ROCE %");
@@ -374,6 +406,8 @@ public class FundamentalAnalysisService {
                 Double growth10 = year10 == 0 ? 0 : ((year11-year10) / Math.abs(year10)) * 100;
                 Double growth11 = year11 == 0 ? 0 : ((year12-year11) / Math.abs(year11)) * 100;
 
+                stockScoreData.setYearlyRoce(growth11);
+
                 if(year11>0) {
                     score = (
                             ScoreUtils.calculateScore(growth1, FundamentalAnalysisScoreRules.YEARLY_ROCE_RULES) +
@@ -394,7 +428,7 @@ public class FundamentalAnalysisService {
         return score;
     }
 
-    private int calculateShareholdingPatternScore(Map<String, Map<String, Double>> profitAndLoss) {
+    private int calculateShareholdingPatternScore(Map<String, Map<String, Double>> profitAndLoss, StockScoreData stockScoreData) {
         int score = 0;
         if(profitAndLoss!=null && profitAndLoss.get("Net Profit") != null) {
             Map<String, Double> promoters = profitAndLoss.get("Promoters");
@@ -462,6 +496,7 @@ public class FundamentalAnalysisService {
                 Double shareHolding11 = promoter11 + fii11 + dii11;
                 Double shareHolding12 = promoter12 + fii12 + dii12;
 
+                stockScoreData.setShareholdingPattern(shareHolding12);
 
                 if(shareHolding12>0) {
                     score = (

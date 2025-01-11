@@ -25,12 +25,18 @@ public class ApiEndpointConstant {
     public static class Reporting {
         public static final String BASE = "/v1/api/analysis";
         public static final String STOCK_ANALYSIS = "/stocks_analysis";
-
         public static final String HIGH_DIVIDEND = "/high_dividend";
     }
 
     public static class Scoring {
         public static final String BASE = "/v1/api/scoring";
         public static final String CALCULATE_SCORE = "/calculate_score";
+        public static final String SYNC = "/sync";
+    }
+
+    public static class Camunda {
+        public static final String BASE = "/engine-rest";
+        public static final String PROCESS_DEFINITION = "/process-definition/";
+        public static final String START = "/start";
     }
 }

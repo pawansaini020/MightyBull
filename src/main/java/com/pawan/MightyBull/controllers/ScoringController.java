@@ -2,10 +2,13 @@ package com.pawan.MightyBull.controllers;
 
 import com.pawan.MightyBull.constants.ApiEndpointConstant;
 import com.pawan.MightyBull.dto.response.SuccessResponse;
+import com.pawan.MightyBull.dto.score.StockScoreInfoDTO;
 import com.pawan.MightyBull.services.ScoringService;
+import com.pawan.MightyBull.utils.GsonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,5 +33,12 @@ public class ScoringController {
     public SuccessResponse<?> generateStockScore(@RequestParam(value = "stock_id") String stockId) {
         log.info("SCORING_CONTROLLER ::: Received request for generating score for: {}", stockId);
         return new SuccessResponse<>(scoringService.generateStockScore(stockId));
+    }
+
+    @PostMapping(value = ApiEndpointConstant.Scoring.SYNC)
+    public SuccessResponse<?> syncStockScore(@RequestParam(value = "stock_id") String stockId,
+                                             @RequestBody StockScoreInfoDTO scoreInfoDTO) {
+        log.info("SCORING_CONTROLLER ::: Received request for syncing score for: {}, {}", stockId, GsonUtils.getGson().toJson(scoreInfoDTO));
+        return new SuccessResponse<>("Success");
     }
 }

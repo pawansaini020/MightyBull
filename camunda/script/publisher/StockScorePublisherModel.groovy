@@ -1,6 +1,7 @@
-package com.pawan.MightyBull.camunda.script.publisher
+package com.moveinsync.camunda.engine.securitydashboard.scripts.mightybull.publisher
 
 import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -43,7 +44,7 @@ def init() {
         String stock_id = execution.getVariable("stock_id")
         String endpoint = "/v1/api/scoring/sync?stock_id=" + stock_id;
         post(endpoint, jsonPayload)
-        Log.logger.info("STOCK_SCORE_PUBLISHER_MODEL :: Successfully synced the score for: {}", stock_id);
+        Log.logger.info("STOCK_SCORE_PUBLISHER_MODEL :: Successfully synced the score for: {}, {}", stock_id, jsonPayload);
     } catch (Exception e) {
         Log.logger.error("STOCK_SCORE_PUBLISHER_MODEL :: Error occurred while syncing stock score data.", e);
     }
