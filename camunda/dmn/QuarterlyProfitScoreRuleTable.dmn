@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" id="QuarterlyProfitScoreRuleTable" name="QuarterlyProfitScoreRuleTable" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.16.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.20.0">
+  <decision id="QuarterlyProfitScoreRuleTableId" name="QuarterlyProfitScoreRuleTable" camunda:historyTimeToLive="180">
+    <decisionTable id="DecisionTable_0u16fv7">
+      <input id="Input_1" label="Quarterly Profit Key" biodi:width="231" camunda:inputVariable="quarterly_profit_key">
+        <inputExpression id="InputExpression_1" typeRef="string">
+          <text></text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_0o73zod" label="Quarterly Profit Value" camunda:inputVariable="quarterly_profit_value">
+        <inputExpression id="LiteralExpression_0iiv5lf" typeRef="double">
+          <text></text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" label="Quarterly Profit Score" name="quarterly_profit_score" typeRef="double" />
+      <rule id="DecisionRule_068l7xe">
+        <inputEntry id="UnaryTests_171ucss">
+          <text>"default_quarterly_profit"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1fevptm">
+          <text>&lt;20</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1hezom5">
+          <text>20</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0duy127">
+        <inputEntry id="UnaryTests_06qpdwp">
+          <text>"default_quarterly_profit"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_01ta7c7">
+          <text>[20..50]</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1f0cjyj">
+          <text>50</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0r4dpfn">
+        <inputEntry id="UnaryTests_0mpxf6r">
+          <text>"default_quarterly_profit"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ztle3i">
+          <text>&gt;=50</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1xqhg10">
+          <text>100</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="QuarterlyProfitScoreRuleTableId">
+        <dc:Bounds height="80" width="180" x="160" y="100" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

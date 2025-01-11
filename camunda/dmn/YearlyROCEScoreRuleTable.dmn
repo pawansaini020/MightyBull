@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" id="YearlyROCEScoreRuleTable" name="YearlyROCEScoreRuleTable" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.16.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.20.0">
+  <decision id="YearlyROCEScoreRuleTableId" name="YearlyROCEScoreRuleTable" camunda:historyTimeToLive="180">
+    <decisionTable id="DecisionTable_0gz2brl">
+      <input id="Input_1" label="Yearly ROCE Key" camunda:inputVariable="yearly_roce_key">
+        <inputExpression id="InputExpression_1" typeRef="string">
+          <text></text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_05pn7kc" label="Yearly ROCE Value" biodi:width="208" camunda:inputVariable="yearly_roce_value">
+        <inputExpression id="LiteralExpression_11acrw5" typeRef="double">
+          <text></text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" label="Yearly ROCE Score" name="yearly_roce_score" typeRef="double" biodi:width="206" />
+      <rule id="DecisionRule_183b97y">
+        <inputEntry id="UnaryTests_1x4hs8x">
+          <text>"default_yearly_roce"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1s60fu4">
+          <text>&lt;20</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0fkngfi">
+          <text>20</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1svxwyk">
+        <inputEntry id="UnaryTests_1auy4zn">
+          <text>"default_yearly_roce"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1kfoskt">
+          <text>[20..50]</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0huy9vi">
+          <text>50</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1tse5w0">
+        <inputEntry id="UnaryTests_037b2t1">
+          <text>"default_yearly_roce"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1dk9fq4">
+          <text>&gt;50</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_05gvkq7">
+          <text>100</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="YearlyROCEScoreRuleTableId">
+        <dc:Bounds height="80" width="180" x="160" y="100" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>
