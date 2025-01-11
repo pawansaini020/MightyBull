@@ -35,11 +35,15 @@ public class ScoringService {
     }
 
     public StockScoreDTO generateStockScore(String stockId) {
-        Optional<ScreenerStockDetailsEntity> stockDetailsEntity = screenerStockDetailsDao.getByStockId(stockId);
-        if(stockDetailsEntity.isPresent()) {
-            StockScoreDTO scoreInfo = fundamentalAnalysisService.calculateScore(stockDetailsEntity.get());
-            syncStockScore(scoreInfo);
-            return scoreInfo;
+        try {
+            Optional<ScreenerStockDetailsEntity> stockDetailsEntity = screenerStockDetailsDao.getByStockId(stockId);
+            if (stockDetailsEntity.isPresent()) {
+                StockScoreDTO scoreInfo = fundamentalAnalysisService.calculateScore(stockDetailsEntity.get());
+                syncStockScore(scoreInfo);
+                return scoreInfo;
+            }
+        } catch (Exception e) {
+            log.error("Error occurred while generating stock score for stockId: {}", stockId);
         }
         return new StockScoreDTO();
     }

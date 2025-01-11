@@ -56,7 +56,7 @@ public class GrowService {
         }
     }
 
-    public List<String> getStockId() {
-        return stockDetailsService.getStockId();
+    public List<String> getAllStockIds() {
+        return stockDetailsService.getAllStockIds();
     }
 }

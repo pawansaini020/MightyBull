@@ -14,9 +14,11 @@ public class ScoreUtils {
 
     public static int calculateScore(Double value, List<ScoreRule> rules) {
         try {
-            for(ScoreRule rule : rules) {
-                if(rule.getFrom() <= value && value <= rule.getTo()) {
-                    return (int) (rule.getScore() * rule.getWeight());
+            if(value != null) {
+                for (ScoreRule rule : rules) {
+                    if (rule.getFrom() <= value && value <= rule.getTo()) {
+                        return (int) (rule.getScore() * rule.getWeight());
+                    }
                 }
             }
         } catch (Exception e) {

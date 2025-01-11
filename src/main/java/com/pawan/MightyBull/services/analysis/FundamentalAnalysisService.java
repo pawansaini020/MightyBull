@@ -67,7 +67,7 @@ public class FundamentalAnalysisService {
         stockScoreData.setMarketCap(marketCap);
         int score = 0;
         if(marketCap!=null) {
-            score = ScoreUtils.calculateScore(marketCap, FundamentalAnalysisScoreRules.MARKET_CAB_RULES);
+            score = ScoreUtils.calculateScore(marketCap, FundamentalAnalysisScoreRules.MARKET_CAP_RULES);
         }
         return score;
     }
@@ -112,7 +112,7 @@ public class FundamentalAnalysisService {
     private int calculateROCScore(Double roc, StockScoreData stockScoreData) {
         int score = 0;
         if(roc!=null) {
-            score = ScoreUtils.calculateScore(roc, FundamentalAnalysisScoreRules.ROC_RULES);
+            score = ScoreUtils.calculateScore(roc, FundamentalAnalysisScoreRules.ROE_RULES);
             stockScoreData.setRoc(roc);
         }
         return score;
@@ -138,21 +138,21 @@ public class FundamentalAnalysisService {
                 Double quarter13 = StockUtils.getOrDefault(netProfit.get("Jun 2024"));
                 Double quarter14 = StockUtils.getOrDefault(netProfit.get("Sep 2024"));
 
-                Double profit1 = quarter1 == 0 ? 0 : ((quarter2-quarter1) / Math.abs(quarter1)) * 100;
-                Double profit2 = quarter7 == 0 ? 0 : ((quarter3-quarter2) / Math.abs(quarter7)) * 100;
-                Double profit3 = quarter7 == 0 ? 0 : ((quarter4-quarter3) / Math.abs(quarter7)) * 100;
-                Double profit4 = quarter7 == 0 ? 0 : ((quarter5-quarter4) / Math.abs(quarter7)) * 100;
-                Double profit5 = quarter7 == 0 ? 0 : ((quarter6-quarter5) / Math.abs(quarter7)) * 100;
-                Double profit6 = quarter7 == 0 ? 0 : ((quarter7-quarter6) / Math.abs(quarter7)) * 100;
-                Double profit7 = quarter7 == 0 ? 0 : ((quarter8-quarter7) / Math.abs(quarter7)) * 100;
-                Double profit8 = quarter8 == 0 ? 0 : ((quarter9-quarter8) / Math.abs(quarter8)) * 100;
-                Double profit9 = quarter9 == 0 ? 0 : ((quarter10-quarter9) / Math.abs(quarter9)) * 100;
-                Double profit10 = quarter10 == 0 ? 0 : ((quarter11-quarter10) / Math.abs(quarter10)) * 100;
-                Double profit11 = quarter11 == 0 ? 0 : ((quarter12-quarter11) / Math.abs(quarter11)) * 100;
-                Double profit12 = quarter12 == 0 ? 0 : ((quarter13-quarter12) / Math.abs(quarter12)) * 100;
-                Double profit13 = quarter13 == 0 ? 0 : ((quarter14-quarter13) / Math.abs(quarter13)) * 100;
+                Double profit1 = quarter1 <= 0 ? 0 : ((quarter2-quarter1) / Math.abs(quarter1)) * 100;
+                Double profit2 = quarter2 <= 0 ? 0 : ((quarter3-quarter2) / Math.abs(quarter2)) * 100;
+                Double profit3 = quarter3 <= 0 ? 0 : ((quarter4-quarter3) / Math.abs(quarter3)) * 100;
+                Double profit4 = quarter4 <= 0 ? 0 : ((quarter5-quarter4) / Math.abs(quarter4)) * 100;
+                Double profit5 = quarter5 <= 0 ? 0 : ((quarter6-quarter5) / Math.abs(quarter5)) * 100;
+                Double profit6 = quarter6 <= 0 ? 0 : ((quarter7-quarter6) / Math.abs(quarter6)) * 100;
+                Double profit7 = quarter7 <= 0 ? 0 : ((quarter8-quarter7) / Math.abs(quarter7)) * 100;
+                Double profit8 = quarter8 <= 0 ? 0 : ((quarter9-quarter8) / Math.abs(quarter8)) * 100;
+                Double profit9 = quarter9 <= 0 ? 0 : ((quarter10-quarter9) / Math.abs(quarter9)) * 100;
+                Double profit10 = quarter10 <= 0 ? 0 : ((quarter11-quarter10) / Math.abs(quarter10)) * 100;
+                Double profit11 = quarter11 <= 0 ? 0 : ((quarter12-quarter11) / Math.abs(quarter11)) * 100;
+                Double profit12 = quarter12 <= 0 ? 0 : ((quarter13-quarter12) / Math.abs(quarter12)) * 100;
+                Double profit13 = quarter13 <= 0 ? 0 : ((quarter14-quarter13) / Math.abs(quarter13)) * 100;
                 stockScoreData.setQuarterlyProfit(profit13);
-                if(profit12>0 && profit13>0) {
+                if(profit12>0 || profit13>0) {
                     score = (
                             ScoreUtils.calculateScore(profit1, FundamentalAnalysisScoreRules.QUARTERLY_PROFIT_RULES) +
                                     ScoreUtils.calculateScore(profit2, FundamentalAnalysisScoreRules.QUARTERLY_PROFIT_RULES) +
@@ -190,21 +190,21 @@ public class FundamentalAnalysisService {
                 Double year9 = StockUtils.getOrDefault(netProfit.get("Mar 2021"));
                 Double year10 = StockUtils.getOrDefault(netProfit.get("Mar 2022"));
                 Double year11 = StockUtils.getOrDefault(netProfit.get("Mar 2023"));
-                Double year12 = StockUtils.getOrDefault(netProfit.get("Mar 2023"));
+                Double year12 = StockUtils.getOrDefault(netProfit.get("Mar 2024"));
 
-                Double profit1 = year1 == 0 ? 0 : ((year2-year1) / Math.abs(year1)) * 100;
-                Double profit2 = year2 == 0 ? 0 : ((year3-year2) / Math.abs(year2)) * 100;
-                Double profit3 = year3 == 0 ? 0 : ((year4-year3) / Math.abs(year3)) * 100;
-                Double profit4 = year4 == 0 ? 0 : ((year5-year4) / Math.abs(year4)) * 100;
-                Double profit5 = year5 == 0 ? 0 : ((year6-year5) / Math.abs(year5)) * 100;
-                Double profit6 = year6 == 0 ? 0 : ((year7-year6) / Math.abs(year6)) * 100;
-                Double profit7 = year7 == 0 ? 0 : ((year8-year7) / Math.abs(year7)) * 100;
-                Double profit8 = year8 == 0 ? 0 : ((year9-year8) / Math.abs(year8)) * 100;
-                Double profit9 = year9 == 0 ? 0 : ((year10-year9) / Math.abs(year9)) * 100;
-                Double profit10 = year10 == 0 ? 0 : ((year11-year10) / Math.abs(year10)) * 100;
-                Double profit11 = year11 == 0 ? 0 : ((year12-year11) / Math.abs(year11)) * 100;
+                Double profit1 = year1 <= 0 ? 0 : ((year2-year1) / Math.abs(year1)) * 100;
+                Double profit2 = year2 <= 0 ? 0 : ((year3-year2) / Math.abs(year2)) * 100;
+                Double profit3 = year3 <= 0 ? 0 : ((year4-year3) / Math.abs(year3)) * 100;
+                Double profit4 = year4 <= 0 ? 0 : ((year5-year4) / Math.abs(year4)) * 100;
+                Double profit5 = year5 <= 0 ? 0 : ((year6-year5) / Math.abs(year5)) * 100;
+                Double profit6 = year6 <= 0 ? 0 : ((year7-year6) / Math.abs(year6)) * 100;
+                Double profit7 = year7 <= 0 ? 0 : ((year8-year7) / Math.abs(year7)) * 100;
+                Double profit8 = year8 <= 0 ? 0 : ((year9-year8) / Math.abs(year8)) * 100;
+                Double profit9 = year9 <= 0 ? 0 : ((year10-year9) / Math.abs(year9)) * 100;
+                Double profit10 = year10 <= 0 ? 0 : ((year11-year10) / Math.abs(year10)) * 100;
+                Double profit11 = year11 <= 0 ? 0 : ((year12-year11) / Math.abs(year11)) * 100;
                 stockScoreData.setProfitAndLoss(profit11);
-                if(year11>0) {
+                if(year11>0 || year10>0) {
                     score = (
                             ScoreUtils.calculateScore(profit1, FundamentalAnalysisScoreRules.PROFIT_AND_LOSS_RULES) +
                                     ScoreUtils.calculateScore(profit2, FundamentalAnalysisScoreRules.PROFIT_AND_LOSS_RULES) +
@@ -226,7 +226,7 @@ public class FundamentalAnalysisService {
 
     private int calculateBalanceSheetScore(Map<String, Map<String, Double>> balanceSheet, StockScoreData stockScoreData) {
         int score = 0;
-        if(balanceSheet!=null && balanceSheet.get("Net Profit") != null) {
+        if(balanceSheet!=null && balanceSheet.get("Total Assets") != null) {
             Map<String, Double> totalAssets = balanceSheet.get("Total Assets");
             if(totalAssets!=null) {
                 Double year1 = StockUtils.getOrDefault(totalAssets.get("Mar 2013"));
@@ -240,7 +240,7 @@ public class FundamentalAnalysisService {
                 Double year9 = StockUtils.getOrDefault(totalAssets.get("Mar 2021"));
                 Double year10 = StockUtils.getOrDefault(totalAssets.get("Mar 2022"));
                 Double year11 = StockUtils.getOrDefault(totalAssets.get("Mar 2023"));
-                Double year12 = StockUtils.getOrDefault(totalAssets.get("Mar 2023"));
+                Double year12 = StockUtils.getOrDefault(totalAssets.get("Mar 2024"));
 
                 Double growth1 = year1 == 0 ? 0 : ((year2-year1) / Math.abs(year1)) * 100;
                 Double growth2 = year2 == 0 ? 0 : ((year3-year2) / Math.abs(year2)) * 100;
@@ -254,7 +254,7 @@ public class FundamentalAnalysisService {
                 Double growth10 = year10 == 0 ? 0 : ((year11-year10) / Math.abs(year10)) * 100;
                 Double growth11 = year11 == 0 ? 0 : ((year12-year11) / Math.abs(year11)) * 100;
                 stockScoreData.setBalanceSheet(growth11);
-                if(year11>0) {
+                if(year11>0 || year10>0) {
                     score = (
                             ScoreUtils.calculateScore(growth1, FundamentalAnalysisScoreRules.BALANCE_SHEET_RULES) +
                                     ScoreUtils.calculateScore(growth2, FundamentalAnalysisScoreRules.BALANCE_SHEET_RULES) +
@@ -290,36 +290,34 @@ public class FundamentalAnalysisService {
                 Double year9 = StockUtils.getOrDefault(netValue.get("Mar 2021"));
                 Double year10 = StockUtils.getOrDefault(netValue.get("Mar 2022"));
                 Double year11 = StockUtils.getOrDefault(netValue.get("Mar 2023"));
-                Double year12 = StockUtils.getOrDefault(netValue.get("Mar 2023"));
+                Double year12 = StockUtils.getOrDefault(netValue.get("Mar 2024"));
 
-                Double growth1 = year1 == 0 ? 0 : ((year2-year1) / Math.abs(year1)) * 100;
-                Double growth2 = year2 == 0 ? 0 : ((year3-year2) / Math.abs(year2)) * 100;
-                Double growth3 = year3 == 0 ? 0 : ((year4-year3) / Math.abs(year3)) * 100;
-                Double growth4 = year4 == 0 ? 0 : ((year5-year4) / Math.abs(year4)) * 100;
-                Double growth5 = year5 == 0 ? 0 : ((year6-year5) / Math.abs(year5)) * 100;
-                Double growth6 = year6 == 0 ? 0 : ((year7-year6) / Math.abs(year6)) * 100;
-                Double growth7 = year7 == 0 ? 0 : ((year8-year7) / Math.abs(year7)) * 100;
-                Double growth8 = year8 == 0 ? 0 : ((year9-year8) / Math.abs(year8)) * 100;
-                Double growth9 = year9 == 0 ? 0 : ((year10-year9) / Math.abs(year9)) * 100;
-                Double growth10 = year10 == 0 ? 0 : ((year11-year10) / Math.abs(year10)) * 100;
-                Double growth11 = year11 == 0 ? 0 : ((year12-year11) / Math.abs(year11)) * 100;
+                Double growth1 = year1 <= 0 ? 0 : ((year2-year1) / Math.abs(year1)) * 100;
+                Double growth2 = year2 <= 0 ? 0 : ((year3-year2) / Math.abs(year2)) * 100;
+                Double growth3 = year3 <= 0 ? 0 : ((year4-year3) / Math.abs(year3)) * 100;
+                Double growth4 = year4 <= 0 ? 0 : ((year5-year4) / Math.abs(year4)) * 100;
+                Double growth5 = year5 <= 0 ? 0 : ((year6-year5) / Math.abs(year5)) * 100;
+                Double growth6 = year6 <= 0 ? 0 : ((year7-year6) / Math.abs(year6)) * 100;
+                Double growth7 = year7 <= 0 ? 0 : ((year8-year7) / Math.abs(year7)) * 100;
+                Double growth8 = year8 <= 0 ? 0 : ((year9-year8) / Math.abs(year8)) * 100;
+                Double growth9 = year9 <= 0 ? 0 : ((year10-year9) / Math.abs(year9)) * 100;
+                Double growth10 = year10 <= 0 ? 0 : ((year11-year10) / Math.abs(year10)) * 100;
+                Double growth11 = year11 <= 0 ? 0 : ((year12-year11) / Math.abs(year11)) * 100;
 
                 stockScoreData.setCashFlow(growth11);
-                if(year11>0) {
-                    score = (
-                            ScoreUtils.calculateScore(growth1, FundamentalAnalysisScoreRules.CASH_FLOWS_RULES) +
-                                    ScoreUtils.calculateScore(growth2, FundamentalAnalysisScoreRules.CASH_FLOWS_RULES) +
-                                    ScoreUtils.calculateScore(growth3, FundamentalAnalysisScoreRules.CASH_FLOWS_RULES) +
-                                    ScoreUtils.calculateScore(growth4, FundamentalAnalysisScoreRules.CASH_FLOWS_RULES) +
-                                    ScoreUtils.calculateScore(growth5, FundamentalAnalysisScoreRules.CASH_FLOWS_RULES) +
-                                    ScoreUtils.calculateScore(growth6, FundamentalAnalysisScoreRules.CASH_FLOWS_RULES) +
-                                    ScoreUtils.calculateScore(growth7, FundamentalAnalysisScoreRules.CASH_FLOWS_RULES) +
-                                    ScoreUtils.calculateScore(growth8, FundamentalAnalysisScoreRules.CASH_FLOWS_RULES) +
-                                    ScoreUtils.calculateScore(growth9, FundamentalAnalysisScoreRules.CASH_FLOWS_RULES) +
-                                    ScoreUtils.calculateScore(growth10, FundamentalAnalysisScoreRules.CASH_FLOWS_RULES) +
-                                    ScoreUtils.calculateScore(growth11, FundamentalAnalysisScoreRules.CASH_FLOWS_RULES)
-                    ) / 11;
-                }
+                score = (
+                        ScoreUtils.calculateScore(growth1, FundamentalAnalysisScoreRules.CASH_FLOWS_RULES) +
+                                ScoreUtils.calculateScore(growth2, FundamentalAnalysisScoreRules.CASH_FLOWS_RULES) +
+                                ScoreUtils.calculateScore(growth3, FundamentalAnalysisScoreRules.CASH_FLOWS_RULES) +
+                                ScoreUtils.calculateScore(growth4, FundamentalAnalysisScoreRules.CASH_FLOWS_RULES) +
+                                ScoreUtils.calculateScore(growth5, FundamentalAnalysisScoreRules.CASH_FLOWS_RULES) +
+                                ScoreUtils.calculateScore(growth6, FundamentalAnalysisScoreRules.CASH_FLOWS_RULES) +
+                                ScoreUtils.calculateScore(growth7, FundamentalAnalysisScoreRules.CASH_FLOWS_RULES) +
+                                ScoreUtils.calculateScore(growth8, FundamentalAnalysisScoreRules.CASH_FLOWS_RULES) +
+                                ScoreUtils.calculateScore(growth9, FundamentalAnalysisScoreRules.CASH_FLOWS_RULES) +
+                                ScoreUtils.calculateScore(growth10, FundamentalAnalysisScoreRules.CASH_FLOWS_RULES) +
+                                ScoreUtils.calculateScore(growth11, FundamentalAnalysisScoreRules.CASH_FLOWS_RULES)
+                ) / 11;
             }
         }
         return score;
@@ -341,7 +339,7 @@ public class FundamentalAnalysisService {
                 Double year9 = StockUtils.getOrDefault(netValue.get("Mar 2021"));
                 Double year10 = StockUtils.getOrDefault(netValue.get("Mar 2022"));
                 Double year11 = StockUtils.getOrDefault(netValue.get("Mar 2023"));
-                Double year12 = StockUtils.getOrDefault(netValue.get("Mar 2023"));
+                Double year12 = StockUtils.getOrDefault(netValue.get("Mar 2024"));
 
                 Double growth1 = year1 == 0 ? 0 : ((year2-year1) / Math.abs(year1)) * 100;
                 Double growth2 = year2 == 0 ? 0 : ((year3-year2) / Math.abs(year2)) * 100;
@@ -356,21 +354,19 @@ public class FundamentalAnalysisService {
                 Double growth11 = year11 == 0 ? 0 : ((year12-year11) / Math.abs(year11)) * 100;
 
                 stockScoreData.setDebtorDays(growth11);
-                if(year11>0) {
-                    score = (
-                            ScoreUtils.calculateScore(growth1, FundamentalAnalysisScoreRules.DEBTOR_DAYS_RULES) +
-                                    ScoreUtils.calculateScore(growth2, FundamentalAnalysisScoreRules.DEBTOR_DAYS_RULES) +
-                                    ScoreUtils.calculateScore(growth3, FundamentalAnalysisScoreRules.DEBTOR_DAYS_RULES) +
-                                    ScoreUtils.calculateScore(growth4, FundamentalAnalysisScoreRules.DEBTOR_DAYS_RULES) +
-                                    ScoreUtils.calculateScore(growth5, FundamentalAnalysisScoreRules.DEBTOR_DAYS_RULES) +
-                                    ScoreUtils.calculateScore(growth6, FundamentalAnalysisScoreRules.DEBTOR_DAYS_RULES) +
-                                    ScoreUtils.calculateScore(growth7, FundamentalAnalysisScoreRules.DEBTOR_DAYS_RULES) +
-                                    ScoreUtils.calculateScore(growth8, FundamentalAnalysisScoreRules.DEBTOR_DAYS_RULES) +
-                                    ScoreUtils.calculateScore(growth9, FundamentalAnalysisScoreRules.DEBTOR_DAYS_RULES) +
-                                    ScoreUtils.calculateScore(growth10, FundamentalAnalysisScoreRules.DEBTOR_DAYS_RULES) +
-                                    ScoreUtils.calculateScore(growth11, FundamentalAnalysisScoreRules.DEBTOR_DAYS_RULES)
-                    ) / 11;
-                }
+                score = (
+                        ScoreUtils.calculateScore(growth1, FundamentalAnalysisScoreRules.DEBTOR_DAYS_RULES) +
+                                ScoreUtils.calculateScore(growth2, FundamentalAnalysisScoreRules.DEBTOR_DAYS_RULES) +
+                                ScoreUtils.calculateScore(growth3, FundamentalAnalysisScoreRules.DEBTOR_DAYS_RULES) +
+                                ScoreUtils.calculateScore(growth4, FundamentalAnalysisScoreRules.DEBTOR_DAYS_RULES) +
+                                ScoreUtils.calculateScore(growth5, FundamentalAnalysisScoreRules.DEBTOR_DAYS_RULES) +
+                                ScoreUtils.calculateScore(growth6, FundamentalAnalysisScoreRules.DEBTOR_DAYS_RULES) +
+                                ScoreUtils.calculateScore(growth7, FundamentalAnalysisScoreRules.DEBTOR_DAYS_RULES) +
+                                ScoreUtils.calculateScore(growth8, FundamentalAnalysisScoreRules.DEBTOR_DAYS_RULES) +
+                                ScoreUtils.calculateScore(growth9, FundamentalAnalysisScoreRules.DEBTOR_DAYS_RULES) +
+                                ScoreUtils.calculateScore(growth10, FundamentalAnalysisScoreRules.DEBTOR_DAYS_RULES) +
+                                ScoreUtils.calculateScore(growth11, FundamentalAnalysisScoreRules.DEBTOR_DAYS_RULES)
+                ) / 11;
             }
         }
         return score;
@@ -392,23 +388,23 @@ public class FundamentalAnalysisService {
                 Double year9 = StockUtils.getOrDefault(netValue.get("Mar 2021"));
                 Double year10 = StockUtils.getOrDefault(netValue.get("Mar 2022"));
                 Double year11 = StockUtils.getOrDefault(netValue.get("Mar 2023"));
-                Double year12 = StockUtils.getOrDefault(netValue.get("Mar 2023"));
+                Double year12 = StockUtils.getOrDefault(netValue.get("Mar 2024"));
 
-                Double growth1 = year1 == 0 ? 0 : ((year2-year1) / Math.abs(year1)) * 100;
-                Double growth2 = year2 == 0 ? 0 : ((year3-year2) / Math.abs(year2)) * 100;
-                Double growth3 = year3 == 0 ? 0 : ((year4-year3) / Math.abs(year3)) * 100;
-                Double growth4 = year4 == 0 ? 0 : ((year5-year4) / Math.abs(year4)) * 100;
-                Double growth5 = year5 == 0 ? 0 : ((year6-year5) / Math.abs(year5)) * 100;
-                Double growth6 = year6 == 0 ? 0 : ((year7-year6) / Math.abs(year6)) * 100;
-                Double growth7 = year7 == 0 ? 0 : ((year8-year7) / Math.abs(year7)) * 100;
-                Double growth8 = year8 == 0 ? 0 : ((year9-year8) / Math.abs(year8)) * 100;
-                Double growth9 = year9 == 0 ? 0 : ((year10-year9) / Math.abs(year9)) * 100;
-                Double growth10 = year10 == 0 ? 0 : ((year11-year10) / Math.abs(year10)) * 100;
-                Double growth11 = year11 == 0 ? 0 : ((year12-year11) / Math.abs(year11)) * 100;
+                Double growth1 = year1 <= 0 ? 0 : ((year2-year1) / Math.abs(year1)) * 100;
+                Double growth2 = year2 <= 0 ? 0 : ((year3-year2) / Math.abs(year2)) * 100;
+                Double growth3 = year3 <= 0 ? 0 : ((year4-year3) / Math.abs(year3)) * 100;
+                Double growth4 = year4 <= 0 ? 0 : ((year5-year4) / Math.abs(year4)) * 100;
+                Double growth5 = year5 <= 0 ? 0 : ((year6-year5) / Math.abs(year5)) * 100;
+                Double growth6 = year6 <= 0 ? 0 : ((year7-year6) / Math.abs(year6)) * 100;
+                Double growth7 = year7 <= 0 ? 0 : ((year8-year7) / Math.abs(year7)) * 100;
+                Double growth8 = year8 <= 0 ? 0 : ((year9-year8) / Math.abs(year8)) * 100;
+                Double growth9 = year9 <= 0 ? 0 : ((year10-year9) / Math.abs(year9)) * 100;
+                Double growth10 = year10 <= 0 ? 0 : ((year11-year10) / Math.abs(year10)) * 100;
+                Double growth11 = year11 <= 0 ? 0 : ((year12-year11) / Math.abs(year11)) * 100;
 
                 stockScoreData.setYearlyRoce(growth11);
 
-                if(year11>0) {
+                if(year11>0 && year10>0) {
                     score = (
                             ScoreUtils.calculateScore(growth1, FundamentalAnalysisScoreRules.YEARLY_ROCE_RULES) +
                                     ScoreUtils.calculateScore(growth2, FundamentalAnalysisScoreRules.YEARLY_ROCE_RULES) +
@@ -430,7 +426,7 @@ public class FundamentalAnalysisService {
 
     private int calculateShareholdingPatternScore(Map<String, Map<String, Double>> profitAndLoss, StockScoreData stockScoreData) {
         int score = 0;
-        if(profitAndLoss!=null && profitAndLoss.get("Net Profit") != null) {
+        if(profitAndLoss!=null && profitAndLoss.get("Promoters") != null) {
             Map<String, Double> promoters = profitAndLoss.get("Promoters");
             Map<String, Double> fiis = profitAndLoss.getOrDefault("FIIs", new HashMap<>());
             Map<String, Double> diis = profitAndLoss.getOrDefault("DIIs", new HashMap<>());
@@ -498,7 +494,7 @@ public class FundamentalAnalysisService {
 
                 stockScoreData.setShareholdingPattern(shareHolding12);
 
-                if(shareHolding12>0) {
+                if(promoter12>0 && promoter11>0) {
                     score = (
                             ScoreUtils.calculateScore(shareHolding1, FundamentalAnalysisScoreRules.SHAREHOLDING_PATTERN_RULES) +
                                     ScoreUtils.calculateScore(shareHolding2, FundamentalAnalysisScoreRules.SHAREHOLDING_PATTERN_RULES) +
@@ -512,7 +508,7 @@ public class FundamentalAnalysisService {
                                     ScoreUtils.calculateScore(shareHolding10, FundamentalAnalysisScoreRules.SHAREHOLDING_PATTERN_RULES) +
                                     ScoreUtils.calculateScore(shareHolding11, FundamentalAnalysisScoreRules.SHAREHOLDING_PATTERN_RULES) +
                                     ScoreUtils.calculateScore(shareHolding12, FundamentalAnalysisScoreRules.SHAREHOLDING_PATTERN_RULES)
-                    ) / 11;
+                    ) / 12;
                 }
             }
         }

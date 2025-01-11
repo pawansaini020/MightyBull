@@ -32,6 +32,7 @@ public class ApiEndpointConstant {
         public static final String BASE = "/v1/api/scoring";
         public static final String CALCULATE_SCORE = "/calculate_score";
         public static final String SYNC = "/sync";
+        public static final String CALCULATE_STOCK_SCORE = "/calculate_stocks_score";
     }
 
     public static class Camunda {

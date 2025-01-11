@@ -18,5 +18,5 @@ public interface StockDetailsRepository extends JpaRepository<StockDetailsEntity
     Optional<StockDetailsEntity> findByStockId(String eventId);
 
     @Query("SELECT DISTINCT s.stockId FROM StockDetailsEntity s WHERE s.stockId IS NOT NULL")
-    List<String> findAllDistinctNseScriptCode();
+    List<String> findAllDistinctStockId();
 }

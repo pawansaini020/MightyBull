@@ -38,6 +38,6 @@ public class GrowController {
     @GetMapping(value = ApiEndpointConstant.Grow.ALL_STOCKS)
     public SuccessResponse<?> getStockDetails() {
         log.info("GROW_CONTROLLER ::: Received request for getting stock details");
-        return new SuccessResponse<>(growService.getStockId());
+        return new SuccessResponse<>(growService.getAllStockIds());
     }
 }

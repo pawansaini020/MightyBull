@@ -51,7 +51,7 @@ public class StockDetailsDao implements Dao<StockDetailsEntity, Long> {
         return repository.saveAll(entities);
     }
 
-    public List<String> getAllStockId() {
-        return repository.findAllDistinctNseScriptCode();
+    public List<String> getAllStockIds() {
+        return repository.findAllDistinctStockId();
     }
 }
