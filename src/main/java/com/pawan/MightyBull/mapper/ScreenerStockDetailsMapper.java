@@ -15,4 +15,6 @@ public interface ScreenerStockDetailsMapper {
     ScreenerStockDetailsMapper INSTANCE = Mappers.getMapper(ScreenerStockDetailsMapper.class);
 
     ScreenerStockDetailsEntity mapDtoToEntity(ScreenerStockDetails dto);
+
+    ScreenerStockDetails mapEntityToDto(ScreenerStockDetailsEntity dto);
 }

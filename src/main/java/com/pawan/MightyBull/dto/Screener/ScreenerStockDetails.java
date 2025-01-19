@@ -1,6 +1,7 @@
 package com.pawan.MightyBull.dto.Screener;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.pawan.MightyBull.dto.BaseDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,7 +17,7 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ScreenerStockDetails {
+public class ScreenerStockDetails extends BaseDto {
 
     private String stockId;
     private String name;
