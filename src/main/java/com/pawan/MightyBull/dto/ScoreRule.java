@@ -13,8 +13,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ScoreRule {
 
-    private int from;
-    private int to;
-    private int score;
+    private double from;
+    private double to;
+    private double score;
     private double weight;
 }

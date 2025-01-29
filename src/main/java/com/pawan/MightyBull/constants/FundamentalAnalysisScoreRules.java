@@ -15,7 +15,7 @@ public class FundamentalAnalysisScoreRules {
     private static final Double MARKET_CAP_RULES_WEIGHT = 0.25D;           // Moderate weight as market size shows maturity
     private static final Double PRICE_RULES_WEIGHT = 0.5D;                // Reflects price trends; moderately important
     private static final Double PE_RULES_WEIGHT = 1D;                      // Critical for valuation analysis
-    private static final Double DIVIDEND_YIELD_RULES_WEIGHT = 0.25D;       // Relevant for dividend-focused investors
+    private static final Double DIVIDEND_YIELD_RULES_WEIGHT = 0.1D;       // Relevant for dividend-focused investors
     private static final Double ROCE_RULES_WEIGHT = 0.75D;                 // Vital for assessing operational efficiency
     private static final Double ROE_RULES_WEIGHT = 1D;                     // Core profitability metric
     private static final Double QUARTERLY_PROFIT_RULES_WEIGHT = 0.75D;      // Important for short-term performance evaluation
@@ -38,8 +38,9 @@ public class FundamentalAnalysisScoreRules {
 
     public static final List<ScoreRule> PRICE_RULES = List.of(
             new ScoreRule(Integer.MIN_VALUE, 20, 100, PRICE_RULES_WEIGHT),
-            new ScoreRule(20, 50, 50, PRICE_RULES_WEIGHT),
-            new ScoreRule(50, 75, 25, PRICE_RULES_WEIGHT),
+            new ScoreRule(20, 40, 75, PRICE_RULES_WEIGHT),
+            new ScoreRule(40, 60, 50, PRICE_RULES_WEIGHT),
+            new ScoreRule(60, 75, 25, PRICE_RULES_WEIGHT),
             new ScoreRule(75, Integer.MAX_VALUE, 0, PRICE_RULES_WEIGHT)
     );
 
@@ -79,7 +80,7 @@ public class FundamentalAnalysisScoreRules {
 
     public static final List<ScoreRule> QUARTERLY_PROFIT_RULES = List.of(
             new ScoreRule(Integer.MIN_VALUE, 0, 0, QUARTERLY_PROFIT_RULES_WEIGHT),  // Negative or Zero increment
-            new ScoreRule(0, 5, 10, QUARTERLY_PROFIT_RULES_WEIGHT),                 // Increment between 0% and 5% (small improvement)
+            new ScoreRule(0, 5, 25, QUARTERLY_PROFIT_RULES_WEIGHT),                 // Increment between 0% and 5% (small improvement)
             new ScoreRule(5, 15, 50, QUARTERLY_PROFIT_RULES_WEIGHT),                // Increment between 5% and 15% (moderate improvement)
             new ScoreRule(15, 30, 75, QUARTERLY_PROFIT_RULES_WEIGHT),               // Increment between 15% and 30% (significant improvement)
             new ScoreRule(30, Integer.MAX_VALUE, 100, QUARTERLY_PROFIT_RULES_WEIGHT) // Above 30% (exceptional growth)
@@ -133,7 +134,7 @@ public class FundamentalAnalysisScoreRules {
             new ScoreRule(Integer.MIN_VALUE, 40, 0, SHAREHOLDING_PATTERN_RULES_WEIGHT),  // Decrease in promoter shareholding (negative)
             new ScoreRule(40, 50, 25, SHAREHOLDING_PATTERN_RULES_WEIGHT),                 // Small increase (0% to 2%)
             new ScoreRule(50, 60, 50, SHAREHOLDING_PATTERN_RULES_WEIGHT),                 // Moderate increase (2% to 5%)
-            new ScoreRule(60, 75, 75, SHAREHOLDING_PATTERN_RULES_WEIGHT),                // Strong increase (5% to 10%)
-            new ScoreRule(75, Integer.MAX_VALUE, 100, SHAREHOLDING_PATTERN_RULES_WEIGHT) // Large increase (10%+)
+            new ScoreRule(60, 70, 75, SHAREHOLDING_PATTERN_RULES_WEIGHT),                // Strong increase (5% to 10%)
+            new ScoreRule(70, Integer.MAX_VALUE, 100, SHAREHOLDING_PATTERN_RULES_WEIGHT) // Large increase (10%+)
     );
 }
