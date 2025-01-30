@@ -7,6 +7,7 @@ import com.pawan.MightyBull.dto.score.StockScoreDTO;
 import com.pawan.MightyBull.dto.score.StockScoreData;
 import com.pawan.MightyBull.dto.score.StockScoreInfoDTO;
 import com.pawan.MightyBull.entity.ScreenerStockDetailsEntity;
+import com.pawan.MightyBull.utils.DateUtils;
 import com.pawan.MightyBull.utils.ScoreUtils;
 import com.pawan.MightyBull.utils.StockUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -165,9 +166,9 @@ public class FundamentalAnalysisService {
                     int validProfitsCount = 0;
 
                     // Loop through the quarters and calculate profits while summing the scores
-                    for (int i = 0; i < 13; i++) {
-                        Double currentQuarter = StockUtils.getOrDefault(netProfit.get(getQuarter(i)));
-                        Double nextQuarter = StockUtils.getOrDefault(netProfit.get(getQuarter(i + 1)));
+                    for (int i = 0; i < DateUtils.getQuarterCount()-1; i++) {
+                        Double currentQuarter = StockUtils.getOrDefault(netProfit.get(DateUtils.getQuarter(i)));
+                        Double nextQuarter = StockUtils.getOrDefault(netProfit.get(DateUtils.getQuarter(i + 1)));
 
                         // Calculate profit percentage
                         Double profit = 0.0;
@@ -179,13 +180,13 @@ public class FundamentalAnalysisService {
                         totalScore += ScoreUtils.calculateScore(profit, FundamentalAnalysisScoreRules.QUARTERLY_PROFIT_RULES);
 
                         // Count the valid profits
-                        if (currentQuarter != 0.0) {
+                        if (currentQuarter != 0.0 && nextQuarter != 0.0) {
                             validProfitsCount++;
                         }
                     }
 
                     // Set the last quarter profit (Sep 2024)
-                    stockScoreData.setQuarterlyProfit(StockUtils.getOrDefault(netProfit.get(getQuarter(13))));
+                    stockScoreData.setQuarterlyProfit(StockUtils.getOrDefault(netProfit.get(DateUtils.getQuarter(DateUtils.getQuarterCount()-1))));
 
                     // Calculate the average score if there were valid profits
                     if (validProfitsCount > 0) {
@@ -214,9 +215,9 @@ public class FundamentalAnalysisService {
                     int validProfitsCount = 0;
 
                     // Loop through the years and calculate profits and score
-                    for (int i = 0; i < 11; i++) {
-                        Double currentYear = StockUtils.getOrDefault(netProfit.get(getYear(i)));
-                        Double nextYear = StockUtils.getOrDefault(netProfit.get(getYear(i + 1)));
+                    for (int i = 0; i < DateUtils.getYearCount()-1; i++) {
+                        Double currentYear = StockUtils.getOrDefault(netProfit.get(DateUtils.getYear(i)));
+                        Double nextYear = StockUtils.getOrDefault(netProfit.get(DateUtils.getYear(i + 1)));
 
                         // Calculate profit percentage
                         Double profit = 0.0;
@@ -228,13 +229,13 @@ public class FundamentalAnalysisService {
                         totalScore += ScoreUtils.calculateScore(profit, FundamentalAnalysisScoreRules.PROFIT_AND_LOSS_RULES);
 
                         // Count the valid profits
-                        if (currentYear != 0.0) {
+                        if (currentYear != 0.0 && nextYear != 0.0) {
                             validProfitsCount++;
                         }
                     }
 
                     // Set the profit and loss for the last year (Mar 2024)
-                    stockScoreData.setProfitAndLoss(StockUtils.getOrDefault(netProfit.get(getYear(11))));
+                    stockScoreData.setProfitAndLoss(StockUtils.getOrDefault(netProfit.get(DateUtils.getYear(DateUtils.getYearCount()-1))));
 
                     // Calculate the average score based on valid profits
                     if (validProfitsCount > 0) {
@@ -262,9 +263,9 @@ public class FundamentalAnalysisService {
                     int validGrowthCount = 0;
 
                     // Loop through the years and calculate growth and score
-                    for (int i = 0; i < 11; i++) {
-                        Double currentYear = StockUtils.getOrDefault(totalAssets.get(getYear(i)));
-                        Double nextYear = StockUtils.getOrDefault(totalAssets.get(getYear(i + 1)));
+                    for (int i = 0; i < DateUtils.getYearCount()-1; i++) {
+                        Double currentYear = StockUtils.getOrDefault(totalAssets.get(DateUtils.getYear(i)));
+                        Double nextYear = StockUtils.getOrDefault(totalAssets.get(DateUtils.getYear(i + 1)));
 
                         // Calculate growth percentage
                         Double growth = 0.0;
@@ -276,13 +277,13 @@ public class FundamentalAnalysisService {
                         totalScore += ScoreUtils.calculateScore(growth, FundamentalAnalysisScoreRules.BALANCE_SHEET_RULES);
 
                         // Count the valid growths
-                        if (currentYear != 0.0) {
+                        if (currentYear != 0.0 && nextYear != 0.0) {
                             validGrowthCount++;
                         }
                     }
 
                     // Set the balance sheet growth for the last year (Mar 2024)
-                    stockScoreData.setBalanceSheet(StockUtils.getOrDefault(totalAssets.get(getYear(11))));
+                    stockScoreData.setBalanceSheet(StockUtils.getOrDefault(totalAssets.get(DateUtils.getYear(DateUtils.getYearCount()-1))));
 
                     // Calculate the average score based on valid growths
                     if (validGrowthCount > 0) {
@@ -311,9 +312,9 @@ public class FundamentalAnalysisService {
                     int validGrowthCount = 0;
 
                     // Loop through the years and calculate growth and score
-                    for (int i = 0; i < 11; i++) {
-                        Double currentYear = StockUtils.getOrDefault(netValue.get(getYear(i)));
-                        Double nextYear = StockUtils.getOrDefault(netValue.get(getYear(i + 1)));
+                    for (int i = 0; i < DateUtils.getYearCount()-1; i++) {
+                        Double currentYear = StockUtils.getOrDefault(netValue.get(DateUtils.getYear(i)));
+                        Double nextYear = StockUtils.getOrDefault(netValue.get(DateUtils.getYear(i + 1)));
 
                         // Calculate growth percentage
                         Double growth = 0.0;
@@ -325,13 +326,13 @@ public class FundamentalAnalysisService {
                         totalScore += ScoreUtils.calculateScore(growth, FundamentalAnalysisScoreRules.CASH_FLOWS_RULES);
 
                         // Count the valid growths
-                        if (currentYear != 0.0) {
+                        if (currentYear != 0.0 && nextYear != 0.0) {
                             validGrowthCount++;
                         }
                     }
 
                     // Set the cash flow growth for the last year (Mar 2024)
-                    stockScoreData.setCashFlow(StockUtils.getOrDefault(netValue.get(getYear(11))));
+                    stockScoreData.setCashFlow(StockUtils.getOrDefault(netValue.get(DateUtils.getYear(DateUtils.getYearCount()-1))));
 
                     // Calculate the average score based on valid growths
                     if (validGrowthCount > 0) {
@@ -356,11 +357,13 @@ public class FundamentalAnalysisService {
 
                     // Calculate growths for each year
                     List<Double> growths = new ArrayList<>();
-                    for (int i = 1; i < 12; i++) {
-                        Double currentYearValue = StockUtils.getOrDefault(netValue.get(getYear(i)));
-                        Double previousYearValue = StockUtils.getOrDefault(netValue.get(getYear(i - 1)));
-                        double growth = calculateGrowth(previousYearValue, currentYearValue);
-                        growths.add(growth);
+                    for (int i = 1; i < DateUtils.getYearCount()-1; i++) {
+                        Double currentYearValue = StockUtils.getOrDefault(netValue.get(DateUtils.getYear(i)));
+                        Double previousYearValue = StockUtils.getOrDefault(netValue.get(DateUtils.getYear(i - 1)));
+                        if(currentYearValue != 0 && previousYearValue != 0) {
+                            double growth = calculateGrowth(previousYearValue, currentYearValue);
+                            growths.add(growth);
+                        }
                     }
 
                     // Set the most recent growth
@@ -402,9 +405,9 @@ public class FundamentalAnalysisService {
                     int validGrowthCount = 0;
 
                     // Loop through the years and calculate growth and score
-                    for (int i = 0; i < 11; i++) {
-                        Double currentYear = StockUtils.getOrDefault(netValue.get(getYear(i)));
-                        Double nextYear = StockUtils.getOrDefault(netValue.get(getYear(i + 1)));
+                    for (int i = 0; i < DateUtils.getYearCount()-1; i++) {
+                        Double currentYear = StockUtils.getOrDefault(netValue.get(DateUtils.getYear(i)));
+                        Double nextYear = StockUtils.getOrDefault(netValue.get(DateUtils.getYear(i + 1)));
 
                         // Calculate growth percentage
                         Double growth = 0.0;
@@ -416,13 +419,13 @@ public class FundamentalAnalysisService {
                         totalScore += ScoreUtils.calculateScore(growth, FundamentalAnalysisScoreRules.YEARLY_ROCE_RULES);
 
                         // Count the valid growths
-                        if (currentYear != 0.0) {
+                        if (currentYear != 0.0 && nextYear != 0.0) {
                             validGrowthCount++;
                         }
                     }
 
                     // Set the ROCE growth for the last year (Mar 2024)
-                    stockScoreData.setYearlyRoce(StockUtils.getOrDefault(netValue.get(getYear(11))));
+                    stockScoreData.setYearlyRoce(StockUtils.getOrDefault(netValue.get(DateUtils.getYear(DateUtils.getYearCount()-1))));
 
                     // Calculate the average score based on valid growths
                     if (validGrowthCount > 0) {
@@ -447,40 +450,30 @@ public class FundamentalAnalysisService {
                 Map<String, Double> fiis = profitAndLoss.getOrDefault("FIIs", new HashMap<>());
                 Map<String, Double> diis = profitAndLoss.getOrDefault("DIIs", new HashMap<>());
 
-                double[] shareHoldings = new double[12];
-                for (int i = 0; i < 12; i++) {
-                    String period = getQuarter(i+2); // Helper method to get the period string (e.g., "Dec 2021", "Mar 2022")
+                double[] shareHoldings = new double[DateUtils.getQuarterCount()];
+                int validShareHoldings = 0;
+                for (int i = 0; i < DateUtils.getQuarterCount(); i++) {
+                    String period = DateUtils.getQuarter(i); // Helper method to get the period string (e.g., "Dec 2021", "Mar 2022")
                     double promoter = StockUtils.getOrDefault(promoters.get(period));
                     double fii = StockUtils.getOrDefault(fiis.get(period));
                     double dii = StockUtils.getOrDefault(diis.get(period));
 
                     shareHoldings[i] = promoter + fii + dii;
+                    if(shareHoldings[i] > 0) {
+                        validShareHoldings++;
+                        score += ScoreUtils.calculateScore(shareHoldings[i], FundamentalAnalysisScoreRules.SHAREHOLDING_PATTERN_RULES);
+                    }
                 }
 
-                stockScoreData.setShareholdingPattern(shareHoldings[11]);
+                stockScoreData.setShareholdingPattern(shareHoldings[DateUtils.getQuarterCount()-1]);
 
                 // Calculate score if the data for the last two periods is valid
-                if (shareHoldings[11] > 0 && shareHoldings[10] > 0) {
-                    for (double holding : shareHoldings) {
-                        score += ScoreUtils.calculateScore(holding, FundamentalAnalysisScoreRules.SHAREHOLDING_PATTERN_RULES);
-                    }
-                    score /= 12;
-                }
+                score /= validShareHoldings;
             }
             return score;
         } catch (Exception e) {
             log.error("Error occurred while calculating shareholding pattern score for: {}, data: {}", stockId, profitAndLoss);
             return 0;
         }
-    }
-
-    private String getYear(int index) {
-        String[] periods = {"Mar 2013", "Mar 2014", "Mar 2015", "Mar 2016", "Mar 2017", "Mar 2018", "Mar 2019", "Mar 2020", "Mar 2021", "Mar 2022", "Mar 2023", "Mar 2024"};
-        return periods[index];
-    }
-
-    private String getQuarter(int index) {
-        String[] quarters = {"Jun 2021", "Sep 2021", "Dec 2021", "Mar 2022", "Jun 2022", "Sep 2022", "Dec 2022", "Mar 2023", "Jun 2023", "Sep 2023", "Dec 2023", "Mar 2024", "Jun 2024", "Sep 2024"};
-        return quarters[index];
     }
 }
