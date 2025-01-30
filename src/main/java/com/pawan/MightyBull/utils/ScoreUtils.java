@@ -12,7 +12,7 @@ import java.util.List;
 @Slf4j
 public class ScoreUtils {
 
-    public static int calculateScore(Double value, List<ScoreRule> rules) {
+    public static double calculateScore(Double value, List<ScoreRule> rules) {
         try {
             if(value != null) {
                 for (ScoreRule rule : rules) {
