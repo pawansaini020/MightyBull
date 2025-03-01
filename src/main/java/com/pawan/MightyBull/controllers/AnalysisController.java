@@ -29,14 +29,14 @@ public class AnalysisController {
 
     @GetMapping(value = ApiEndpointConstant.Reporting.STOCK_ANALYSIS)
     public SuccessResponse<?> stockAnalysis() {
-        log.info("REPORTING_CONTROLLER ::: Received request for getting stock analysis");
+        log.info("REPORTING_CONTROLLER ::: Received request for getting stock analysis.");
         return new SuccessResponse<>( analysisService.stockAnalysis());
     }
 
     @GetMapping(value = ApiEndpointConstant.Reporting.HIGH_DIVIDEND)
     public SuccessResponse<?> highDividendStocks(@RequestParam(value = "page_number", defaultValue = "0") Integer pageNumber,
                                                  @RequestParam(value = "page_size", defaultValue = "10") Integer pageSize) {
-        log.info("REPORTING_CONTROLLER ::: Received request for getting high dividend stocks page: {}, {}", pageNumber, pageSize);
+        log.info("REPORTING_CONTROLLER ::: Received request for getting high dividend stocks page: {}, {}.", pageNumber, pageSize);
         return new SuccessResponse<>( analysisService.highDividendStocks(pageNumber, pageSize));
     }
 }
