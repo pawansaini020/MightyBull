@@ -5,7 +5,9 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum UserRole {
-    ADMIN,
-    USER
+public enum UserStatus {
+    PENDING,
+    ACTIVE,
+    BLOCKED,
+    DEACTIVATED
 }

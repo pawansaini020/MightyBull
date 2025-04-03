@@ -1,6 +1,7 @@
 package com.pawan.MightyBull.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.pawan.MightyBull.dto.BaseDto;
 import com.pawan.MightyBull.enums.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,7 +12,7 @@ import lombok.NonNull;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SignupRequest {
+public class SignupRequest extends BaseDto {
 
     @NonNull
     private String name;
@@ -26,4 +27,5 @@ public class SignupRequest {
     private String password;
 
     private UserRole role = UserRole.USER;
+    private String otp;
 }

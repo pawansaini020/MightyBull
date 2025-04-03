@@ -3,7 +3,7 @@ package com.pawan.MightyBull.controllers;
 import com.pawan.MightyBull.constants.ApiEndpointConstant;
 import com.pawan.MightyBull.dto.response.SuccessResponse;
 import com.pawan.MightyBull.dto.user.SignupRequest;
-import com.pawan.MightyBull.services.user.AuthService;
+import com.pawan.MightyBull.services.auth.AuthService;
 import com.pawan.MightyBull.utils.GsonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,14 +28,28 @@ public class AuthController {
     @PostMapping(value = ApiEndpointConstant.Auth.SIGNUP)
     public SuccessResponse<?> signup(@RequestBody SignupRequest signupRequest) {
         log.info("AUTH_CONTROLLER ::: Received request for user signup for: {}", GsonUtils.getGson().toJson(signupRequest));
-        authService.userSignup(signupRequest);
-        return new SuccessResponse<>("User signup is successful.");
+        return new SuccessResponse<>(authService.userSignup(signupRequest));
+    }
+
+    @PostMapping(value = ApiEndpointConstant.Auth.VERIFY_OTP)
+    public SuccessResponse<?> verifyOTP(@RequestParam String username,
+                                        @RequestParam String password,
+                                        @RequestParam String otp) {
+        log.info("AUTH_CONTROLLER ::: Received request for verifying user otp for: {}, {}, {}", username, password, otp);
+        return new SuccessResponse<>(authService.verifyOTP(username, password, otp));
     }
 
     @PostMapping(value = ApiEndpointConstant.Auth.LOGIN)
     public SuccessResponse<?> login(@RequestParam String username,
                                     @RequestParam String password) {
-        log.info("AUTH_CONTROLLER ::: Received request for logging user");
+        log.info("AUTH_CONTROLLER ::: Received request for logging user: {}, {}", username, password);
         return new SuccessResponse<>(authService.userLogin(username, password));
+    }
+
+    @PostMapping(value = ApiEndpointConstant.Auth.RESET_PASSWORD)
+    public SuccessResponse<?> resetPassword(@RequestParam String username,
+                                    @RequestParam String newPassword) {
+        log.info("AUTH_CONTROLLER ::: Received request for resetting user password: {}, {}", username, newPassword);
+        return new SuccessResponse<>(authService.resetPassword(username, newPassword));
     }
 }

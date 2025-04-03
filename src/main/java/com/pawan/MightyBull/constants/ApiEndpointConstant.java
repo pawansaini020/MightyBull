@@ -44,7 +44,8 @@ public class ApiEndpointConstant {
     public static class Auth {
         public static final String BASE = "/v1/api/auth";
         public static final String SIGNUP = "/signup";
+        public static final String VERIFY_OTP = "/verify-otp";
         public static final String LOGIN = "/login";
-        public static final String RESET = "/reset";
+        public static final String RESET_PASSWORD = "/reset-password";
     }
 }
