@@ -40,4 +40,11 @@ public class ApiEndpointConstant {
         public static final String PROCESS_DEFINITION = "/process-definition/";
         public static final String START = "/start";
     }
+
+    public static class Auth {
+        public static final String BASE = "/v1/api/auth";
+        public static final String SIGNUP = "/signup";
+        public static final String LOGIN = "/login";
+        public static final String RESET = "/reset";
+    }
 }

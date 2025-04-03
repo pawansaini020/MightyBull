@@ -30,7 +30,6 @@ public class StockDetailsDao implements Dao<StockDetailsEntity, Long> {
         return repository.findById(id);
     }
 
-    @Override
     public Optional<StockDetailsEntity> getByStockId(@NonNull String stockId) {
         return repository.findByStockId(stockId);
     }

@@ -33,7 +33,6 @@ public class ScreenerStockDetailsDao implements Dao<ScreenerStockDetailsEntity, 
         return repository.findById(id);
     }
 
-    @Override
     public Optional<ScreenerStockDetailsEntity> getByStockId(@NonNull String stockId) {
         return repository.findByStockId(stockId);
     }

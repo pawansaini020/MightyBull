@@ -30,7 +30,6 @@ public class StockPriceDao implements Dao<StockPriceEntity, Long> {
         return repository.findById(id);
     }
 
-    @Override
     public Optional<StockPriceEntity> getByStockId(@NonNull String stockId) {
         return repository.findByStockId(stockId);
     }

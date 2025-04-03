@@ -13,8 +13,6 @@ public interface Dao<T, ID> {
 
     Optional<T> get(@NonNull ID id);
 
-    Optional<T> getByStockId(@NonNull String evenId);
-
     List<T> getAll();
 
     T save(@NonNull T t);
