@@ -6,6 +6,7 @@ import com.pawan.MightyBull.enums.ExceptionType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -18,20 +19,20 @@ import java.util.Collections;
  */
 @Slf4j
 @RestControllerAdvice
-public class ExceptionHandler extends ResponseEntityExceptionHandler {
+public class ControllerAdviser extends ResponseEntityExceptionHandler {
 
-    @org.springframework.web.bind.annotation.ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<FailureResponse<Object>> handleHttpMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException exception) {
         ExceptionType exceptionType = ExceptionType.BAD_REQUEST_EXCEPTION;
         return buildExceptionResponse(exception, exceptionType.getErrorCode(), exceptionType.getErrorType().getValue(), exceptionType.getHttpStatus());
     }
 
-    @org.springframework.web.bind.annotation.ExceptionHandler(BaseException.class)
+    @ExceptionHandler(BaseException.class)
     public ResponseEntity<FailureResponse<Object>> handleBaseException(BaseException exception) {
         return buildExceptionResponse(exception, exception.getErrorCode(), exception.getErrorType(), exception.getHttpStatus());
     }
 
-    @org.springframework.web.bind.annotation.ExceptionHandler(Exception.class)
+    @ExceptionHandler(Exception.class)
     public ResponseEntity<FailureResponse<Object>> handleInternalException(Exception exception) {
         ExceptionType exceptionType = ExceptionType.INTERNAL_SERVER_EXCEPTION;
         return buildExceptionResponse(exception, exceptionType.getErrorCode(), exceptionType.getErrorType().getValue(), exceptionType.getHttpStatus());

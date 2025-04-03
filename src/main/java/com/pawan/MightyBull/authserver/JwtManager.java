@@ -1,6 +1,9 @@
 package com.pawan.MightyBull.authserver;
 
+import com.pawan.MightyBull.exception.AuthenticationException;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.stereotype.Component;
@@ -42,6 +45,13 @@ public class JwtManager {
     }
 
     public boolean validateToken(String token, String username) {
-        return (username.equals(extractUsername(token)) && !isTokenExpired(token));
+        try {
+            Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token);
+            return true;
+        } catch (ExpiredJwtException e) {
+            throw new AuthenticationException("Access token has expired.");
+        } catch (JwtException e) {
+            throw new JwtException("Access token is invalid.");
+        }
     }
 }
