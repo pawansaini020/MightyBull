@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="PriceRuleTable" name="PriceRuleTable" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.16.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.20.0">
+  <decision id="PriceRuleTableId" name="PriceRuleTable" camunda:historyTimeToLive="180">
+    <decisionTable id="DecisionTable_1eidt7e">
+      <input id="Input_1" label="Price Key" camunda:inputVariable="price_key">
+        <inputExpression id="InputExpression_1" typeRef="string">
+          <text></text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_1epqv9n" label="Price Value" camunda:inputVariable="price_value">
+        <inputExpression id="LiteralExpression_1aokxes" typeRef="double">
+          <text></text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" label="Price Score" name="price_score" typeRef="double" />
+      <rule id="DecisionRule_0a90qb5">
+        <inputEntry id="UnaryTests_11d0g7h">
+          <text>"default_price"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0okekn6">
+          <text>&lt;20</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1kqouvk">
+          <text>20</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0v2ikt7">
+        <inputEntry id="UnaryTests_0u96qw3">
+          <text>"default_price"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0i79vmi">
+          <text>[20..50]</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0eustcf">
+          <text>50</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_092cv1c">
+        <inputEntry id="UnaryTests_1szr1mr">
+          <text>"default_price"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1c6y84u">
+          <text>&gt;50</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1a1kooj">
+          <text>100</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="PriceRuleTableId">
+        <dc:Bounds height="80" width="180" x="160" y="100" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

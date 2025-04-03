@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="DebtorDaysScoreRuleTable" name="DebtorDaysScoreRuleTable" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.16.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.20.0">
+  <decision id="DebtorDaysScoreRuleTableId" name="DebtorDaysScoreRuleTable" camunda:historyTimeToLive="180">
+    <decisionTable id="DecisionTable_0ddqchf">
+      <input id="Input_1" label="Debtor Days Key " camunda:inputVariable="debtor_days_key">
+        <inputExpression id="InputExpression_1" typeRef="string">
+          <text></text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_1hhoecu" label="Debtor Days Value" camunda:inputVariable="debtor_days_value">
+        <inputExpression id="LiteralExpression_0bw8o5n" typeRef="double">
+          <text></text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" label="Debtor Days Score " name="debtor_days_score" typeRef="double" />
+      <rule id="DecisionRule_1yjbpvc">
+        <inputEntry id="UnaryTests_1c6stoa">
+          <text>"default_debtor_days"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1m52zdj">
+          <text>&lt;20</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0v47aua">
+          <text>20</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0vggbmm">
+        <inputEntry id="UnaryTests_0lrrrrv">
+          <text>"default_debtor_days"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ui43fb">
+          <text>[20..50]</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_104mvjp">
+          <text>50</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0a3kvb4">
+        <inputEntry id="UnaryTests_0el58li">
+          <text>"default_debtor_days"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0brg2j3">
+          <text>&gt;50</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_07loslm">
+          <text>100</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="DebtorDaysScoreRuleTableId">
+        <dc:Bounds height="80" width="180" x="160" y="100" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

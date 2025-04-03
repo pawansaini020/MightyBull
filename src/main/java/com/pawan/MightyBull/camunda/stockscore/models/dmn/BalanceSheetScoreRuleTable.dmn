@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" id="BalanceSheetScoreRuleTable" name="BalanceSheetScoreRuleTable" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.16.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.20.0">
+  <decision id="BalanceSheetScoreRuleTableId" name="BalanceSheetScoreRuleTable" camunda:historyTimeToLive="180">
+    <decisionTable id="DecisionTable_0va90y7">
+      <input id="Input_1" label="Balance Sheet Key" biodi:width="205" camunda:inputVariable="balance_sheet_key">
+        <inputExpression id="InputExpression_1" typeRef="string">
+          <text></text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_0gvyukn" label="Balance Sheet Value" camunda:inputVariable="balance_sheet_value">
+        <inputExpression id="LiteralExpression_1ds1xvp" typeRef="double">
+          <text></text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" label="Balance Sheet Score" name="balance_sheet_score" typeRef="double" />
+      <rule id="DecisionRule_0d6xiid">
+        <inputEntry id="UnaryTests_1nko0uf">
+          <text>"default_balance_sheet"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1dv7w3o">
+          <text>&lt;20</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_05zylp0">
+          <text>20</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0hi9gxl">
+        <inputEntry id="UnaryTests_0usrktq">
+          <text>"default_balance_sheet"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1w1frat">
+          <text>[20..50]</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0ov72po">
+          <text>50</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1d2o3gg">
+        <inputEntry id="UnaryTests_06y5jzg">
+          <text>"default_balance_sheet"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ql71or">
+          <text>&gt;=50</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0vys8jz">
+          <text>100</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="BalanceSheetScoreRuleTableId">
+        <dc:Bounds height="80" width="180" x="160" y="100" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>
