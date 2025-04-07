@@ -40,6 +40,9 @@ public class ScoringService {
             if (stockDetailsEntity.isPresent()) {
                 StockScoreDTO scoreInfo = fundamentalAnalysisService.calculateScore(stockDetailsEntity.get());
                 syncStockScore(scoreInfo);
+                ScreenerStockDetailsEntity stockDetails = stockDetailsEntity.get();
+                stockDetails.setScore(scoreInfo.getScore());
+                screenerStockDetailsDao.save(stockDetails);
                 return scoreInfo;
             }
         } catch (Exception e) {

@@ -110,6 +110,9 @@ public class ScreenerStockDetailsEntity extends BaseEntity<Long> {
     @Column(name = "shareholding_pattern", columnDefinition = "jsonb")
     private Map<String, Map<String, Double>> shareholdingPattern;
 
+    @Column(name = "score")
+    private Double score;
+
     public void setRequiredDetails(ScreenerStockDetails stockDetails) {
         this.setCompanyId(stockDetails.getCompanyId());
         this.setWarehouseId(stockDetails.getWarehouseId());
@@ -131,5 +134,6 @@ public class ScreenerStockDetailsEntity extends BaseEntity<Long> {
         this.setBalanceSheet(stockDetails.getBalanceSheet());
         this.setCashFlows(stockDetails.getCashFlows());
         this.setShareholdingPattern(stockDetails.getShareholdingPattern());
+        this.setScore(stockDetails.getScore());
     }
 }

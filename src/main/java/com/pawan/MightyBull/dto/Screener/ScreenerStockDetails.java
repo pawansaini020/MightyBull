@@ -44,4 +44,5 @@ public class ScreenerStockDetails extends BaseDto {
     private Map<String, Map<String, Double>> cashFlows;
     private Map<String, Map<String, Double>> ratios;
     private Map<String, Map<String, Double>> shareholdingPattern;
+    private Double score;
 }

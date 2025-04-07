@@ -5,12 +5,14 @@ import com.pawan.MightyBull.entity.ScreenerStockDetailsEntity;
 import com.pawan.MightyBull.repository.ScreenerStockDetailsRepository;
 import com.pawan.MightyBull.utils.StockUtils;
 import lombok.NonNull;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,5 +58,20 @@ public class ScreenerStockDetailsDao implements Dao<ScreenerStockDetailsEntity, 
     public Page<ScreenerStockDetailsEntity> getStockByDividend(Integer pageNumber, Integer pageSize) {
         Sort sort = Sort.by(Sort.Direction.DESC, "dividendYield");
         return repository.findAll(StockUtils.getPageable(pageNumber, pageSize, sort));
+    }
+
+    public Page<ScreenerStockDetailsEntity> getFilteredStocks(List<String> scoreRange, List<String> sortBy, Integer pageNumber, Integer pageSize) {
+        double minScore = 0d;
+        double maxScore = 1000d;
+        if (CollectionUtils.isNotEmpty(scoreRange)) {
+            String[] sc = scoreRange.get(0).split("-");
+            minScore = Double.parseDouble(sc[0]);
+            maxScore = Double.parseDouble(sc[1]);
+        }
+        Sort sort = Sort.by(Sort.Direction.DESC, "marketCap");
+        if(CollectionUtils.isNotEmpty(sortBy)) {
+            sort = Sort.by(Sort.Direction.DESC, sortBy.get(0));
+        }
+        return repository.findByScoreBetween(minScore, maxScore, StockUtils.getPageable(pageNumber, pageSize, sort));
     }
 }

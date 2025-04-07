@@ -17,7 +17,9 @@ public class ScoreUtils {
             if(value != null) {
                 for (ScoreRule rule : rules) {
                     if (rule.getFrom() <= value && value <= rule.getTo()) {
-                        return (int) (rule.getScore() * rule.getWeight());
+                        double score = 0.00;
+                        score = rule.getScore() * rule.getWeight();
+                        return score;
                     }
                 }
             }

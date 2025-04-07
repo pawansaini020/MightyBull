@@ -48,4 +48,10 @@ public class ApiEndpointConstant {
         public static final String LOGIN = "/login";
         public static final String RESET_PASSWORD = "/reset-password";
     }
+
+    public static class StockDetails {
+        public static final String BASE = "/v1/api/stock";
+        public static final String WIDGETS = "/widgets";
+        public static final String WIDGET_DETAILS = "/widget-details/{stock_id}";
+    }
 }

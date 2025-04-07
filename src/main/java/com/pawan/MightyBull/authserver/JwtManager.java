@@ -14,6 +14,7 @@ import java.util.function.Function;
 public class JwtManager {
 
     private final String SECRET_KEY = "7c59b085";
+    private final Integer TOKEN_EXPIRY = 60;
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -39,7 +40,7 @@ public class JwtManager {
         return Jwts.builder()
                 .setSubject(username)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * TOKEN_EXPIRY))
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .compact();
     }

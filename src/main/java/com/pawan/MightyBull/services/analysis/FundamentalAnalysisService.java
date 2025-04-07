@@ -50,7 +50,8 @@ public class FundamentalAnalysisService {
         double debtorDaysScore = calculateDebtorDaysScore(entity.getStockId(), entity.getRatios(), stockScoreData);
         double yearlyROCEScore = calculateYearlyROCEScore(entity.getStockId(), entity.getRatios(), stockScoreData);
         double shareholdingPatternScore = calculateShareholdingPatternScore(entity.getStockId(), entity.getShareholdingPattern(), stockScoreData);
-        double totalScore = marketCapScore + priceScore + peScore + dividendYieldScore + roceScore + rocScore + quarterlyProfitScore + profitAndLossScore + balanceSheetScore + cashFlowsScore + debtorDaysScore + yearlyROCEScore + shareholdingPatternScore;
+        double totalScore = 0.00d;
+        totalScore = marketCapScore + priceScore + peScore + dividendYieldScore + roceScore + rocScore + quarterlyProfitScore + profitAndLossScore + balanceSheetScore + cashFlowsScore + debtorDaysScore + yearlyROCEScore + shareholdingPatternScore;
         log.info("Stock score for: {} totalScore: {} : marketCapScore: {}, priceScore: {}, peScore: {}, dividendYieldScore: {}, roceScore: {}, rocScore: {}, " +
                         "quarterlyProfitScore: {}, profitAndLossScore: {}, balanceSheetScore: {}, cashFlowsScore: {}, debtorDaysScore: {}, yearlyROCEScore: {}, shareholdingPatternScore: {}",
                 entity.getName(), totalScore, marketCapScore, priceScore, peScore, dividendYieldScore, roceScore, rocScore, quarterlyProfitScore, profitAndLossScore, balanceSheetScore, cashFlowsScore, debtorDaysScore, yearlyROCEScore, shareholdingPatternScore);
@@ -70,7 +71,7 @@ public class FundamentalAnalysisService {
     private double calculateMarketCapScore(String stockId, Double marketCap, StockScoreData stockScoreData) {
         try {
             stockScoreData.setMarketCap(marketCap);
-            double score = 0;
+            double score = 0.00;
             if (marketCap != null) {
                 score = ScoreUtils.calculateScore(marketCap, FundamentalAnalysisScoreRules.MARKET_CAP_RULES);
             }
@@ -83,7 +84,7 @@ public class FundamentalAnalysisService {
 
     private double calculatePriceScore(String stockId, Double currentPrice, Double highPrice, Double lowPrice, StockScoreData stockScoreData) {
         try {
-            double score = 0;
+            double score = 0.00;
             if (currentPrice != null && highPrice != null && lowPrice != null && highPrice != lowPrice) {
                 double priceIncrement = ((currentPrice - lowPrice) / (highPrice - lowPrice)) * 100;
                 score = ScoreUtils.calculateScore(priceIncrement, FundamentalAnalysisScoreRules.PRICE_RULES);
@@ -98,7 +99,7 @@ public class FundamentalAnalysisService {
 
     private double calculatePEScore(String stockId, Double stockPE, StockScoreData stockScoreData) {
         try {
-            double score = 0;
+            double score = 0.00;
             if (stockPE != null) {
                 score = ScoreUtils.calculateScore(stockPE, FundamentalAnalysisScoreRules.PE_RULES);
                 stockScoreData.setPe(stockPE);
@@ -112,7 +113,7 @@ public class FundamentalAnalysisService {
 
     private double calculateDividendYieldScore(String stockId, Double dividendYield, StockScoreData stockScoreData) {
         try {
-            double score = 0;
+            double score = 0.00;
             if (dividendYield != null) {
                 score = ScoreUtils.calculateScore(dividendYield, FundamentalAnalysisScoreRules.DIVIDEND_YIELD_RULES);
                 stockScoreData.setDividendYield(dividendYield);
@@ -126,7 +127,7 @@ public class FundamentalAnalysisService {
 
     private double calculateROCEScore(String stockId, Double roce, StockScoreData stockScoreData) {
         try {
-            double score = 0;
+            double score = 0.00;
             if (roce != null) {
                 score = ScoreUtils.calculateScore(roce, FundamentalAnalysisScoreRules.ROCE_RULES);
                 stockScoreData.setRoce(roce);
@@ -140,7 +141,7 @@ public class FundamentalAnalysisService {
 
     private double calculateROCScore(String stockId, Double roc, StockScoreData stockScoreData) {
         try {
-            double score = 0;
+            double score = 0.00;
             if (roc != null) {
                 score = ScoreUtils.calculateScore(roc, FundamentalAnalysisScoreRules.ROE_RULES);
                 stockScoreData.setRoc(roc);
@@ -154,7 +155,7 @@ public class FundamentalAnalysisService {
 
     private double calculateQuarterlyProfitScore(String stockId, Map<String, Map<String, Double>> quarterlyProfit, StockScoreData stockScoreData) {
         try {
-            double score = 0;
+            double score = 0.00;
 
             if (quarterlyProfit != null && quarterlyProfit.get("Profit before tax") != null) {
                 Map<String, Double> netProfit = quarterlyProfit.get("Profit before tax");
@@ -204,14 +205,14 @@ public class FundamentalAnalysisService {
 
     private double calculateProfitAndLossScore(String stockId, Map<String, Map<String, Double>> profitAndLoss, StockScoreData stockScoreData) {
         try {
-            double score = 0;
+            double score = 0.00;
 
             if (profitAndLoss != null && profitAndLoss.get("Net Profit") != null) {
                 Map<String, Double> netProfit = profitAndLoss.get("Net Profit");
                 if (netProfit != null) {
 
                     // Variables to hold total score and valid profit count
-                    double totalScore = 0;
+                    double totalScore = 0.00;
                     int validProfitsCount = 0;
 
                     // Loop through the years and calculate profits and score
@@ -253,7 +254,7 @@ public class FundamentalAnalysisService {
 
     private double calculateBalanceSheetScore(String stockId, Map<String, Map<String, Double>> balanceSheet, StockScoreData stockScoreData) {
         try {
-            double score = 0;
+            double score = 0.00;
 
             if (balanceSheet != null && balanceSheet.get("Total Assets") != null) {
                 Map<String, Double> totalAssets = balanceSheet.get("Total Assets");
@@ -301,7 +302,7 @@ public class FundamentalAnalysisService {
 
     private double calculateCashFlowsScore(String stockId, Map<String, Map<String, Double>> cashFlow, StockScoreData stockScoreData) {
         try {
-            double score = 0;
+            double score = 0.00;
 
             if (cashFlow != null && cashFlow.get("Net Cash Flow") != null) {
                 Map<String, Double> netValue = cashFlow.get("Net Cash Flow");
@@ -350,7 +351,7 @@ public class FundamentalAnalysisService {
 
     private double calculateDebtorDaysScore(String stockId, Map<String, Map<String, Double>> debtorDays, StockScoreData stockScoreData) {
         try {
-            double score = 0;
+            double score = 0.00;
             if (debtorDays != null && debtorDays.get("Debtor Days") != null) {
                 Map<String, Double> netValue = debtorDays.get("Debtor Days");
                 if (netValue != null) {
@@ -393,7 +394,7 @@ public class FundamentalAnalysisService {
 
     private double calculateYearlyROCEScore(String stockId, Map<String, Map<String, Double>> ratios, StockScoreData stockScoreData) {
         try {
-            double score = 0;
+            double score = 0.00;
 
             if (ratios != null && ratios.get("ROCE %") != null) {
                 Map<String, Double> netValue = ratios.get("ROCE %");
@@ -443,7 +444,7 @@ public class FundamentalAnalysisService {
 
     private double calculateShareholdingPatternScore(String stockId, Map<String, Map<String, Double>> profitAndLoss, StockScoreData stockScoreData) {
         try {
-            double score = 0;
+            double score = 0.00;
 
             if (profitAndLoss != null && profitAndLoss.get("Promoters") != null) {
                 Map<String, Double> promoters = profitAndLoss.get("Promoters");

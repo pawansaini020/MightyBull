@@ -96,7 +96,12 @@ public class AuthService {
         }
 
         String token = jwtManager.generateToken(user.getEmail(), user.getRole().name());
-        return new AuthResponse(token, token, user.getRole().name());
+        return AuthResponse.builder()
+                .name(user.getName())
+                .role(user.getRole().name())
+                .token(token)
+                .refreshToken(token)
+                .build();
     }
 
     public String resetPassword(String username, String newPassword) {
