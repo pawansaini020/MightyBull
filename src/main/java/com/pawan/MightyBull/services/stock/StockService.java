@@ -3,6 +3,7 @@ package com.pawan.MightyBull.services.stock;
 import com.pawan.MightyBull.dao.ScreenerStockDetailsDao;
 import com.pawan.MightyBull.dto.response.PaginationResponse;
 import com.pawan.MightyBull.dto.response.SuccessResponse;
+import com.pawan.MightyBull.dto.stock.StockSearchDto;
 import com.pawan.MightyBull.dto.stock.StockWidgetDetailsDto;
 import com.pawan.MightyBull.dto.stock.StockWidgetDto;
 import com.pawan.MightyBull.entity.ScreenerStockDetailsEntity;
@@ -11,8 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -64,8 +68,28 @@ public class StockService {
                     .dividendYield(stockDetailsEntity.getDividendYield())
                     .roce(stockDetailsEntity.getRoce())
                     .roe(stockDetailsEntity.getRoe())
-                    .score(stockDetailsEntity.getScore());
+                    .score(stockDetailsEntity.getScore())
+                    .prosList(List.of("Company has been maintaining a healthy dividend payout of 30.8%"))
+                    .consList(List.of("Stock is trading at 3.12 times its book value",
+                            "Company has low interest coverage ratio.",
+                            "Tax rate seems low",
+                            "Company might be capitalizing the interest cost",
+                            "Company has high debtors of 3,557 days."));
         }
         return detailsDtoBuilder.build();
+    }
+
+    public List<StockSearchDto> searchStocks(String stockName) {
+        List<ScreenerStockDetailsEntity> entities = stockDetailsDao.getStocksByName(stockName);
+        entities.addAll(stockDetailsDao.getStocksByStockId(stockName));
+        List<StockSearchDto> stockSearchList = new ArrayList<>();
+        Set<String> stockSet = new HashSet<>();
+        for(ScreenerStockDetailsEntity entity : entities) {
+            if(!stockSet.contains(entity.getStockId())) {
+                stockSearchList.add(new StockSearchDto(entity.getStockId(), entity.getName()));
+                stockSet.add(entity.getStockId());
+            }
+        }
+        return stockSearchList;
     }
 }

@@ -74,4 +74,12 @@ public class ScreenerStockDetailsDao implements Dao<ScreenerStockDetailsEntity, 
         }
         return repository.findByScoreBetween(minScore, maxScore, StockUtils.getPageable(pageNumber, pageSize, sort));
     }
+
+    public List<ScreenerStockDetailsEntity> getStocksByName(String stockName) {
+        return repository.findByNameContainingIgnoreCase(stockName);
+    }
+
+    public List<ScreenerStockDetailsEntity> getStocksByStockId(String stockId) {
+        return repository.findByStockIdContainingIgnoreCase(stockId);
+    }
 }

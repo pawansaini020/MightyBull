@@ -37,7 +37,13 @@ public class StockDetailsController {
 
     @GetMapping(value = ApiEndpointConstant.StockDetails.WIDGET_DETAILS)
     public SuccessResponse<?> getStockWidgetDetails(@PathVariable(value = "stock_id") String stockId) {
-        log.info("STOCK_DETAILS_CONTROLLER::getStockWidgetDetails Request received foe getting stock widget details for: {}", stockId);
+        log.info("STOCK_DETAILS_CONTROLLER::getStockWidgetDetails Request received for getting stock widget details for: {}", stockId);
         return new SuccessResponse<>(stockService.getStockWidgetDetails(stockId));
+    }
+
+    @GetMapping(value = ApiEndpointConstant.StockDetails.SEARCH)
+    public SuccessResponse<?> searchStocks(@RequestParam(value = "name") String StockName) {
+        log.info("STOCK_DETAILS_CONTROLLER::searchStocks Request received for getting stock search for: {}", StockName);
+        return new SuccessResponse<>(stockService.searchStocks(StockName));
     }
 }

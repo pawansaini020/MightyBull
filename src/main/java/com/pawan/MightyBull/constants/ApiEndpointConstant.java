@@ -53,5 +53,6 @@ public class ApiEndpointConstant {
         public static final String BASE = "/v1/api/stock";
         public static final String WIDGETS = "/widgets";
         public static final String WIDGET_DETAILS = "/widget-details/{stock_id}";
+        public static final String SEARCH = "/search";
     }
 }
