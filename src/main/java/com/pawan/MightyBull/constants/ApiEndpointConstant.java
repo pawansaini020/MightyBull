@@ -1,5 +1,8 @@
 package com.pawan.MightyBull.constants;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 /**
  * @author Pawan Saini
  * Created on 01/11/24.
@@ -54,5 +57,12 @@ public class ApiEndpointConstant {
         public static final String WIDGETS = "/widgets";
         public static final String WIDGET_DETAILS = "/widget-details/{stock_id}";
         public static final String SEARCH = "/search";
+    }
+
+    public static class Constance {
+        public static final String BASE = "/constance";
+        public static final String FETCH = "/fetch";
+        public static final String RELOAD = "/reload";
+        public static final String UPDATE = "/update";
     }
 }

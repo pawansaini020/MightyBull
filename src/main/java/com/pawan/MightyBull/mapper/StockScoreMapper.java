@@ -15,4 +15,5 @@ public interface StockScoreMapper {
     StockScoreMapper INSTANCE = Mappers.getMapper(StockScoreMapper.class);
 
     StockScoreEntity mapDtoToEntity(StockScoreDTO dto);
+    StockScoreDTO mapEntityToDto(StockScoreEntity entity);
 }

@@ -1,12 +1,15 @@
 package com.pawan.MightyBull.services.stock;
 
 import com.pawan.MightyBull.dao.ScreenerStockDetailsDao;
+import com.pawan.MightyBull.dao.StockScoreDao;
 import com.pawan.MightyBull.dto.response.PaginationResponse;
 import com.pawan.MightyBull.dto.response.SuccessResponse;
 import com.pawan.MightyBull.dto.stock.StockSearchDto;
 import com.pawan.MightyBull.dto.stock.StockWidgetDetailsDto;
 import com.pawan.MightyBull.dto.stock.StockWidgetDto;
 import com.pawan.MightyBull.entity.ScreenerStockDetailsEntity;
+import com.pawan.MightyBull.entity.StockScoreEntity;
+import com.pawan.MightyBull.mapper.StockScoreMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,10 +27,13 @@ import java.util.stream.Collectors;
 public class StockService {
 
     private final ScreenerStockDetailsDao stockDetailsDao;
+    private final StockScoreDao stockScoreDao;
 
     @Autowired
-    public StockService(ScreenerStockDetailsDao stockDetailsDao) {
+    public StockService(ScreenerStockDetailsDao stockDetailsDao,
+                        StockScoreDao stockScoreDao) {
         this.stockDetailsDao = stockDetailsDao;
+        this.stockScoreDao = stockScoreDao;
     }
 
     public SuccessResponse<?> getStockWidgets(List<String> scoreRange, List<String> sortBy, Integer pageNumber, Integer pageSize) {
@@ -74,7 +80,14 @@ public class StockService {
                             "Company has low interest coverage ratio.",
                             "Tax rate seems low",
                             "Company might be capitalizing the interest cost",
-                            "Company has high debtors of 3,557 days."));
+                            "Company has high debtors of 3,557 days."))
+                    .quarterlyResults(stockDetailsEntity.getQuarterlyResults())
+                    .profitAndLoss(stockDetailsEntity.getProfitAndLoss())
+                    .balanceSheet(stockDetailsEntity.getBalanceSheet())
+                    .ratios(stockDetailsEntity.getRatios())
+                    .shareholdingPattern(stockDetailsEntity.getShareholdingPattern());
+            StockScoreEntity scoreEntity = stockScoreDao.getByStockId(stockId).orElse(null);
+            detailsDtoBuilder.scoreDTO(StockScoreMapper.INSTANCE.mapEntityToDto(scoreEntity));
         }
         return detailsDtoBuilder.build();
     }
