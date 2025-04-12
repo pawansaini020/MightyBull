@@ -18,6 +18,8 @@ public class ApiEndpointConstant {
         public static final String STOCK_DATA = "/stocks_data/v1";
         public static final String ALL_STOCKS = "/all_stocks";
         public static final String SYNC_STOCKS = "/sync_stocks";
+        public static final String LATEST_INDEX = "/tr_live/segment/CASH/latest_aggregated";
+        public static final String INDEX_SYNC = "/index/sync";
     }
 
     public static class Screener {
@@ -64,5 +66,10 @@ public class ApiEndpointConstant {
         public static final String FETCH = "/fetch";
         public static final String RELOAD = "/reload";
         public static final String UPDATE = "/update";
+    }
+
+    public static class Index {
+        public static final String BASE = "/v1/api/index";
+        public static final String WIDGETS = "/widgets";
     }
 }

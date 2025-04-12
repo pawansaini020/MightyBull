@@ -40,4 +40,10 @@ public class GrowController {
         log.info("GROW_CONTROLLER ::: Received request for getting stock details");
         return new SuccessResponse<>(growService.getAllStockIds());
     }
+
+    @GetMapping(value = ApiEndpointConstant.Grow.INDEX_SYNC)
+    public SuccessResponse<?> syncIndexDetails() {
+        log.info("GROW_CONTROLLER ::: Received request for syncing index details");
+        return new SuccessResponse<>(growService.syncIndexDetails());
+    }
 }

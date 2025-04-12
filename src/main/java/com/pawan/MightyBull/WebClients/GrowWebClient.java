@@ -2,7 +2,9 @@ package com.pawan.MightyBull.WebClients;
 
 import com.pawan.MightyBull.constants.ApiEndpointConstant;
 import com.pawan.MightyBull.dto.grow.GrowStocks;
+import com.pawan.MightyBull.dto.grow.request.GrowIndexRequest;
 import com.pawan.MightyBull.dto.grow.request.GrowStockRequest;
+import com.pawan.MightyBull.dto.grow.response.GrowIndexResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -45,5 +47,23 @@ public class GrowWebClient extends Client {
             log.error("GROW_WEB_CLIENT ::: Error occurred while getting all stock details from source grow", e);
         }
         return new GrowStocks();
+    }
+
+    public GrowIndexResponse getIndianIndexDetails(GrowIndexRequest request) {
+        try {
+            String endPoint = ApiEndpointConstant.Grow.BASE + ApiEndpointConstant.Grow.STOCK_DATA + ApiEndpointConstant.Grow.LATEST_INDEX;
+            HttpHeaders headers = getHeader(null, null);
+            Mono<GrowIndexResponse> response = webClient.post()
+                    .uri(serverUrl + endPoint)
+                    .headers(httpHeaders -> httpHeaders.addAll(headers))
+                    .bodyValue(request)
+                    .retrieve()
+                    .bodyToMono(GrowIndexResponse.class);
+            GrowIndexResponse growStocks = response.block();
+            return growStocks != null ? growStocks : new GrowIndexResponse();
+        } catch (Exception e) {
+            log.error("GROW_WEB_CLIENT ::: Error occurred while getting all index from source grow", e);
+        }
+        return new GrowIndexResponse();
     }
 }

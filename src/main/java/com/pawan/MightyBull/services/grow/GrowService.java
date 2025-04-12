@@ -3,6 +3,10 @@ package com.pawan.MightyBull.services.grow;
 import com.pawan.MightyBull.Managers.GrowAPIManager;
 import com.pawan.MightyBull.dto.grow.GrowStockDetails;
 import com.pawan.MightyBull.dto.grow.GrowStocks;
+import com.pawan.MightyBull.dto.grow.response.GrowIndexResponse;
+import com.pawan.MightyBull.dto.grow.response.IndexDto;
+import com.pawan.MightyBull.dto.index.IndexWidget;
+import com.pawan.MightyBull.services.IndexService;
 import com.pawan.MightyBull.utils.GsonUtils;
 import com.pawan.MightyBull.utils.StockUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -23,14 +27,17 @@ public class GrowService {
     private final GrowAPIManager growAPIManager;
     private final StockDetailsService stockDetailsService;
     private final StockPriceService stockPriceService;
+    private final IndexService indexService;
 
     @Autowired
     public GrowService(GrowAPIManager growAPIManager,
                        StockDetailsService stockDetailsService,
-                       StockPriceService stockPriceService) {
+                       StockPriceService stockPriceService,
+                       IndexService indexService) {
         this.growAPIManager = growAPIManager;
         this.stockDetailsService = stockDetailsService;
         this.stockPriceService = stockPriceService;
+        this.indexService = indexService;
     }
 
     public void syncStockDetails(int startPage, int endPage) {
@@ -58,5 +65,26 @@ public class GrowService {
 
     public List<String> getAllStockIds() {
         return stockDetailsService.getAllStockIds();
+    }
+
+    public List<IndexWidget> syncIndexDetails() {
+        GrowIndexResponse growIndexResponse = growAPIManager.getIndexDetails();
+        growIndexResponse.getExchangeAggRespMap()
+                .get("NSE")
+                .get("indexLivePointsMap")
+                .values()
+                .forEach(dto -> {
+                    dto.setName(dto.getSymbol());
+                    indexService.syncIndex(dto);
+                });
+        growIndexResponse.getExchangeAggRespMap()
+                .get("BSE")
+                .get("indexLivePointsMap")
+                .values()
+                .forEach(dto -> {
+                    dto.setName(dto.getSymbol());
+                    indexService.syncIndex(dto);
+                });
+        return indexService.getIndexWidgets();
     }
 }

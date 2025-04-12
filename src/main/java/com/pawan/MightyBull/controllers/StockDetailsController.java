@@ -31,7 +31,7 @@ public class StockDetailsController {
                                               @RequestParam(value = "sort_by", required = false) List<String> sortBy,
                                               @RequestParam(value = "page_number", defaultValue = "0") Integer pageNumber,
                                               @RequestParam(value = "page_size", defaultValue = "10") Integer pageSize) {
-        log.info("STOCK_DETAILS_CONTROLLER::getStockWidgets Request received foe getting stock widgets for: {}, {}, {}", scoreRange, sortBy, pageNumber, pageSize);
+        log.info("STOCK_DETAILS_CONTROLLER::getStockWidgets Request received foe getting stock widgets for: {}, {}, {}, {}", scoreRange, sortBy, pageNumber, pageSize);
         return new SuccessResponse<>(stockService.getStockWidgets(scoreRange, sortBy, pageNumber, pageSize));
     }
 

@@ -2,7 +2,9 @@ package com.pawan.MightyBull.Managers;
 
 import com.pawan.MightyBull.WebClients.GrowWebClient;
 import com.pawan.MightyBull.dto.grow.GrowStocks;
+import com.pawan.MightyBull.dto.grow.request.GrowIndexRequest;
 import com.pawan.MightyBull.dto.grow.request.GrowStockRequest;
+import com.pawan.MightyBull.dto.grow.response.GrowIndexResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -42,5 +44,21 @@ public class GrowAPIManager {
         objFilters.put("MARKET_CAP", marketCabRange);
         GrowStockRequest request = new GrowStockRequest(listFilters, objFilters, pageNumber, pageSize, "NA", "ASC");
         return growWebClient.getAllStockDetails(request);
+    }
+
+    public GrowIndexResponse getIndexDetails() {
+        Map<String, Map<String, List<String>>> exchangeAggReqMap = new HashMap<>();
+        Map<String, List<String>> nse = new HashMap<>();
+        nse.put("priceSymbolList", new ArrayList<>());
+        nse.put("indexSymbolList", List.of("NIFTY", "BANKNIFTY", "FINNIFTY", "NIFTYMIDSELECT"));
+
+        Map<String, List<String>> bse = new HashMap<>();
+        bse.put("priceSymbolList", new ArrayList<>());
+        bse.put("indexSymbolList", List.of("1", "14"));
+        exchangeAggReqMap.put("NSE", nse);
+        exchangeAggReqMap.put("BSE", bse);
+        GrowIndexRequest request = new GrowIndexRequest(exchangeAggReqMap);
+        GrowIndexResponse response = growWebClient.getIndianIndexDetails(request);
+        return response;
     }
 }
