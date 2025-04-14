@@ -118,11 +118,11 @@
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>com.moveinsync</groupId>
-			<artifactId>jwt</artifactId>
-			<version>1.0.1</version>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>com.moveinsync</groupId>-->
+<!--			<artifactId>jwt</artifactId>-->
+<!--			<version>1.0.1</version>-->
+<!--		</dependency>-->
 
 	</dependencies>
 

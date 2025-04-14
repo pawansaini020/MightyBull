@@ -1,6 +1,6 @@
 package com.pawan.MightyBull.services.auth;
 
-import com.pawan.MightyBull.authserver.JwtManager;
+//import com.pawan.MightyBull.authserver.JwtManager;
 import com.pawan.MightyBull.dao.UserDao;
 import com.pawan.MightyBull.dto.user.AuthResponse;
 import com.pawan.MightyBull.dto.user.SignupRequest;
@@ -19,18 +19,18 @@ import java.util.Optional;
 public class AuthService {
 
     private final UserDao userDao;
-    private final PasswordEncoder passwordEncoder;
-    private final JwtManager jwtManager;
+//    private final PasswordEncoder passwordEncoder;
+//    private final JwtManager jwtManager;
     private final OtpService otpService;
 
     @Autowired
     public AuthService(UserDao userDao,
-                       PasswordEncoder passwordEncoder,
-                       JwtManager jwtManager,
+//                       PasswordEncoder passwordEncoder,
+//                       JwtManager jwtManager,
                        OtpService otpService) {
         this.userDao = userDao;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtManager = jwtManager;
+//        this.passwordEncoder = passwordEncoder;
+//        this.jwtManager = jwtManager;
         this.otpService = otpService;
     }
 
@@ -47,7 +47,7 @@ public class AuthService {
                 .name(signupRequest.getName())
                 .email(signupRequest.getEmail())
                 .phone(signupRequest.getPhone())
-                .password(passwordEncoder.encode(signupRequest.getPassword()))
+//                .password(passwordEncoder.encode(signupRequest.getPassword()))
                 .role(signupRequest.getRole())
                 .status(UserStatus.PENDING)
                 .otp(otp)
@@ -70,7 +70,7 @@ public class AuthService {
         }
 
         user.setStatus(UserStatus.ACTIVE);
-        user.setPassword(passwordEncoder.encode(password));
+//        user.setPassword(passwordEncoder.encode(password));
         user.setOtp(null);
         user.setOtpExpiry(null);
         userDao.save(user);
@@ -83,9 +83,9 @@ public class AuthService {
             throw new AuthenticationException("Authentication failed! Check your email and password and try again");
         }
 
-        if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new AuthenticationException("Authentication failed! Check your email and password and try again");
-        }
+//        if (!passwordEncoder.matches(password, user.getPassword())) {
+//            throw new AuthenticationException("Authentication failed! Check your email and password and try again");
+//        }
 
         if (UserStatus.PENDING.equals(user.getStatus())) {
             throw new AuthenticationException("Authentication failed! User is not verified to login, please reset password and verify.");
@@ -95,12 +95,12 @@ public class AuthService {
             throw new AuthenticationException("Authentication failed! User doesn't have permission to login, please contact to admin.");
         }
 
-        String token = jwtManager.generateToken(user.getEmail(), user.getRole().name());
+//        String token = jwtManager.generateToken(user.getEmail(), user.getRole().name());
         return AuthResponse.builder()
                 .name(user.getName())
                 .role(user.getRole().name())
-                .token(token)
-                .refreshToken(token)
+                .token("token")
+                .refreshToken("token")
                 .build();
     }
 
