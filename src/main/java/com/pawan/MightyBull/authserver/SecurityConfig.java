@@ -12,7 +12,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class SecurityConfig {
 
-    private static final String[] UNAUTHORIZATION_END_POINTS = {"/actuator/**", "/ping", "/v1/api/auth/**" };
+    private static final String[] UNAUTHORIZATION_END_POINTS = {"/actuator/**", "/ping", "/v1/api/index/**" ,"/v1/api/auth/**", "/v1/api/stock/**"};
     private static final String[] USER_END_POINTS = {};
     private static final String[] ADMIN_END_POINTS = {};
 
