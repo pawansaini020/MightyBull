@@ -4,6 +4,7 @@ import com.pawan.MightyBull.dao.IndexDao;
 import com.pawan.MightyBull.dto.grow.response.IndexDto;
 import com.pawan.MightyBull.dto.index.IndexWidget;
 import com.pawan.MightyBull.entity.IndexEntity;
+import com.pawan.MightyBull.enums.IndexType;
 import com.pawan.MightyBull.mapper.IndexMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,8 +45,8 @@ public class IndexService {
         }
     }
 
-    public List<IndexWidget> getIndexWidgets() {
-        List<IndexEntity> entities = indexDao.getAll();
+    public List<IndexWidget> getIndexWidgets(IndexType type) {
+        List<IndexEntity> entities = indexDao.getByType(type);
         List<IndexWidget> widgets = new ArrayList<>();
 
         for(IndexEntity entity : entities) {

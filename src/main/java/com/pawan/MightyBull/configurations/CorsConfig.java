@@ -26,7 +26,7 @@ public class CorsConfig {
 
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOriginPatterns(List.of("*://*.moveinsync.*", "http://localhost:*"));
+        config.setAllowedOriginPatterns(List.of("*"));
 
         config.setAllowedHeaders(Arrays.asList(
                         HttpHeaders.AUTHORIZATION,

@@ -19,6 +19,7 @@ public class ApiEndpointConstant {
         public static final String ALL_STOCKS = "/all_stocks";
         public static final String SYNC_STOCKS = "/sync_stocks";
         public static final String LATEST_INDEX = "/tr_live/segment/CASH/latest_aggregated";
+        public static final String GLOBAL_INSTRUMENTS = "/global_instruments";
         public static final String INDEX_SYNC = "/index/sync";
     }
 

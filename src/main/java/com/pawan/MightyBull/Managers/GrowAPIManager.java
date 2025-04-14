@@ -61,4 +61,8 @@ public class GrowAPIManager {
         GrowIndexResponse response = growWebClient.getIndianIndexDetails(request);
         return response;
     }
+
+    public GrowIndexResponse getGlobalIndexDetails() {
+        return growWebClient.getGlobalIndexDetails();
+    }
 }

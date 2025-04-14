@@ -6,6 +6,7 @@ import com.pawan.MightyBull.dto.grow.GrowStocks;
 import com.pawan.MightyBull.dto.grow.response.GrowIndexResponse;
 import com.pawan.MightyBull.dto.grow.response.IndexDto;
 import com.pawan.MightyBull.dto.index.IndexWidget;
+import com.pawan.MightyBull.enums.IndexType;
 import com.pawan.MightyBull.services.IndexService;
 import com.pawan.MightyBull.utils.GsonUtils;
 import com.pawan.MightyBull.utils.StockUtils;
@@ -74,6 +75,7 @@ public class GrowService {
                 .get("indexLivePointsMap")
                 .values()
                 .forEach(dto -> {
+                    dto.setType(IndexType.INDIAN.name());
                     dto.setName(dto.getSymbol());
                     indexService.syncIndex(dto);
                 });
@@ -82,9 +84,22 @@ public class GrowService {
                 .get("indexLivePointsMap")
                 .values()
                 .forEach(dto -> {
+                    dto.setType(IndexType.INDIAN.name());
                     dto.setName(dto.getSymbol());
                     indexService.syncIndex(dto);
                 });
-        return indexService.getIndexWidgets();
+        GrowIndexResponse globalIndexDetails = growAPIManager.getGlobalIndexDetails();
+        globalIndexDetails.getAggregatedGlobalInstrumentDto()
+                .forEach(dto -> {
+                    IndexDto index = dto.getInstrumentDetailDto();
+                    IndexDto price = dto.getLivePriceDto();
+                    price.setName(index.getName());
+                    price.setSymbol(index.getSymbol());
+                    price.setCountry(index.getCountry());
+                    price.setType(IndexType.GLOBAL.name());
+                    price.setLogoUrl(index.getLogoUrl());
+                    indexService.syncIndex(price);
+                });
+        return indexService.getIndexWidgets(IndexType.INDIAN);
     }
 }

@@ -11,7 +11,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
+
+import java.net.URI;
 
 /**
  * @author Pawan Saini
@@ -57,6 +60,26 @@ public class GrowWebClient extends Client {
                     .uri(serverUrl + endPoint)
                     .headers(httpHeaders -> httpHeaders.addAll(headers))
                     .bodyValue(request)
+                    .retrieve()
+                    .bodyToMono(GrowIndexResponse.class);
+            GrowIndexResponse growStocks = response.block();
+            return growStocks != null ? growStocks : new GrowIndexResponse();
+        } catch (Exception e) {
+            log.error("GROW_WEB_CLIENT ::: Error occurred while getting all index from source grow", e);
+        }
+        return new GrowIndexResponse();
+    }
+
+    public GrowIndexResponse getGlobalIndexDetails() {
+        try {
+            String endPoint = ApiEndpointConstant.Grow.BASE + ApiEndpointConstant.Grow.STOCK_DATA + ApiEndpointConstant.Grow.GLOBAL_INSTRUMENTS;
+            URI uri = UriComponentsBuilder.fromUriString(endPoint)
+                    .queryParam("instrumentType", "GLOBAL_INSTRUMENTS")
+                    .build().toUri();
+            HttpHeaders headers = getHeader(null, null);
+            Mono<GrowIndexResponse> response = webClient.get()
+                    .uri(serverUrl + uri.toString())
+                    .headers(httpHeaders -> httpHeaders.addAll(headers))
                     .retrieve()
                     .bodyToMono(GrowIndexResponse.class);
             GrowIndexResponse growStocks = response.block();

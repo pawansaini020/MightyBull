@@ -1,8 +1,11 @@
 package com.pawan.MightyBull.entity;
 
 import com.pawan.MightyBull.entity.base.BaseEntity;
+import com.pawan.MightyBull.enums.IndexType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,6 +30,10 @@ public class IndexEntity extends BaseEntity<Long> {
 
     @Column(name = "country")
     private String country;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type")
+    private IndexType type;
 
     @Column(name = "value")
     private Double value;

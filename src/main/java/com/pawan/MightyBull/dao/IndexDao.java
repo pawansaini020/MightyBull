@@ -2,6 +2,7 @@ package com.pawan.MightyBull.dao;
 
 import com.pawan.MightyBull.constants.AppConstant;
 import com.pawan.MightyBull.entity.IndexEntity;
+import com.pawan.MightyBull.enums.IndexType;
 import com.pawan.MightyBull.repository.IndexRepository;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,5 +45,9 @@ public class IndexDao implements Dao<IndexEntity, Long> {
     public List<IndexEntity> saveAll(@NonNull List<IndexEntity> entities) {
         Assert.noNullElements(entities, String.format(AppConstant.NON_NULL_COLLECTION_ELEMENTS_MESSAGE, "IndexEntity"));
         return repository.saveAll(entities);
+    }
+
+    public List<IndexEntity> getByType(IndexType type) {
+        return repository.findAllByType(type);
     }
 }
