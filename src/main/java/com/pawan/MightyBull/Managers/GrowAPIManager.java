@@ -2,6 +2,7 @@ package com.pawan.MightyBull.Managers;
 
 import com.pawan.MightyBull.WebClients.GrowWebClient;
 import com.pawan.MightyBull.dto.grow.GrowStocks;
+import com.pawan.MightyBull.dto.grow.request.GrowIndexDetails;
 import com.pawan.MightyBull.dto.grow.request.GrowIndexRequest;
 import com.pawan.MightyBull.dto.grow.request.GrowStockRequest;
 import com.pawan.MightyBull.dto.grow.response.GrowIndexResponse;
@@ -50,11 +51,34 @@ public class GrowAPIManager {
         Map<String, Map<String, List<String>>> exchangeAggReqMap = new HashMap<>();
         Map<String, List<String>> nse = new HashMap<>();
         nse.put("priceSymbolList", new ArrayList<>());
-        nse.put("indexSymbolList", List.of("NIFTY", "BANKNIFTY", "FINNIFTY", "NIFTYMIDSELECT"));
+        nse.put("indexSymbolList", List.of("NIFTY",
+                "BANKNIFTY",
+                "FINNIFTY",
+                "NIFTYMIDSELECT",
+                "INDIAVIX",
+                "NIFTYTOTALMCAP",
+                "NIFTYJR",
+                "NIFTY100",
+                "NIFTYMIDCAP",
+                "NIFTY500",
+                "NIFTYAUTO",
+                "NIFTYSMALL",
+                "NIFTYFMCG",
+                "NIFTYMETAL",
+                "NIFTYPHARMA",
+                "NIFTYPSUBANK",
+                "NIFTYIT",
+                "NIFTYSMALLCAP250",
+                "NIFTYMIDCAP150",
+                "NIFTYCDTY"));
 
         Map<String, List<String>> bse = new HashMap<>();
         bse.put("priceSymbolList", new ArrayList<>());
-        bse.put("indexSymbolList", List.of("1", "14"));
+        bse.put("indexSymbolList", List.of("1",
+                "14",
+                "2",
+                "19",
+                "23"));
         exchangeAggReqMap.put("NSE", nse);
         exchangeAggReqMap.put("BSE", bse);
         GrowIndexRequest request = new GrowIndexRequest(exchangeAggReqMap);
@@ -65,4 +89,10 @@ public class GrowAPIManager {
     public GrowIndexResponse getGlobalIndexDetails() {
         return growWebClient.getGlobalIndexDetails();
     }
+
+    public GrowIndexDetails getIndexDetails(String indexId) {
+        return growWebClient.getIndexDetails(indexId);
+    }
+
+
 }

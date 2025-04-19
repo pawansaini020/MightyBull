@@ -14,6 +14,7 @@ import lombok.experimental.SuperBuilder;
 public class IndexWidget {
 
     private String name;
+    private String indexId;
     private String symbol;
     private String country;
     private Double value;

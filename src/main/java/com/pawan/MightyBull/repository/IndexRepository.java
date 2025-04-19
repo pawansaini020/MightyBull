@@ -12,4 +12,6 @@ public interface IndexRepository extends JpaRepository<IndexEntity, Long> {
     Optional<IndexEntity> findBySymbol(String name);
 
     List<IndexEntity> findAllByType(IndexType type);
+
+    Optional<IndexEntity> findByIndexId(String name);
 }

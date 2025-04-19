@@ -3,6 +3,7 @@ package com.pawan.MightyBull.services.grow;
 import com.pawan.MightyBull.Managers.GrowAPIManager;
 import com.pawan.MightyBull.dto.grow.GrowStockDetails;
 import com.pawan.MightyBull.dto.grow.GrowStocks;
+import com.pawan.MightyBull.dto.grow.request.GrowIndexDetails;
 import com.pawan.MightyBull.dto.grow.response.GrowIndexResponse;
 import com.pawan.MightyBull.dto.grow.response.IndexDto;
 import com.pawan.MightyBull.dto.index.IndexWidget;
@@ -15,7 +16,10 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * @author Pawan Saini

@@ -18,8 +18,6 @@ public interface ScreenerStockDetailsRepository extends JpaRepository<ScreenerSt
 
     Optional<ScreenerStockDetailsEntity> findByStockId(String stockId);
 
-    Page<ScreenerStockDetailsEntity> findByScoreBetween(Double minScore, Double maxScore, Pageable pageable);
-
     List<ScreenerStockDetailsEntity> findByNameContainingIgnoreCase(String name);
 
     List<ScreenerStockDetailsEntity> findByStockIdContainingIgnoreCase(String stockId);
