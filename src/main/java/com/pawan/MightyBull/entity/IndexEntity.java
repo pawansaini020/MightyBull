@@ -12,6 +12,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -27,6 +31,9 @@ public class IndexEntity extends BaseEntity<Long> {
 
     @Column(name = "symbol")
     private String symbol;
+
+    @Column(name = "index_id")
+    private String indexId;
 
     @Column(name = "country")
     private String country;
@@ -64,4 +71,8 @@ public class IndexEntity extends BaseEntity<Long> {
 
     @Column(name = "logo_url")
     private String logoUrl;
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "companies")
+    private List<String> companies;
 }

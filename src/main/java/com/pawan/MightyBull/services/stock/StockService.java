@@ -36,8 +36,8 @@ public class StockService {
         this.stockScoreDao = stockScoreDao;
     }
 
-    public SuccessResponse<?> getStockWidgets(List<String> scoreRange, List<String> sortBy, Integer pageNumber, Integer pageSize) {
-        Page<ScreenerStockDetailsEntity> entities = stockDetailsDao.getFilteredStocks(scoreRange, sortBy, pageNumber, pageSize);
+    public SuccessResponse<?> getStockWidgets(List<String> scoreRange, List<String> stockIds, String sector, String sortBy, Integer pageNumber, Integer pageSize) {
+        Page<ScreenerStockDetailsEntity> entities = stockDetailsDao.getFilteredStocks(scoreRange, stockIds, sector, sortBy, pageNumber, pageSize);
         List<StockWidgetDto> stockWidgetDtos = entities.getContent().stream()
                 .map(this::buildStockWidgetDto)
                 .collect(Collectors.toList());

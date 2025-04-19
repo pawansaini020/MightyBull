@@ -1,4 +1,4 @@
-package com.pawan.MightyBull.dto.grow.response;
+package com.pawan.MightyBull.dto.index;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.pawan.MightyBull.enums.IndexType;
@@ -14,22 +14,22 @@ import java.util.List;
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 @SuperBuilder
-public class IndexDto {
+public class IndexWidgetDetails {
 
     private String name;
-    private String symbol;
     private String indexId;
+    private IndexType type;
+    private String symbol;
     private String country;
-    private String type;
     private Double value;
-    private Double close;
     private Double open;
+    private Double close;
     private Double dayChange;
     private Double dayChangePerc;
     private Double low;
     private Double high;
-    private Double yearHighPrice;
     private Double yearLowPrice;
+    private Double yearHighPrice;
     private String logoUrl;
     private List<String> companies;
 }

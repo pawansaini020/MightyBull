@@ -21,6 +21,7 @@ public class ApiEndpointConstant {
         public static final String LATEST_INDEX = "/tr_live/segment/CASH/latest_aggregated";
         public static final String GLOBAL_INSTRUMENTS = "/global_instruments";
         public static final String INDEX_SYNC = "/index/sync";
+        public static final String COMPANY_SEARCH = "/company/search_id/";
     }
 
     public static class Screener {
@@ -72,5 +73,6 @@ public class ApiEndpointConstant {
     public static class Index {
         public static final String BASE = "/v1/api/index";
         public static final String WIDGETS = "/widgets";
+        public static final String WIDGET_DETAILS = "/widget-details/{index_id}";
     }
 }

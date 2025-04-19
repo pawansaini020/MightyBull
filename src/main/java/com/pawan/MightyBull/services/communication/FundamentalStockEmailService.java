@@ -43,7 +43,7 @@ public class FundamentalStockEmailService extends EmailService {
                 })
                 .collect(Collectors.joining(" "));
         return EmailTemplateDto.builder()
-                .to(Arrays.asList("pawan.saini@moveinsync.com"))
+                .to(Arrays.asList("pawanmawata@gmail.com"))
                 .subject(AppConstant.Email.STOCK_RECOMMENDATION_SUBJECT)
                 .template(template.replace("${stockCards}", stockCards))
                 .build();

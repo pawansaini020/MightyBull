@@ -31,5 +31,6 @@ public class GrowStockDetails extends BaseDto implements Serializable {
     private Double yearlyLowPrice;
     private Double closePrice;
     private Long marketCap;
+    private String logoUrl;
     private GrowLivePriceDto livePriceDto;
 }

@@ -50,4 +50,8 @@ public class IndexDao implements Dao<IndexEntity, Long> {
     public List<IndexEntity> getByType(IndexType type) {
         return repository.findAllByType(type);
     }
+
+    public Optional<IndexEntity> getByIndexId(@NonNull String name) {
+        return repository.findByIndexId(name);
+    }
 }
