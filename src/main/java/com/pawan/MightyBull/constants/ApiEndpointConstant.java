@@ -22,6 +22,9 @@ public class ApiEndpointConstant {
         public static final String GLOBAL_INSTRUMENTS = "/global_instruments";
         public static final String INDEX_SYNC = "/index/sync";
         public static final String COMPANY_SEARCH = "/company/search_id/";
+        public static final String SYNC_MUTUAL_FUND = "/sync_mutual_fund";
+        public static final String SEARCH_V1 = "/search/v1";
+        public static final String DERIVED_SCHEME = "/derived/scheme";
     }
 
     public static class Screener {

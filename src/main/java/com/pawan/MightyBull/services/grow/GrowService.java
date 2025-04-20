@@ -1,14 +1,17 @@
 package com.pawan.MightyBull.services.grow;
 
 import com.pawan.MightyBull.Managers.GrowAPIManager;
+import com.pawan.MightyBull.dto.grow.GrowMutualFundDetails;
 import com.pawan.MightyBull.dto.grow.GrowStockDetails;
 import com.pawan.MightyBull.dto.grow.GrowStocks;
 import com.pawan.MightyBull.dto.grow.request.GrowIndexDetails;
 import com.pawan.MightyBull.dto.grow.response.GrowIndexResponse;
+import com.pawan.MightyBull.dto.grow.response.GrowMutualFundResponse;
 import com.pawan.MightyBull.dto.grow.response.IndexDto;
 import com.pawan.MightyBull.dto.index.IndexWidget;
 import com.pawan.MightyBull.enums.IndexType;
 import com.pawan.MightyBull.services.IndexService;
+import com.pawan.MightyBull.services.mutualfund.MutualFundService;
 import com.pawan.MightyBull.utils.GsonUtils;
 import com.pawan.MightyBull.utils.StockUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -33,22 +36,25 @@ public class GrowService {
     private final StockDetailsService stockDetailsService;
     private final StockPriceService stockPriceService;
     private final IndexService indexService;
+    private final MutualFundService mutualFundService;
 
     @Autowired
     public GrowService(GrowAPIManager growAPIManager,
                        StockDetailsService stockDetailsService,
                        StockPriceService stockPriceService,
-                       IndexService indexService) {
+                       IndexService indexService,
+                       MutualFundService mutualFundService) {
         this.growAPIManager = growAPIManager;
         this.stockDetailsService = stockDetailsService;
         this.stockPriceService = stockPriceService;
         this.indexService = indexService;
+        this.mutualFundService = mutualFundService;
     }
 
     public void syncStockDetails(int startPage, int endPage) {
-        for (int i = startPage; i < endPage; i++) {
+        for (int i = startPage; i <= endPage; i++) {
             try {
-                GrowStocks growStocks = growAPIManager.getAllStockDetails(i, 150);
+                GrowStocks growStocks = growAPIManager.getAllStockDetails(i, 15);
                 if (CollectionUtils.isNotEmpty(growStocks.getRecords())) {
                     for (GrowStockDetails growStockDetails : growStocks.getRecords()) {
                         try {
@@ -105,5 +111,25 @@ public class GrowService {
                     indexService.syncIndex(price);
                 });
         return indexService.getIndexWidgets(IndexType.INDIAN);
+    }
+
+    public void syncMutualFundDetails(Integer startPage, Integer endPage) {
+        for (int i = startPage; i <= endPage; i++) {
+            try {
+                GrowMutualFundResponse growMutualFundDetails = growAPIManager.getAllMutualFundDetails(i, 15);
+                if (CollectionUtils.isNotEmpty(growMutualFundDetails.getContent())) {
+                    for (GrowMutualFundDetails growMutual : growMutualFundDetails.getContent()) {
+                        try {
+                            mutualFundService.persistGrowMutualFundDetails(growMutual);
+                        } catch (Exception e) {
+                            log.error("Error occurred while persisting mutual fund: {}", GsonUtils.getGson().toJson(growMutual), e);
+                        }
+                    }
+                }
+                Thread.sleep(5000);
+            } catch (Exception e) {
+                log.error("Error occurred while persisting mutual fund for: {}", i, e);
+            }
+        }
     }
 }

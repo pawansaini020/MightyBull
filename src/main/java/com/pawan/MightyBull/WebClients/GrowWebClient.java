@@ -6,6 +6,7 @@ import com.pawan.MightyBull.dto.grow.request.GrowIndexDetails;
 import com.pawan.MightyBull.dto.grow.request.GrowIndexRequest;
 import com.pawan.MightyBull.dto.grow.request.GrowStockRequest;
 import com.pawan.MightyBull.dto.grow.response.GrowIndexResponse;
+import com.pawan.MightyBull.dto.grow.response.GrowMutualFundResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -106,5 +107,32 @@ public class GrowWebClient extends Client {
             log.error("GROW_WEB_CLIENT ::: Error occurred while getting all index from source grow: {}", indexId, e);
         }
         return new GrowIndexDetails();
+    }
+
+    public GrowMutualFundResponse getAllMutualFundDetails(int pageNumber, int pageSize) {
+        try {
+            String endPoint = ApiEndpointConstant.Grow.BASE + ApiEndpointConstant.Grow.SEARCH_V1 + ApiEndpointConstant.Grow.DERIVED_SCHEME;
+            URI uri = UriComponentsBuilder.fromUriString(endPoint)
+                    .queryParam("available_for_investment", true)
+                    .queryParam("doc_type", "scheme")
+                    .queryParam("plan_type", "Direct")
+                    .queryParam("sort_by", 3)
+                    .queryParam("max_aum", "")
+                    .queryParam("q", "")
+                    .queryParam("page", pageNumber)
+                    .queryParam("size", pageSize)
+                    .build().toUri();
+            HttpHeaders headers = getHeader(null, null);
+            Mono<GrowMutualFundResponse> response = webClient.get()
+                    .uri(serverUrl + uri.toString())
+                    .headers(httpHeaders -> httpHeaders.addAll(headers))
+                    .retrieve()
+                    .bodyToMono(GrowMutualFundResponse.class);
+            GrowMutualFundResponse growMutual = response.block();
+            return growMutual != null ? growMutual : new GrowMutualFundResponse();
+        } catch (Exception e) {
+            log.error("GROW_WEB_CLIENT ::: Error occurred while getting all mutual fund from source grow: {}, {}", pageNumber, pageSize, e);
+        }
+        return new GrowMutualFundResponse();
     }
 }

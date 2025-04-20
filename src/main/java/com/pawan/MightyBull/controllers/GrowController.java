@@ -46,4 +46,12 @@ public class GrowController {
         log.info("GROW_CONTROLLER ::: Received request for syncing index details");
         return new SuccessResponse<>(growService.syncIndexDetails());
     }
+
+    @PostMapping(value = ApiEndpointConstant.Grow.SYNC_MUTUAL_FUND)
+    public SuccessResponse<?> syncMutualFundDetails(@RequestParam(value = "start_page") Integer startPage,
+                                               @RequestParam(value = "end_page") Integer endPage) {
+        log.info("GROW_CONTROLLER ::: Received request for syncing mutual fund details for: {}, {}", startPage, endPage);
+        growService.syncMutualFundDetails(startPage, endPage);
+        return new SuccessResponse<>("Success");
+    }
 }
