@@ -2,16 +2,22 @@ package com.pawan.MightyBull.services.mutualfund;
 
 import com.pawan.MightyBull.dao.MutualFundDao;
 import com.pawan.MightyBull.dto.grow.GrowMutualFundDetails;
+import com.pawan.MightyBull.dto.mutualfund.MutualFundWidgetDto;
+import com.pawan.MightyBull.dto.response.PaginationResponse;
+import com.pawan.MightyBull.dto.response.SuccessResponse;
+import com.pawan.MightyBull.dto.stock.StockWidgetDto;
 import com.pawan.MightyBull.entity.MutualFundEntity;
-import com.pawan.MightyBull.entity.StockDetailsEntity;
+import com.pawan.MightyBull.entity.ScreenerStockDetailsEntity;
 import com.pawan.MightyBull.mapper.MutualFundMapper;
-import com.pawan.MightyBull.mapper.StockDetailsMapper;
 import com.pawan.MightyBull.utils.GsonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -44,5 +50,17 @@ public class MutualFundService {
             mutualFundDao.save(entity);
             log.info("Updated new mutual fund in the system: {}", GsonUtils.getGson().toJson(entity));
         }
+    }
+
+    public SuccessResponse<?> getMutualFundWidgets(Integer pageNumber, Integer pageSize) {
+        Page<MutualFundEntity> entities = mutualFundDao.getFilteredEntity(pageNumber, pageSize);
+        List<MutualFundWidgetDto> mutualFunds = entities.getContent().stream()
+                .map(this::buildMutualFundWidgets)
+                .collect(Collectors.toList());
+        return new SuccessResponse<>(mutualFunds, new PaginationResponse(entities));
+    }
+
+    private MutualFundWidgetDto buildMutualFundWidgets(MutualFundEntity mutualFundEntity) {
+        return MutualFundMapper.INSTANCE.mapEntityToWidget(mutualFundEntity);
     }
 }

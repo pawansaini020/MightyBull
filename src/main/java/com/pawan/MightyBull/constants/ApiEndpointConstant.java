@@ -78,4 +78,10 @@ public class ApiEndpointConstant {
         public static final String WIDGETS = "/widgets";
         public static final String WIDGET_DETAILS = "/widget-details/{index_id}";
     }
+
+    public static class MutualFund {
+        public static final String BASE = "/v1/api/mutual-fund";
+        public static final String WIDGETS = "/widgets";
+        public static final String WIDGET_DETAILS = "/widget-details/{mutual_fund_id}";
+    }
 }
