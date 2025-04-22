@@ -52,8 +52,8 @@ public class MutualFundService {
         }
     }
 
-    public SuccessResponse<?> getMutualFundWidgets(Integer pageNumber, Integer pageSize) {
-        Page<MutualFundEntity> entities = mutualFundDao.getFilteredEntity(pageNumber, pageSize);
+    public SuccessResponse<?> getMutualFundWidgets(String fundHouse, String category, String cap, Integer pageNumber, Integer pageSize) {
+        Page<MutualFundEntity> entities = mutualFundDao.getFilteredEntity(fundHouse, category, cap, pageNumber, pageSize);
         List<MutualFundWidgetDto> mutualFunds = entities.getContent().stream()
                 .map(this::buildMutualFundWidgets)
                 .collect(Collectors.toList());

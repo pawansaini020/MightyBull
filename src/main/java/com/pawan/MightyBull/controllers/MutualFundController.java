@@ -24,10 +24,13 @@ public class MutualFundController {
     }
 
     @GetMapping(value = ApiEndpointConstant.MutualFund.WIDGETS)
-    public SuccessResponse<?> getMutualFundWidgets(@RequestParam(value = "page_number", defaultValue = "0") Integer pageNumber,
+    public SuccessResponse<?> getMutualFundWidgets(@RequestParam(value = "fund_house", required = false) String fundHouse,
+                                                   @RequestParam(value = "category", required = false) String category,
+                                                   @RequestParam(value = "cap", required = false) String cap,
+                                                   @RequestParam(value = "page_number", defaultValue = "0") Integer pageNumber,
                                                    @RequestParam(value = "page_size", defaultValue = "10") Integer pageSize) {
-        log.info("MUTUAL_FUND_CONTROLLER::getMutualFundWidgets Request received for fetching mutual fund widgets: {}, {}", pageNumber, pageSize);
-        return mutualFundService.getMutualFundWidgets(pageNumber, pageSize);
+        log.info("MUTUAL_FUND_CONTROLLER::getMutualFundWidgets Request received for fetching mutual fund widgets: {}, {}, {}, {}, {}", fundHouse, category, cap, pageNumber, pageSize);
+        return mutualFundService.getMutualFundWidgets(fundHouse, category, cap, pageNumber, pageSize);
     }
 
 //    @GetMapping(value = ApiEndpointConstant.MutualFund.WIDGET_DETAILS)

@@ -1,17 +1,21 @@
 package com.pawan.MightyBull.dao;
 
 import com.pawan.MightyBull.constants.AppConstant;
-import com.pawan.MightyBull.entity.IndexEntity;
+import com.pawan.MightyBull.dto.FilterCondition;
 import com.pawan.MightyBull.entity.MutualFundEntity;
+import com.pawan.MightyBull.enums.FilterType;
 import com.pawan.MightyBull.repository.MutualFundRepository;
-import com.pawan.MightyBull.utils.StockUtils;
+import com.pawan.MightyBull.utils.CriteriaQueryUtils;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.NonNull;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,10 +23,13 @@ import java.util.Optional;
 public class MutualFundDao implements Dao<MutualFundEntity, Long> {
 
     private final MutualFundRepository repository;
+    private final CriteriaQueryUtils criteriaQueryUtils;
 
     @Autowired
-    public MutualFundDao(MutualFundRepository repository) {
+    public MutualFundDao(MutualFundRepository repository,
+                         CriteriaQueryUtils criteriaQueryUtils) {
         this.repository = repository;
+        this.criteriaQueryUtils = criteriaQueryUtils;
     }
 
     @Override
@@ -50,8 +57,26 @@ public class MutualFundDao implements Dao<MutualFundEntity, Long> {
         return repository.saveAll(entities);
     }
 
-    public Page<MutualFundEntity> getFilteredEntity(Integer pageNumber, Integer pageSize) {
-        Sort sort = Sort.by(Sort.Direction.ASC, "id");
-        return repository.findAll(StockUtils.getPageable(pageNumber, pageSize, sort));
+    public Page<MutualFundEntity> getFilteredEntity(String fundHouse, String category, String cap, Integer pageNumber, Integer pageSize) {
+        List<FilterCondition> filters = new ArrayList<>();
+        if (StringUtils.isNotBlank(fundHouse)) {
+            filters.add(new FilterCondition("fundHouse", FilterType.EQUAL, fundHouse, null));
+        }
+        if (StringUtils.isNotBlank(category)) {
+            filters.add(new FilterCondition("category", FilterType.EQUAL, category, null));
+        }
+        if (StringUtils.isNotBlank(cap)) {
+            filters.add(new FilterCondition("subCategory", FilterType.EQUAL, cap, null));
+        }
+
+        Page<MutualFundEntity> pageData = criteriaQueryUtils.getFilteredPage(
+                MutualFundEntity.class,
+                filters,
+                "id",
+                false,
+                pageNumber,
+                pageSize
+        );
+        return pageData;
     }
 }
