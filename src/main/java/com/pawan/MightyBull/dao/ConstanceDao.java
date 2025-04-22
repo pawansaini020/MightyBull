@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
-public class ConstanceDao implements Dao<ConstanceEntity, Long> {
+public class ConstanceDao extends AbstractDao<ConstanceEntity, Long> {
 
     private final ConstanceRepository repository;
 

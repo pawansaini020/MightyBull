@@ -5,10 +5,7 @@ import com.pawan.MightyBull.dto.FilterCondition;
 import com.pawan.MightyBull.entity.ScreenerStockDetailsEntity;
 import com.pawan.MightyBull.enums.FilterType;
 import com.pawan.MightyBull.repository.ScreenerStockDetailsRepository;
-import com.pawan.MightyBull.utils.CriteriaQueryUtils;
 import com.pawan.MightyBull.utils.StockUtils;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import lombok.NonNull;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -27,16 +24,13 @@ import java.util.Optional;
  * Created on 04/11/24.
  */
 @Component
-public class ScreenerStockDetailsDao implements Dao<ScreenerStockDetailsEntity, Long> {
+public class ScreenerStockDetailsDao extends AbstractDao<ScreenerStockDetailsEntity, Long> {
 
     private final ScreenerStockDetailsRepository repository;
-    private final CriteriaQueryUtils criteriaQueryUtils;
 
     @Autowired
-    public ScreenerStockDetailsDao(ScreenerStockDetailsRepository repository,
-                                   CriteriaQueryUtils criteriaQueryUtils) {
+    public ScreenerStockDetailsDao(ScreenerStockDetailsRepository repository) {
         this.repository = repository;
-        this.criteriaQueryUtils = criteriaQueryUtils;
     }
 
     @Override
@@ -82,7 +76,7 @@ public class ScreenerStockDetailsDao implements Dao<ScreenerStockDetailsEntity, 
             filters.add(new FilterCondition("sector", FilterType.EQUAL, sector, null));
         }
 
-        Page<ScreenerStockDetailsEntity> pageData = criteriaQueryUtils.getFilteredPage(
+        Page<ScreenerStockDetailsEntity> pageData = getFilteredPage(
                 ScreenerStockDetailsEntity.class,
                 filters,
                 StringUtils.defaultIfBlank(sortBy, "marketCap"),

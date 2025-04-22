@@ -5,9 +5,6 @@ import com.pawan.MightyBull.dto.FilterCondition;
 import com.pawan.MightyBull.entity.MutualFundEntity;
 import com.pawan.MightyBull.enums.FilterType;
 import com.pawan.MightyBull.repository.MutualFundRepository;
-import com.pawan.MightyBull.utils.CriteriaQueryUtils;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import lombok.NonNull;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,16 +17,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
-public class MutualFundDao implements Dao<MutualFundEntity, Long> {
+public class MutualFundDao extends AbstractDao<MutualFundEntity, Long> {
 
     private final MutualFundRepository repository;
-    private final CriteriaQueryUtils criteriaQueryUtils;
 
     @Autowired
-    public MutualFundDao(MutualFundRepository repository,
-                         CriteriaQueryUtils criteriaQueryUtils) {
+    public MutualFundDao(MutualFundRepository repository) {
         this.repository = repository;
-        this.criteriaQueryUtils = criteriaQueryUtils;
     }
 
     @Override
@@ -69,7 +63,7 @@ public class MutualFundDao implements Dao<MutualFundEntity, Long> {
             filters.add(new FilterCondition("subCategory", FilterType.EQUAL, cap, null));
         }
 
-        Page<MutualFundEntity> pageData = criteriaQueryUtils.getFilteredPage(
+        Page<MutualFundEntity> pageData = getFilteredPage(
                 MutualFundEntity.class,
                 filters,
                 "id",

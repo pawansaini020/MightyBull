@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
-public class UserDao implements Dao<UserEntity, Long> {
+public class UserDao extends AbstractDao<UserEntity, Long> {
 
     private final UserRepository repository;
 
