@@ -13,13 +13,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-@Component
 public abstract class AbstractDao<T, ID> implements Dao<T, ID> {
 
     @PersistenceContext
