@@ -27,7 +27,6 @@ public abstract class AbstractDao<T, ID> implements Dao<T, ID> {
                                        boolean sortDesc, int pageNumber, int pageSize) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 
-        // === Main Query ===
         CriteriaQuery<TT> cq = cb.createQuery(entityClass);
         Root<TT> root = cq.from(entityClass);
         List<Predicate> predicates = buildPredicates(cb, root, filters);
@@ -43,7 +42,6 @@ public abstract class AbstractDao<T, ID> implements Dao<T, ID> {
         query.setMaxResults(pageSize);
         List<TT> results = query.getResultList();
 
-        // === Count Query ===
         CriteriaQuery<Long> countQuery = cb.createQuery(Long.class);
         Root<TT> countRoot = countQuery.from(entityClass);
         List<Predicate> countPredicates = buildPredicates(cb, countRoot, filters);
