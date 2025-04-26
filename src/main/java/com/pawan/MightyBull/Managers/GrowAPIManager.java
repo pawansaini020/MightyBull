@@ -1,6 +1,7 @@
 package com.pawan.MightyBull.Managers;
 
 import com.pawan.MightyBull.WebClients.GrowWebClient;
+import com.pawan.MightyBull.dto.grow.GrowMutualFundDetails;
 import com.pawan.MightyBull.dto.grow.GrowStocks;
 import com.pawan.MightyBull.dto.grow.request.GrowIndexDetails;
 import com.pawan.MightyBull.dto.grow.request.GrowIndexRequest;
@@ -97,5 +98,9 @@ public class GrowAPIManager {
 
     public GrowMutualFundResponse getAllMutualFundDetails(int pageNumber, int pageSize) {
         return growWebClient.getAllMutualFundDetails(pageNumber, pageSize);
+    }
+
+    public GrowMutualFundDetails getMutualFundDetails(String mutualFundId) {
+        return growWebClient.getMutualFundDetails(mutualFundId);
     }
 }

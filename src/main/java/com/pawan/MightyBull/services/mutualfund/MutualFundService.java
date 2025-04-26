@@ -1,13 +1,11 @@
 package com.pawan.MightyBull.services.mutualfund;
 
 import com.pawan.MightyBull.dao.MutualFundDao;
-import com.pawan.MightyBull.dto.grow.GrowMutualFundDetails;
+import com.pawan.MightyBull.dto.grow.GrowMutualFund;
 import com.pawan.MightyBull.dto.mutualfund.MutualFundWidgetDto;
 import com.pawan.MightyBull.dto.response.PaginationResponse;
 import com.pawan.MightyBull.dto.response.SuccessResponse;
-import com.pawan.MightyBull.dto.stock.StockWidgetDto;
 import com.pawan.MightyBull.entity.MutualFundEntity;
-import com.pawan.MightyBull.entity.ScreenerStockDetailsEntity;
 import com.pawan.MightyBull.mapper.MutualFundMapper;
 import com.pawan.MightyBull.utils.GsonUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +28,7 @@ public class MutualFundService {
         this.mutualFundDao = mutualFundDao;
     }
 
-    public void persistGrowMutualFundDetails(GrowMutualFundDetails mutualFundDetails) {
+    public void persistGrowMutualFundDetails(GrowMutualFund mutualFundDetails) {
         Optional<MutualFundEntity> mutualFundEntity = mutualFundDao.getByMutualFundId(mutualFundDetails.getMutualFundId());
         if(mutualFundEntity.isEmpty()) {
             MutualFundEntity entity = MutualFundMapper.INSTANCE.mapDetailsToEntity(mutualFundDetails);

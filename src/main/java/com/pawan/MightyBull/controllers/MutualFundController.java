@@ -3,10 +3,12 @@ package com.pawan.MightyBull.controllers;
 import com.pawan.MightyBull.constants.ApiEndpointConstant;
 import com.pawan.MightyBull.dto.response.SuccessResponse;
 import com.pawan.MightyBull.enums.IndexType;
+import com.pawan.MightyBull.services.mutualfund.MutualFundDetailsService;
 import com.pawan.MightyBull.services.mutualfund.MutualFundService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,10 +19,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class MutualFundController {
 
     private final MutualFundService mutualFundService;
+    private final MutualFundDetailsService mutualFundDetailsService;
 
     @Autowired
-    public MutualFundController(MutualFundService mutualFundService) {
+    public MutualFundController(MutualFundService mutualFundService,
+                                MutualFundDetailsService mutualFundDetailsService) {
         this.mutualFundService = mutualFundService;
+        this.mutualFundDetailsService = mutualFundDetailsService;
     }
 
     @GetMapping(value = ApiEndpointConstant.MutualFund.WIDGETS)
@@ -33,9 +38,9 @@ public class MutualFundController {
         return mutualFundService.getMutualFundWidgets(fundHouse, category, cap, pageNumber, pageSize);
     }
 
-//    @GetMapping(value = ApiEndpointConstant.MutualFund.WIDGET_DETAILS)
-//    public SuccessResponse<?> getIndexWidgetDetails(@PathVariable(value = "index_id") String indexId) {
-//        log.info("STOCK_DETAILS_CONTROLLER::getIndexWidgetDetails Request received for getting index widget details: {}", indexId);
-//        return new SuccessResponse<>(indexService.getIndexWidgetDetails(indexId));
-//    }
+    @GetMapping(value = ApiEndpointConstant.MutualFund.WIDGET_DETAILS)
+    public SuccessResponse<?> getMutualFundWidgetDetails(@PathVariable(value = "mutual_fund_id") String mutualFundId) {
+        log.info("STOCK_DETAILS_CONTROLLER::getMutualFundWidgetDetails Request received for getting mutual fund widget details: {}", mutualFundId);
+        return new SuccessResponse<>(mutualFundDetailsService.getMutualFundWidgetDetails(mutualFundId));
+    }
 }

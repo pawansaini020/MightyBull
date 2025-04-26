@@ -21,4 +21,6 @@ public interface ScreenerStockDetailsRepository extends JpaRepository<ScreenerSt
     List<ScreenerStockDetailsEntity> findByNameContainingIgnoreCase(String name);
 
     List<ScreenerStockDetailsEntity> findByStockIdContainingIgnoreCase(String stockId);
+
+    Optional<ScreenerStockDetailsEntity> findByNameIgnoreCaseIsLike(String name);
 }

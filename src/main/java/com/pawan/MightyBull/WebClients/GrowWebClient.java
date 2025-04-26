@@ -1,6 +1,7 @@
 package com.pawan.MightyBull.WebClients;
 
 import com.pawan.MightyBull.constants.ApiEndpointConstant;
+import com.pawan.MightyBull.dto.grow.GrowMutualFundDetails;
 import com.pawan.MightyBull.dto.grow.GrowStocks;
 import com.pawan.MightyBull.dto.grow.request.GrowIndexDetails;
 import com.pawan.MightyBull.dto.grow.request.GrowIndexRequest;
@@ -134,5 +135,22 @@ public class GrowWebClient extends Client {
             log.error("GROW_WEB_CLIENT ::: Error occurred while getting all mutual fund from source grow: {}, {}", pageNumber, pageSize, e);
         }
         return new GrowMutualFundResponse();
+    }
+
+    public GrowMutualFundDetails getMutualFundDetails(String mutualFundId) {
+        try {
+            String endPoint = ApiEndpointConstant.Grow.BASE + ApiEndpointConstant.Grow.MUTUAL_FUND_DETAILS + mutualFundId;
+            HttpHeaders headers = getHeader(null, null);
+            Mono<GrowMutualFundDetails> response = webClient.get()
+                    .uri(serverUrl + endPoint)
+                    .headers(httpHeaders -> httpHeaders.addAll(headers))
+                    .retrieve()
+                    .bodyToMono(GrowMutualFundDetails.class);
+            GrowMutualFundDetails growMutual = response.block();
+            return growMutual != null ? growMutual : new GrowMutualFundDetails();
+        } catch (Exception e) {
+            log.error("GROW_WEB_CLIENT ::: Error occurred while getting mutual fund details from grow for mutualFundId: {}", mutualFundId, e);
+        }
+        return new GrowMutualFundDetails();
     }
 }

@@ -94,4 +94,8 @@ public class ScreenerStockDetailsDao extends AbstractDao<ScreenerStockDetailsEnt
     public List<ScreenerStockDetailsEntity> getStocksByStockId(String stockId) {
         return repository.findByStockIdContainingIgnoreCase(stockId);
     }
+
+    public Optional<ScreenerStockDetailsEntity> getByName(String name) {
+        return repository.findByNameIgnoreCaseIsLike(name);
+    }
 }

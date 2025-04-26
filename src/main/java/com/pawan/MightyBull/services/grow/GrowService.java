@@ -1,7 +1,7 @@
 package com.pawan.MightyBull.services.grow;
 
 import com.pawan.MightyBull.Managers.GrowAPIManager;
-import com.pawan.MightyBull.dto.grow.GrowMutualFundDetails;
+import com.pawan.MightyBull.dto.grow.GrowMutualFund;
 import com.pawan.MightyBull.dto.grow.GrowStockDetails;
 import com.pawan.MightyBull.dto.grow.GrowStocks;
 import com.pawan.MightyBull.dto.grow.request.GrowIndexDetails;
@@ -11,6 +11,7 @@ import com.pawan.MightyBull.dto.grow.response.IndexDto;
 import com.pawan.MightyBull.dto.index.IndexWidget;
 import com.pawan.MightyBull.enums.IndexType;
 import com.pawan.MightyBull.services.IndexService;
+import com.pawan.MightyBull.services.mutualfund.MutualFundDetailsService;
 import com.pawan.MightyBull.services.mutualfund.MutualFundService;
 import com.pawan.MightyBull.utils.GsonUtils;
 import com.pawan.MightyBull.utils.StockUtils;
@@ -37,18 +38,21 @@ public class GrowService {
     private final StockPriceService stockPriceService;
     private final IndexService indexService;
     private final MutualFundService mutualFundService;
+    private final MutualFundDetailsService mutualFundDetailsService;
 
     @Autowired
     public GrowService(GrowAPIManager growAPIManager,
                        StockDetailsService stockDetailsService,
                        StockPriceService stockPriceService,
                        IndexService indexService,
-                       MutualFundService mutualFundService) {
+                       MutualFundService mutualFundService,
+                       MutualFundDetailsService mutualFundDetailsService) {
         this.growAPIManager = growAPIManager;
         this.stockDetailsService = stockDetailsService;
         this.stockPriceService = stockPriceService;
         this.indexService = indexService;
         this.mutualFundService = mutualFundService;
+        this.mutualFundDetailsService = mutualFundDetailsService;
     }
 
     public void syncStockDetails(int startPage, int endPage) {
@@ -118,9 +122,10 @@ public class GrowService {
             try {
                 GrowMutualFundResponse growMutualFundDetails = growAPIManager.getAllMutualFundDetails(i, 15);
                 if (CollectionUtils.isNotEmpty(growMutualFundDetails.getContent())) {
-                    for (GrowMutualFundDetails growMutual : growMutualFundDetails.getContent()) {
+                    for (GrowMutualFund growMutual : growMutualFundDetails.getContent()) {
                         try {
                             mutualFundService.persistGrowMutualFundDetails(growMutual);
+                            mutualFundDetailsService.syncMutualFundDetails(growMutual.getMutualFundId());
                         } catch (Exception e) {
                             log.error("Error occurred while persisting mutual fund: {}", GsonUtils.getGson().toJson(growMutual), e);
                         }
