@@ -18,7 +18,7 @@ import java.util.Optional;
  * Created on 11/01/25.
  */
 @Component
-public class StockScoreDao implements Dao<StockScoreEntity, Long> {
+public class StockScoreDao extends AbstractDao<StockScoreEntity, Long> {
 
     private final StockScoreRepository repository;
 

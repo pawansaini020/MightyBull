@@ -19,7 +19,7 @@ import java.util.Optional;
  * Created on 01/11/24.
  */
 @Component
-public class StockDetailsDao implements Dao<StockDetailsEntity, Long> {
+public class StockDetailsDao extends AbstractDao<StockDetailsEntity, Long> {
 
     private final StockDetailsRepository repository;
 

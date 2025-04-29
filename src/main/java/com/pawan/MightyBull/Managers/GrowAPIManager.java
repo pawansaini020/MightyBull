@@ -1,11 +1,13 @@
 package com.pawan.MightyBull.Managers;
 
 import com.pawan.MightyBull.WebClients.GrowWebClient;
+import com.pawan.MightyBull.dto.grow.GrowMutualFundDetails;
 import com.pawan.MightyBull.dto.grow.GrowStocks;
 import com.pawan.MightyBull.dto.grow.request.GrowIndexDetails;
 import com.pawan.MightyBull.dto.grow.request.GrowIndexRequest;
 import com.pawan.MightyBull.dto.grow.request.GrowStockRequest;
 import com.pawan.MightyBull.dto.grow.response.GrowIndexResponse;
+import com.pawan.MightyBull.dto.grow.response.GrowMutualFundResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -94,5 +96,11 @@ public class GrowAPIManager {
         return growWebClient.getIndexDetails(indexId);
     }
 
+    public GrowMutualFundResponse getAllMutualFundDetails(int pageNumber, int pageSize) {
+        return growWebClient.getAllMutualFundDetails(pageNumber, pageSize);
+    }
 
+    public GrowMutualFundDetails getMutualFundDetails(String mutualFundId) {
+        return growWebClient.getMutualFundDetails(mutualFundId);
+    }
 }

@@ -22,6 +22,10 @@ public class ApiEndpointConstant {
         public static final String GLOBAL_INSTRUMENTS = "/global_instruments";
         public static final String INDEX_SYNC = "/index/sync";
         public static final String COMPANY_SEARCH = "/company/search_id/";
+        public static final String SYNC_MUTUAL_FUND = "/sync_mutual_fund";
+        public static final String SEARCH_V1 = "/search/v1";
+        public static final String DERIVED_SCHEME = "/derived/scheme";
+        public static final String MUTUAL_FUND_DETAILS = "/data/mf/web/v4/scheme/search/";
     }
 
     public static class Screener {
@@ -74,5 +78,11 @@ public class ApiEndpointConstant {
         public static final String BASE = "/v1/api/index";
         public static final String WIDGETS = "/widgets";
         public static final String WIDGET_DETAILS = "/widget-details/{index_id}";
+    }
+
+    public static class MutualFund {
+        public static final String BASE = "/v1/api/mutual-fund";
+        public static final String WIDGETS = "/widgets";
+        public static final String WIDGET_DETAILS = "/widget-details/{mutual_fund_id}";
     }
 }

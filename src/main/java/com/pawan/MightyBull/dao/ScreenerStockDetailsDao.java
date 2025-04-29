@@ -1,23 +1,16 @@
 package com.pawan.MightyBull.dao;
 
 import com.pawan.MightyBull.constants.AppConstant;
+import com.pawan.MightyBull.dto.FilterCondition;
 import com.pawan.MightyBull.entity.ScreenerStockDetailsEntity;
+import com.pawan.MightyBull.enums.FilterType;
 import com.pawan.MightyBull.repository.ScreenerStockDetailsRepository;
 import com.pawan.MightyBull.utils.StockUtils;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.TypedQuery;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
 import lombok.NonNull;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
@@ -31,12 +24,9 @@ import java.util.Optional;
  * Created on 04/11/24.
  */
 @Component
-public class ScreenerStockDetailsDao implements Dao<ScreenerStockDetailsEntity, Long> {
+public class ScreenerStockDetailsDao extends AbstractDao<ScreenerStockDetailsEntity, Long> {
 
     private final ScreenerStockDetailsRepository repository;
-
-    @PersistenceContext
-    private EntityManager entityManager;
 
     @Autowired
     public ScreenerStockDetailsDao(ScreenerStockDetailsRepository repository) {
@@ -74,55 +64,27 @@ public class ScreenerStockDetailsDao implements Dao<ScreenerStockDetailsEntity, 
     }
 
     public Page<ScreenerStockDetailsEntity> getFilteredStocks(List<String> scoreRange, List<String> stockIds, String sector, String sortBy, Integer pageNumber, Integer pageSize) {
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-
-        // === Main Query ===
-        CriteriaQuery<ScreenerStockDetailsEntity> cq = cb.createQuery(ScreenerStockDetailsEntity.class);
-        Root<ScreenerStockDetailsEntity> root = cq.from(ScreenerStockDetailsEntity.class);
-
-        List<Predicate> predicates = buildPredicates(cb, root, scoreRange, stockIds, sector);
-        cq.where(cb.and(predicates.toArray(new Predicate[0])));
-
-        cq.orderBy(StringUtils.isNotBlank(sortBy)
-                ? cb.desc(root.get(sortBy))
-                : cb.desc(root.get("marketCap")));
-
-        TypedQuery<ScreenerStockDetailsEntity> query = entityManager.createQuery(cq);
-        query.setFirstResult(pageNumber * pageSize);
-        query.setMaxResults(pageSize);
-        List<ScreenerStockDetailsEntity> results = query.getResultList();
-
-        // === Count Query ===
-        CriteriaQuery<Long> countQuery = cb.createQuery(Long.class);
-        Root<ScreenerStockDetailsEntity> countRoot = countQuery.from(ScreenerStockDetailsEntity.class);
-
-        List<Predicate> countPredicates = buildPredicates(cb, countRoot, scoreRange, stockIds, sector);
-        countQuery.select(cb.count(countRoot)).where(cb.and(countPredicates.toArray(new Predicate[0])));
-        Long totalCount = entityManager.createQuery(countQuery).getSingleResult();
-
-        return new PageImpl<>(results, PageRequest.of(pageNumber, pageSize), totalCount);
-    }
-
-    private List<Predicate> buildPredicates(CriteriaBuilder cb, Root<ScreenerStockDetailsEntity> root,
-                                            List<String> scoreRange, List<String> stockIds, String sector) {
-        List<Predicate> predicates = new ArrayList<>();
-
+        List<FilterCondition> filters = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(scoreRange)) {
             String[] range = scoreRange.get(0).split("-");
-            double minScore = Double.parseDouble(range[0]);
-            double maxScore = Double.parseDouble(range[1]);
-            predicates.add(cb.between(root.get("score"), minScore, maxScore));
+            filters.add(new FilterCondition("score", FilterType.BETWEEN, Double.parseDouble(range[0]), Double.parseDouble(range[1])));
         }
-
         if (CollectionUtils.isNotEmpty(stockIds)) {
-            predicates.add(root.get("stockId").in(stockIds));
+            filters.add(new FilterCondition("stockId", FilterType.IN, stockIds, null));
         }
-
         if (StringUtils.isNotBlank(sector)) {
-            predicates.add(cb.equal(root.get("sector"), sector));
+            filters.add(new FilterCondition("sector", FilterType.EQUAL, sector, null));
         }
 
-        return predicates;
+        Page<ScreenerStockDetailsEntity> pageData = getFilteredPage(
+                ScreenerStockDetailsEntity.class,
+                filters,
+                StringUtils.defaultIfBlank(sortBy, "marketCap"),
+                true,
+                pageNumber,
+                pageSize
+        );
+        return pageData;
     }
 
     public List<ScreenerStockDetailsEntity> getStocksByName(String stockName) {
@@ -131,5 +93,9 @@ public class ScreenerStockDetailsDao implements Dao<ScreenerStockDetailsEntity, 
 
     public List<ScreenerStockDetailsEntity> getStocksByStockId(String stockId) {
         return repository.findByStockIdContainingIgnoreCase(stockId);
+    }
+
+    public Optional<ScreenerStockDetailsEntity> getByName(String name) {
+        return repository.findByNameIgnoreCaseIsLike(name);
     }
 }

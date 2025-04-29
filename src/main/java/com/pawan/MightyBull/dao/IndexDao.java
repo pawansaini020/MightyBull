@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
-public class IndexDao implements Dao<IndexEntity, Long> {
+public class IndexDao extends AbstractDao<IndexEntity, Long> {
 
     private final IndexRepository repository;
 
