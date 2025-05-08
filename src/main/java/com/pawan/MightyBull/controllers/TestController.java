@@ -1,26 +1,13 @@
 package com.pawan.MightyBull.controllers;
 
-import com.pawan.MightyBull.Managers.GrowAPIManager;
 import com.pawan.MightyBull.constants.ApiEndpointConstant;
-import com.pawan.MightyBull.dao.ScreenerStockDetailsDao;
-import com.pawan.MightyBull.dto.BaseDto;
-import com.pawan.MightyBull.dto.Screener.ScreenerStockDetails;
-import com.pawan.MightyBull.dto.communication.FundamentalStockEmailDto;
-import com.pawan.MightyBull.dto.grow.GrowStockDetails;
-import com.pawan.MightyBull.entity.ScreenerStockDetailsEntity;
-import com.pawan.MightyBull.mapper.ScreenerStockDetailsMapper;
 import com.pawan.MightyBull.services.communication.FundamentalStockEmailService;
-import com.pawan.MightyBull.services.grow.StockDetailsService;
-import com.pawan.MightyBull.services.grow.StockPriceService;
-import com.pawan.MightyBull.utils.GsonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 /**
  * @author Pawan Saini
@@ -31,19 +18,7 @@ import java.util.List;
 public class TestController {
 
     @Autowired
-    private GrowAPIManager growAPIManager;
-
-    @Autowired
-    private StockDetailsService stockDetailsService;
-
-    @Autowired
-    private StockPriceService stockPriceService;
-
-    @Autowired
     private FundamentalStockEmailService fundamentalStockEmailService;
-
-    @Autowired
-    private ScreenerStockDetailsDao stockDetailsDao;
 
     @GetMapping(value = ApiEndpointConstant.PING)
     public ResponseEntity<String> homePage() {

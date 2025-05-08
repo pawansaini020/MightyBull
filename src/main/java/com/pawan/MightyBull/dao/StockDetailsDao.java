@@ -3,11 +3,8 @@ package com.pawan.MightyBull.dao;
 import com.pawan.MightyBull.constants.AppConstant;
 import com.pawan.MightyBull.entity.StockDetailsEntity;
 import com.pawan.MightyBull.repository.StockDetailsRepository;
-import com.pawan.MightyBull.utils.StockUtils;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
