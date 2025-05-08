@@ -1,6 +1,7 @@
 package com.pawan.MightyBull.dto.grow;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.pawan.MightyBull.dto.BaseDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,5 +31,6 @@ public class GrowStockDetails extends BaseDto implements Serializable {
     private Double yearlyLowPrice;
     private Double closePrice;
     private Long marketCap;
+    private String logoUrl;
     private GrowLivePriceDto livePriceDto;
 }

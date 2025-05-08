@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" id="ShareholdingPatternScoreRuleTable" name="ShareholdingPatternScoreRuleTable" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.16.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.20.0">
+  <decision id="ShareholdingPatternScoreRuleTableId" name="ShareholdingPatternScoreRuleTable" camunda:historyTimeToLive="180">
+    <decisionTable id="DecisionTable_1jlsefp">
+      <input id="Input_1" label="Shareholding Pattern Key" biodi:width="264" camunda:inputVariable="shareholding_pattern_key">
+        <inputExpression id="InputExpression_1" typeRef="string">
+          <text></text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_0zf8pjh" label="Shareholding Pattern Value" biodi:width="223" camunda:inputVariable="shareholding_pattern_value">
+        <inputExpression id="LiteralExpression_1hwpiyr" typeRef="double">
+          <text></text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" label="Shareholding Pattern Score" name="shareholding_pattern_score" typeRef="double" biodi:width="236" />
+      <rule id="DecisionRule_1ll67yl">
+        <inputEntry id="UnaryTests_17wdbtp">
+          <text>"default_shareholding_pattern"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0l7l0jz">
+          <text>&lt;40</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1bkrade">
+          <text>20</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0w40w05">
+        <inputEntry id="UnaryTests_0s3zvjl">
+          <text>"default_shareholding_pattern"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1q0gdal">
+          <text>[40..60]</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1r8af68">
+          <text>50</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_03ng277">
+        <inputEntry id="UnaryTests_01msawn">
+          <text>"default_shareholding_pattern"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0t1gbrz">
+          <text>&gt;=60</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0e318ex">
+          <text>100</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="ShareholdingPatternScoreRuleTableId">
+        <dc:Bounds height="80" width="180" x="160" y="100" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

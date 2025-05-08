@@ -4,6 +4,7 @@ import com.pawan.MightyBull.entity.ScreenerStockDetailsEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -14,4 +15,10 @@ import java.util.Optional;
 public interface ScreenerStockDetailsRepository extends JpaRepository<ScreenerStockDetailsEntity, Long> {
 
     Optional<ScreenerStockDetailsEntity> findByStockId(String stockId);
+
+    List<ScreenerStockDetailsEntity> findByNameContainingIgnoreCase(String name);
+
+    List<ScreenerStockDetailsEntity> findByStockIdContainingIgnoreCase(String stockId);
+
+    Optional<ScreenerStockDetailsEntity> findByNameIgnoreCaseIsLike(String name);
 }

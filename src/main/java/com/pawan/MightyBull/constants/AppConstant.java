@@ -30,4 +30,13 @@ public class AppConstant {
         private RequestHeader() {
         }
     }
+
+    public static String SCREENER_URL = "https://www.screener.in/company/%s";
+
+    public static class Email {
+        public static final String STOCK_RECOMMENDATION_TEMPLATE = "src/main/resources/template/StockRecommendationEmailTemplate.html";
+        public static final String STOCK_RECOMMENDATION_SUBJECT = "Stock Recommendation Alert From MightyBull";
+        public static final String OTP_TEMPLATE = "src/main/resources/template/Otp.html";
+        public static final String OTP_SUBJECT = "Verify Your MightyBull Account - OTP Inside";
+    }
 }

@@ -16,7 +16,7 @@ import java.util.Optional;
  * Created on 01/11/24.
  */
 @Component
-public class StockPriceDao implements Dao<StockPriceEntity, Long> {
+public class StockPriceDao extends AbstractDao<StockPriceEntity, Long> {
 
     private final StockPriceRepository repository;
 
@@ -30,7 +30,6 @@ public class StockPriceDao implements Dao<StockPriceEntity, Long> {
         return repository.findById(id);
     }
 
-    @Override
     public Optional<StockPriceEntity> getByStockId(@NonNull String stockId) {
         return repository.findByStockId(stockId);
     }

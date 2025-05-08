@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="CashFlowsScoreRuleTable" name="CashFlowsScoreRuleTable" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.16.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.20.0">
+  <decision id="CashFlowsScoreRuleTableId" name="CashFlowsScoreRuleTable" camunda:historyTimeToLive="180">
+    <decisionTable id="DecisionTable_1ylr1xo">
+      <input id="Input_1" label="Cash Flow Key" camunda:inputVariable="cash_flow_key">
+        <inputExpression id="InputExpression_1" typeRef="string">
+          <text></text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_1xzmr0c" label="Cash Flow Value" camunda:inputVariable="cash_flow_value">
+        <inputExpression id="LiteralExpression_1ya5o3x" typeRef="double">
+          <text></text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" label="Cash Flow Score" name="cash_flow_score" typeRef="double" />
+      <rule id="DecisionRule_060827n">
+        <inputEntry id="UnaryTests_0pqkr7q">
+          <text>"default_cash_flow"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1tz4rmz">
+          <text>&lt;20</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1723ocr">
+          <text>20</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_07cxa1w">
+        <inputEntry id="UnaryTests_1evg2zz">
+          <text>"default_cash_flow"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1wos9q1">
+          <text>[20..50]</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_09blgtg">
+          <text>50</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_03eknyv">
+        <inputEntry id="UnaryTests_12k11lg">
+          <text>"default_cash_flow"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1yeh0ia">
+          <text>&gt;=50</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0kpb7pb">
+          <text>100</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="CashFlowsScoreRuleTableId">
+        <dc:Bounds height="80" width="180" x="160" y="100" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

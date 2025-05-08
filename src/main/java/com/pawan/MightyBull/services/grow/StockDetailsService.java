@@ -50,7 +50,7 @@ public class StockDetailsService {
         }
     }
 
-    public List<String> getStockId() {
-        return stockDetailsDao.getAllStockId();
+    public List<String> getAllStockIds() {
+        return stockDetailsDao.getAllStockIds();
     }
 }

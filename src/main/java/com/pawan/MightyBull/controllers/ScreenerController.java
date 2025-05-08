@@ -1,8 +1,9 @@
 package com.pawan.MightyBull.controllers;
 
 import com.pawan.MightyBull.constants.ApiEndpointConstant;
-import com.pawan.MightyBull.dto.grow.Screener.ScreenerStockDetails;
-import com.pawan.MightyBull.dto.grow.response.SuccessResponse;
+import com.pawan.MightyBull.dto.Screener.ScreenerStockDetails;
+import com.pawan.MightyBull.dto.response.SuccessResponse;
+import com.pawan.MightyBull.services.ScoringService;
 import com.pawan.MightyBull.services.screener.ScreenerService;
 import com.pawan.MightyBull.utils.GsonUtils;
 import com.pawan.MightyBull.utils.StockUtils;
@@ -23,10 +24,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class ScreenerController {
 
     private final ScreenerService screenerService;
+    private final ScoringService scoringService;
 
     @Autowired
-    public ScreenerController(ScreenerService screenerService) {
+    public ScreenerController(ScreenerService screenerService,
+                              ScoringService scoringService) {
         this.screenerService = screenerService;
+        this.scoringService = scoringService;
     }
 
     @PostMapping(value = ApiEndpointConstant.Screener.STOCK_DETAILS)
@@ -35,6 +39,7 @@ public class ScreenerController {
         String stockId = StockUtils.getStockId(stockDetails.getBseCode(), stockDetails.getNseCode());
         stockDetails.setStockId(stockId);
         screenerService.addStockDetails(stockId, stockDetails);
+        scoringService.generateStockScore(stockId);
         return new SuccessResponse<>("SUCCESS");
     }
 }

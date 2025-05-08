@@ -1,7 +1,7 @@
 package com.pawan.MightyBull.services.screener;
 
 import com.pawan.MightyBull.dao.ScreenerStockDetailsDao;
-import com.pawan.MightyBull.dto.grow.Screener.ScreenerStockDetails;
+import com.pawan.MightyBull.dto.Screener.ScreenerStockDetails;
 import com.pawan.MightyBull.entity.ScreenerStockDetailsEntity;
 import com.pawan.MightyBull.mapper.ScreenerStockDetailsMapper;
 import com.pawan.MightyBull.utils.GsonUtils;

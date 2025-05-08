@@ -12,12 +12,13 @@ import lombok.Getter;
 public enum ErrorType {
 
     UNKNOWN(0, "Unknown"),
-    BAD_REQUEST(1, "Bad Request"),
-    INTERNAL_SERVER(2, "Internal Server"),
-    EXTERNAL_SERVER(3, "External Server"),
-    NOT_FOUND(4, "Not Found"),
-    UNPROCESSABLE_ENTITY(5, "Unprocessable Entity"),
-    VALIDATION(6, "Validation");
+    UNAUTHORIZED(1, "UNAUTHORIZED"),
+    BAD_REQUEST(2, "Bad Request"),
+    INTERNAL_SERVER(3, "Internal Server"),
+    EXTERNAL_SERVER(4, "External Server"),
+    NOT_FOUND(5, "Not Found"),
+    UNPROCESSABLE_ENTITY(6, "Unprocessable Entity"),
+    VALIDATION(7, "Validation");
 
     private final Integer index;
     private final String value;

@@ -1,7 +1,7 @@
 package com.pawan.MightyBull.controllers;
 
 import com.pawan.MightyBull.constants.ApiEndpointConstant;
-import com.pawan.MightyBull.dto.grow.response.SuccessResponse;
+import com.pawan.MightyBull.dto.response.SuccessResponse;
 import com.pawan.MightyBull.services.grow.GrowService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +38,20 @@ public class GrowController {
     @GetMapping(value = ApiEndpointConstant.Grow.ALL_STOCKS)
     public SuccessResponse<?> getStockDetails() {
         log.info("GROW_CONTROLLER ::: Received request for getting stock details");
-        return new SuccessResponse<>(growService.getStockId());
+        return new SuccessResponse<>(growService.getAllStockIds());
+    }
+
+    @GetMapping(value = ApiEndpointConstant.Grow.INDEX_SYNC)
+    public SuccessResponse<?> syncIndexDetails() {
+        log.info("GROW_CONTROLLER ::: Received request for syncing index details");
+        return new SuccessResponse<>(growService.syncIndexDetails());
+    }
+
+    @PostMapping(value = ApiEndpointConstant.Grow.SYNC_MUTUAL_FUND)
+    public SuccessResponse<?> syncMutualFundDetails(@RequestParam(value = "start_page") Integer startPage,
+                                               @RequestParam(value = "end_page") Integer endPage) {
+        log.info("GROW_CONTROLLER ::: Received request for syncing mutual fund details for: {}, {}", startPage, endPage);
+        growService.syncMutualFundDetails(startPage, endPage);
+        return new SuccessResponse<>("Success");
     }
 }

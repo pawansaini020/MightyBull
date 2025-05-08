@@ -1,8 +1,13 @@
 package com.pawan.MightyBull.Managers;
 
 import com.pawan.MightyBull.WebClients.GrowWebClient;
+import com.pawan.MightyBull.dto.grow.GrowMutualFundDetails;
 import com.pawan.MightyBull.dto.grow.GrowStocks;
+import com.pawan.MightyBull.dto.grow.request.GrowIndexDetails;
+import com.pawan.MightyBull.dto.grow.request.GrowIndexRequest;
 import com.pawan.MightyBull.dto.grow.request.GrowStockRequest;
+import com.pawan.MightyBull.dto.grow.response.GrowIndexResponse;
+import com.pawan.MightyBull.dto.grow.response.GrowMutualFundResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -42,5 +47,60 @@ public class GrowAPIManager {
         objFilters.put("MARKET_CAP", marketCabRange);
         GrowStockRequest request = new GrowStockRequest(listFilters, objFilters, pageNumber, pageSize, "NA", "ASC");
         return growWebClient.getAllStockDetails(request);
+    }
+
+    public GrowIndexResponse getIndexDetails() {
+        Map<String, Map<String, List<String>>> exchangeAggReqMap = new HashMap<>();
+        Map<String, List<String>> nse = new HashMap<>();
+        nse.put("priceSymbolList", new ArrayList<>());
+        nse.put("indexSymbolList", List.of("NIFTY",
+                "BANKNIFTY",
+                "FINNIFTY",
+                "NIFTYMIDSELECT",
+                "INDIAVIX",
+                "NIFTYTOTALMCAP",
+                "NIFTYJR",
+                "NIFTY100",
+                "NIFTYMIDCAP",
+                "NIFTY500",
+                "NIFTYAUTO",
+                "NIFTYSMALL",
+                "NIFTYFMCG",
+                "NIFTYMETAL",
+                "NIFTYPHARMA",
+                "NIFTYPSUBANK",
+                "NIFTYIT",
+                "NIFTYSMALLCAP250",
+                "NIFTYMIDCAP150",
+                "NIFTYCDTY"));
+
+        Map<String, List<String>> bse = new HashMap<>();
+        bse.put("priceSymbolList", new ArrayList<>());
+        bse.put("indexSymbolList", List.of("1",
+                "14",
+                "2",
+                "19",
+                "23"));
+        exchangeAggReqMap.put("NSE", nse);
+        exchangeAggReqMap.put("BSE", bse);
+        GrowIndexRequest request = new GrowIndexRequest(exchangeAggReqMap);
+        GrowIndexResponse response = growWebClient.getIndianIndexDetails(request);
+        return response;
+    }
+
+    public GrowIndexResponse getGlobalIndexDetails() {
+        return growWebClient.getGlobalIndexDetails();
+    }
+
+    public GrowIndexDetails getIndexDetails(String indexId) {
+        return growWebClient.getIndexDetails(indexId);
+    }
+
+    public GrowMutualFundResponse getAllMutualFundDetails(int pageNumber, int pageSize) {
+        return growWebClient.getAllMutualFundDetails(pageNumber, pageSize);
+    }
+
+    public GrowMutualFundDetails getMutualFundDetails(String mutualFundId) {
+        return growWebClient.getMutualFundDetails(mutualFundId);
     }
 }

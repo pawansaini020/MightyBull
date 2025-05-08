@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="RocScoreRuleTable" name="RocScoreRuleTable" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.16.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.20.0">
+  <decision id="RocScoreRuleTableId" name="RocScoreRuleTable" camunda:historyTimeToLive="180">
+    <decisionTable id="DecisionTable_14yqca8">
+      <input id="Input_1" label="Roc Key" camunda:inputVariable="roc_key">
+        <inputExpression id="InputExpression_1" typeRef="string">
+          <text></text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_0idqc72" label="Roc Value" camunda:inputVariable="roc_value">
+        <inputExpression id="LiteralExpression_0nyun9x" typeRef="double">
+          <text></text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" label="Roc Score" name="roc_score" typeRef="double" />
+      <rule id="DecisionRule_0e6z0ke">
+        <inputEntry id="UnaryTests_0y32rn5">
+          <text>"default_roc"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0kv1ugy">
+          <text>&lt;20</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1x5mg4w">
+          <text>20</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0ctx48w">
+        <inputEntry id="UnaryTests_1xigi9h">
+          <text>"default_roc"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1mgbn2i">
+          <text>[20..50]</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1x8qqe8">
+          <text>50</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_10ihtqp">
+        <inputEntry id="UnaryTests_0x7ty17">
+          <text>"default_roc"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1y4z9b3">
+          <text>&gt;=50</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0282j66">
+          <text>100</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="RocScoreRuleTableId">
+        <dc:Bounds height="80" width="180" x="160" y="100" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

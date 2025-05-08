@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_08rcmm5" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.16.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.20.0">
+  <bpmn:process id="StockScorePublisherModel" name="StockScorePublisherModel" isExecutable="true" camunda:historyTimeToLive="180">
+    <bpmn:startEvent id="StartEvent_1" name="Input" camunda:asyncBefore="true">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="stock_id" type="string" />
+          <camunda:formField id="data" label="data" type="string" />
+          <camunda:formField id="rules" label="rules" type="string" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:outgoing>Flow_0ib7uhg</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:endEvent id="Event_18l1e06" name="Output">
+      <bpmn:incoming>Flow_0ae15ef</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:callActivity id="Activity_1018r0n" name="Stock Score Calculator" calledElement="StockScoreCalculatorModel" camunda:calledElementTenantId="StockScoreCalculatorModel">
+      <bpmn:extensionElements>
+        <camunda:in variables="all" />
+        <camunda:out source="kafkaEvent" target="kafkaEvent" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0ib7uhg</bpmn:incoming>
+      <bpmn:outgoing>Flow_1683eak</bpmn:outgoing>
+    </bpmn:callActivity>
+    <bpmn:sequenceFlow id="Flow_0ib7uhg" sourceRef="StartEvent_1" targetRef="Activity_1018r0n" />
+    <bpmn:sequenceFlow id="Flow_1683eak" sourceRef="Activity_1018r0n" targetRef="Activity_049y4tk" />
+    <bpmn:sequenceFlow id="Flow_0ae15ef" sourceRef="Activity_049y4tk" targetRef="Event_18l1e06" />
+    <bpmn:scriptTask id="Activity_049y4tk" name="Stock Score Publisher" scriptFormat="groovy">
+      <bpmn:incoming>Flow_1683eak</bpmn:incoming>
+      <bpmn:outgoing>Flow_0ae15ef</bpmn:outgoing>
+      <bpmn:script>package com.moveinsync.camunda.engine.securitydashboard.scripts.mightybull.publisher
+
+import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+
+// Logger
+class Log {
+    static final Logger logger = LoggerFactory.getLogger(getClass())
+}
+
+// constance
+class Constance {
+    static final String BASE_URL = "http://localhost:8083/mightybull";
+}
+
+def post(String apiUrl, String jsonPayLoad) {
+    try {
+        URL url = new URL(Constance.BASE_URL + apiUrl)
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection()
+        connection.setRequestMethod('POST')
+        connection.setRequestProperty('Content-Type', 'application/json')
+        connection.setDoOutput(true)
+        connection.getOutputStream().write(jsonPayLoad.getBytes('UTF-8'))
+        int responseCode = connection.getResponseCode()
+        def response
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            response = connection.getInputStream().text
+        } else {
+            response = null
+        }
+        connection.disconnect()
+        return response
+    } catch (Exception e) {
+        Log.logger.error("STOCK_SCORE_PUBLISHER_MODEL :: Error occurred in post call url: {}, data: {}", apiUrl, jsonPayLoad, e);
+    }
+}
+
+def init() {
+    try {
+        def body = execution.getVariable("kafkaEvent");
+        def jsonPayload = JsonOutput.toJson(body)
+        String stock_id = execution.getVariable("stock_id")
+        String endpoint = "/v1/api/scoring/sync?stock_id=" + stock_id;
+        post(endpoint, jsonPayload)
+        Log.logger.info("STOCK_SCORE_PUBLISHER_MODEL :: Successfully synced the score for: {}, {}", stock_id, jsonPayload);
+    } catch (Exception e) {
+        Log.logger.error("STOCK_SCORE_PUBLISHER_MODEL :: Error occurred while syncing stock score data.", e);
+    }
+}
+
+init();</bpmn:script>
+    </bpmn:scriptTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="StockScorePublisherModel">
+      <bpmndi:BPMNShape id="BPMNShape_1tifuzn" bpmnElement="StartEvent_1">
+        <dc:Bounds x="152" y="132" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="158" y="175" width="25" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_06fcuk6" bpmnElement="Event_18l1e06">
+        <dc:Bounds x="845" y="132" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="847" y="175" width="34" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1cenbp8_di" bpmnElement="Activity_1018r0n">
+        <dc:Bounds x="323" y="110" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0j6yul1_di" bpmnElement="Activity_049y4tk">
+        <dc:Bounds x="593" y="110" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_10edxbl" bpmnElement="Flow_0ib7uhg">
+        <di:waypoint x="188" y="150" />
+        <di:waypoint x="323" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_1e2dxug" bpmnElement="Flow_1683eak">
+        <di:waypoint x="423" y="150" />
+        <di:waypoint x="593" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_07uhuua" bpmnElement="Flow_0ae15ef">
+        <di:waypoint x="693" y="150" />
+        <di:waypoint x="845" y="150" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

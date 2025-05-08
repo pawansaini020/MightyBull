@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" id="ProfitAndLossScoreRuleTable" name="ProfitAndLossScoreRuleTable" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.16.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.20.0">
+  <decision id="ProfitAndLossScoreRuleTableId" name="ProfitAndLossScoreRuleTable" camunda:historyTimeToLive="180">
+    <decisionTable id="DecisionTable_1yom05u">
+      <input id="Input_1" label="Profit And Loss Key" biodi:width="228" camunda:inputVariable="profit_and_loss_key">
+        <inputExpression id="InputExpression_1" typeRef="string">
+          <text></text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_132mvru" label="Profit And Loss Value" camunda:inputVariable="profit_and_loss_value">
+        <inputExpression id="LiteralExpression_019xdaz" typeRef="double">
+          <text></text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" label="Profit And Loss Score" name="profit_and_loss_score" typeRef="double" />
+      <rule id="DecisionRule_06thxxb">
+        <inputEntry id="UnaryTests_0te9xn8">
+          <text>"default_profit_and_loss"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ruataj">
+          <text>&lt;20</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_15k1bsx">
+          <text>20</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0ry88ds">
+        <inputEntry id="UnaryTests_0rty4my">
+          <text>"default_profit_and_loss"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1rs0yk5">
+          <text>[20..50]</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_03gy1mh">
+          <text>50</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_05tccv2">
+        <inputEntry id="UnaryTests_13v3013">
+          <text>"default_profit_and_loss"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0sd25hg">
+          <text>&gt;=50</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1byv38h">
+          <text>100</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="ProfitAndLossScoreRuleTableId">
+        <dc:Bounds height="80" width="180" x="160" y="100" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

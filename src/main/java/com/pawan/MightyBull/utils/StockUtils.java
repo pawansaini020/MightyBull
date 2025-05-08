@@ -21,7 +21,18 @@ public class StockUtils {
         throw new InternalServerException(String.format("Invalid stock id for bseCode: %s, nseCode: %s", bseCode, nseCode));
     }
 
+    public static Pageable getPageable(int pageNumber, int pageSize) {
+        return PageRequest.of(pageNumber, pageSize);
+    }
+
     public static Pageable getPageable(int pageNumber, int pageSize, Sort sort) {
         return PageRequest.of(pageNumber, pageSize, sort);
+    }
+
+    public static Double getOrDefault(Double value) {
+        if(value==null) {
+            return 0d;
+        }
+        return value;
     }
 }

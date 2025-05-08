@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="RoceScoreRuleTable" name="RoceScoreRuleTable" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.16.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.20.0">
+  <decision id="RoceScoreRuleTableId" name="RoceScoreRuleTable" camunda:historyTimeToLive="180">
+    <decisionTable id="DecisionTable_03ohr7q">
+      <input id="Input_1" label="Roce Key" camunda:inputVariable="roce_key">
+        <inputExpression id="InputExpression_1" typeRef="string">
+          <text></text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_0cfpmf3" label="Roce Value" camunda:inputVariable="roce_value">
+        <inputExpression id="LiteralExpression_0uuttdt" typeRef="double">
+          <text></text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" label="Roce Score" name="roce_score" typeRef="double" />
+      <rule id="DecisionRule_1sjdgfi">
+        <inputEntry id="UnaryTests_1n54i02">
+          <text>"default_roce"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0c76owu">
+          <text>&lt;20</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0d1g1ij">
+          <text>20</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0u1bn5q">
+        <inputEntry id="UnaryTests_0cdo7zi">
+          <text>"default_roce"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0dhdopl">
+          <text>[20..50]</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0sudvv1">
+          <text>50</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_07eojlo">
+        <inputEntry id="UnaryTests_111u7u7">
+          <text>"default_roce"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1tncfex">
+          <text>&gt;=50</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0r1dzxm">
+          <text>100</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="RoceScoreRuleTableId">
+        <dc:Bounds height="80" width="180" x="160" y="100" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

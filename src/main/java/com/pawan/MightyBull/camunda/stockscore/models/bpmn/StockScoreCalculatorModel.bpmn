@@ -1,0 +1,774 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_013c3ui" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.16.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.20.0">
+  <bpmn:process id="StockScoreCalculatorModel" name="StockScoreCalculatorModel" isExecutable="true" camunda:historyTimeToLive="180">
+    <bpmn:startEvent id="Event_095yjja" name="Input">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="stock_id" label="stock_id" type="long" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:outgoing>Flow_10w03on</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_10w03on" sourceRef="Event_095yjja" targetRef="Activity_1xqenzs" />
+    <bpmn:scriptTask id="Activity_1xqenzs" name="Pre Processor" scriptFormat="groovy">
+      <bpmn:incoming>Flow_10w03on</bpmn:incoming>
+      <bpmn:outgoing>Flow_0tb9xf3</bpmn:outgoing>
+      <bpmn:script>package com.moveinsync.camunda.engine.securitydashboard.scripts.mightybull.scorecalculator
+
+
+import groovy.json.JsonSlurper
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
+// Logger
+class Log {
+
+    static final Logger logger = LoggerFactory.getLogger(getClass())
+}
+
+// Camunda Rules
+class Camunda {
+
+    static final def MARKET_CAP = [""]
+    static final def PRICE = [""]
+    static final def PE = [""]
+    static final def DIVIDEND_YIELD = [""]
+    static final def ROCE = [""]
+    static final def ROC = [""]
+    static final def QUARTERLY_PROFIT = [""]
+    static final def PROFIT_AND_LOSS = [""]
+    static final def BALANCE_SHEET = [""]
+    static final def CASH_FLOW = [""]
+    static final def DEBTOR_DAYS = [""]
+    static final def YEARLY_ROCE = [""]
+    static final def SHAREHOLDING_PATTERN = [""]
+}
+
+// App Constants
+class Constants {
+
+    static final def DEFAULT = "default"
+    static final def KEY = "_key"
+    static final def VALUE = "_value"
+    static final def SCORE = "_score"
+    static final def MARKET_CAP = "market_cap"
+    static final def PRICE = "price"
+    static final def PE = "pe";
+    static final def DIVIDEND_YIELD = "dividend_yield";
+    static final def ROCE = "roce";
+    static final def ROC = "roc";
+    static final def QUARTERLY_PROFIT = "quarterly_profit";
+    static final def PROFIT_AND_LOSS = "profit_and_loss";
+    static final def BALANCE_SHEET = "balance_sheet";
+    static final def CASH_FLOW = "cash_flow";
+    static final def DEBTOR_DAYS = "debtor_days";
+    static final def YEARLY_ROCE = "yearly_roce";
+    static final def SHAREHOLDING_PATTERN = "shareholding_pattern";
+}
+
+
+def setMarketCapInfo(def data, def stock_id) {
+    try {
+        if (Camunda.MARKET_CAP.contains(stock_id)) {
+            execution.setVariable(Constants.MARKET_CAP + Constants.KEY, stock_id + "_" + Constants.MARKET_CAP)
+        } else {
+            execution.setVariable(Constants.MARKET_CAP + Constants.KEY, Constants.DEFAULT + "_" + Constants.MARKET_CAP)
+        }
+        execution.setVariable(Constants.MARKET_CAP + Constants.VALUE, data.marketCap);
+    } catch (Exception e) {
+        setDefaultInfo(Constants.MARKET_CAP)
+        Log.logger.error("STOCK_SCORE_CALCULATOR_MODEL :: Error occurred while pre processing MARKET_CAP info for buid: {}, data: {}", stock_id, data, e);
+    }
+}
+
+def setPriceInfo(def data, def stock_id) {
+    try {
+        if (Camunda.PRICE.contains(stock_id)) {
+            execution.setVariable(Constants.PRICE + Constants.KEY, stock_id + "_" + Constants.PRICE)
+        } else {
+            execution.setVariable(Constants.PRICE + Constants.KEY, Constants.DEFAULT + "_" + Constants.PRICE)
+        }
+        execution.setVariable(Constants.PRICE + Constants.VALUE, data.price);
+    } catch (Exception e) {
+        setDefaultInfo(Constants.PRICE)
+        Log.logger.error("STOCK_SCORE_CALCULATOR_MODEL :: Error occurred while pre processing PRICE info for buid: {}, data: {}", stock_id, data, e);
+    }
+}
+
+def setPeInfo(def data, def stock_id) {
+    try {
+        if (Camunda.PE.contains(stock_id)) {
+            execution.setVariable(Constants.PE + Constants.KEY, stock_id + "_" + Constants.PE)
+        } else {
+            execution.setVariable(Constants.PE + Constants.KEY, Constants.DEFAULT + "_" + Constants.PE)
+        }
+        execution.setVariable(Constants.PE + Constants.VALUE, data.pe);
+    } catch (Exception e) {
+        setDefaultInfo(Constants.PE)
+        Log.logger.error("STOCK_SCORE_CALCULATOR_MODEL :: Error occurred while pre processing PE info for buid: {}, data: {}", stock_id, data, e);
+    }
+}
+
+def setDividendYieldInfo(def data, def stock_id) {
+    try {
+        if (Camunda.DIVIDEND_YIELD.contains(stock_id)) {
+            execution.setVariable(Constants.DIVIDEND_YIELD + Constants.KEY, stock_id + "_" + Constants.DIVIDEND_YIELD)
+        } else {
+            execution.setVariable(Constants.DIVIDEND_YIELD + Constants.KEY, Constants.DEFAULT + "_" + Constants.DIVIDEND_YIELD)
+        }
+        execution.setVariable(Constants.DIVIDEND_YIELD + Constants.VALUE, data.dividendYield);
+    } catch (Exception e) {
+        setDefaultInfo(Constants.DIVIDEND_YIELD)
+        Log.logger.error("STOCK_SCORE_CALCULATOR_MODEL :: Error occurred while pre processing DIVIDEND_YIELD info for buid: {}, data: {}", stock_id, data, e);
+    }
+}
+
+def setRoceInfo(def data, def stock_id) {
+    try {
+        if (Camunda.ROCE.contains(stock_id)) {
+            execution.setVariable(Constants.ROCE + Constants.KEY, stock_id + "_" + Constants.ROCE)
+        } else {
+            execution.setVariable(Constants.ROCE + Constants.KEY, Constants.DEFAULT + "_" + Constants.ROCE)
+        }
+        execution.setVariable(Constants.ROCE + Constants.VALUE, data.roce);
+    } catch (Exception e) {
+        setDefaultInfo(Constants.ROCE)
+        Log.logger.error("STOCK_SCORE_CALCULATOR_MODEL :: Error occurred while pre processing ROCE info for buid: {}, data: {}", stock_id, data, e);
+    }
+}
+
+def setRocInfo(def data, def stock_id) {
+    try {
+        if (Camunda.ROC.contains(stock_id)) {
+            execution.setVariable(Constants.ROC + Constants.KEY, stock_id + "_" + Constants.ROC)
+        } else {
+            execution.setVariable(Constants.ROC + Constants.KEY, Constants.DEFAULT + "_" + Constants.ROC)
+        }
+        execution.setVariable(Constants.ROC + Constants.VALUE, data.roc);
+    } catch (Exception e) {
+        setDefaultInfo(Constants.ROC)
+        Log.logger.error("STOCK_SCORE_CALCULATOR_MODEL :: Error occurred while pre processing ROC info for buid: {}, data: {}", stock_id, data, e);
+    }
+}
+
+def setQuarterlyProfitInfo(def data, def stock_id) {
+    try {
+        if (Camunda.QUARTERLY_PROFIT.contains(stock_id)) {
+            execution.setVariable(Constants.QUARTERLY_PROFIT + Constants.KEY, stock_id + "_" + Constants.QUARTERLY_PROFIT)
+        } else {
+            execution.setVariable(Constants.QUARTERLY_PROFIT + Constants.KEY, Constants.DEFAULT + "_" + Constants.QUARTERLY_PROFIT)
+        }
+        execution.setVariable(Constants.QUARTERLY_PROFIT + Constants.VALUE, data.quarterlyProfit);
+    } catch (Exception e) {
+        setDefaultInfo(Constants.QUARTERLY_PROFIT)
+        Log.logger.error("STOCK_SCORE_CALCULATOR_MODEL :: Error occurred while pre processing QUARTERLY_PROFIT info for buid: {}, data: {}", stock_id, data, e);
+    }
+}
+
+def setProfitAndLossInfo(def data, def stock_id) {
+    try {
+        if (Camunda.PROFIT_AND_LOSS.contains(stock_id)) {
+            execution.setVariable(Constants.PROFIT_AND_LOSS + Constants.KEY, stock_id + "_" + Constants.PROFIT_AND_LOSS)
+        } else {
+            execution.setVariable(Constants.PROFIT_AND_LOSS + Constants.KEY, Constants.DEFAULT + "_" + Constants.PROFIT_AND_LOSS)
+        }
+        execution.setVariable(Constants.PROFIT_AND_LOSS + Constants.VALUE, data.profitAndLoss);
+    } catch (Exception e) {
+        setDefaultInfo(Constants.PROFIT_AND_LOSS)
+        Log.logger.error("STOCK_SCORE_CALCULATOR_MODEL :: Error occurred while pre processing PROFIT_AND_LOSS info for buid: {}, data: {}", stock_id, data, e);
+    }
+}
+
+def setBalanceSheetInfo(def data, def stock_id) {
+    try {
+        if (Camunda.BALANCE_SHEET.contains(stock_id)) {
+            execution.setVariable(Constants.BALANCE_SHEET + Constants.KEY, stock_id + "_" + Constants.BALANCE_SHEET)
+        } else {
+            execution.setVariable(Constants.BALANCE_SHEET + Constants.KEY, Constants.DEFAULT + "_" + Constants.BALANCE_SHEET)
+        }
+        execution.setVariable(Constants.BALANCE_SHEET + Constants.VALUE, data.balanceSheet);
+    } catch (Exception e) {
+        setDefaultInfo(Constants.BALANCE_SHEET)
+        Log.logger.error("STOCK_SCORE_CALCULATOR_MODEL :: Error occurred while pre processing BALANCE_SHEET info for buid: {}, data: {}", stock_id, data, e);
+    }
+}
+
+def setCashFlowInfo(def data, def stock_id) {
+    try {
+        if (Camunda.CASH_FLOW.contains(stock_id)) {
+            execution.setVariable(Constants.CASH_FLOW + Constants.KEY, stock_id + "_" + Constants.CASH_FLOW)
+        } else {
+            execution.setVariable(Constants.CASH_FLOW + Constants.KEY, Constants.DEFAULT + "_" + Constants.CASH_FLOW)
+        }
+        execution.setVariable(Constants.CASH_FLOW + Constants.VALUE, data.cashFlow);
+    } catch (Exception e) {
+        setDefaultInfo(Constants.CASH_FLOW)
+        Log.logger.error("STOCK_SCORE_CALCULATOR_MODEL :: Error occurred while pre processing CASH_FLOW info for buid: {}, data: {}", stock_id, data, e);
+    }
+}
+
+def setDebtorDaysInfo(def data, def stock_id) {
+    try {
+        if (Camunda.DEBTOR_DAYS.contains(stock_id)) {
+            execution.setVariable(Constants.DEBTOR_DAYS + Constants.KEY, stock_id + "_" + Constants.DEBTOR_DAYS)
+        } else {
+            execution.setVariable(Constants.DEBTOR_DAYS + Constants.KEY, Constants.DEFAULT + "_" + Constants.DEBTOR_DAYS)
+        }
+        execution.setVariable(Constants.DEBTOR_DAYS + Constants.VALUE, data.debtorDays);
+    } catch (Exception e) {
+        setDefaultInfo(Constants.DEBTOR_DAYS)
+        Log.logger.error("STOCK_SCORE_CALCULATOR_MODEL :: Error occurred while pre processing DEBTOR_DAYS info for buid: {}, data: {}", stock_id, data, e);
+    }
+}
+
+def setYearlyRoceInfo(def data, def stock_id) {
+    try {
+        if (Camunda.YEARLY_ROCE.contains(stock_id)) {
+            execution.setVariable(Constants.YEARLY_ROCE + Constants.KEY, stock_id + "_" + Constants.YEARLY_ROCE)
+        } else {
+            execution.setVariable(Constants.YEARLY_ROCE + Constants.KEY, Constants.DEFAULT + "_" + Constants.YEARLY_ROCE)
+        }
+        execution.setVariable(Constants.YEARLY_ROCE + Constants.VALUE, data.yearlyRoce);
+    } catch (Exception e) {
+        setDefaultInfo(Constants.YEARLY_ROCE)
+        Log.logger.error("STOCK_SCORE_CALCULATOR_MODEL :: Error occurred while pre processing YEARLY_ROCE info for buid: {}, data: {}", stock_id, data, e);
+    }
+}
+
+def setShareholdingPatternInfo(def data, def stock_id) {
+    try {
+        if (Camunda.SHAREHOLDING_PATTERN.contains(stock_id)) {
+            execution.setVariable(Constants.SHAREHOLDING_PATTERN + Constants.KEY, stock_id + "_" + Constants.SHAREHOLDING_PATTERN)
+        } else {
+            execution.setVariable(Constants.SHAREHOLDING_PATTERN + Constants.KEY, Constants.DEFAULT + "_" + Constants.SHAREHOLDING_PATTERN)
+        }
+        execution.setVariable(Constants.SHAREHOLDING_PATTERN + Constants.VALUE, data.shareholdingPattern);
+    } catch (Exception e) {
+        setDefaultInfo(Constants.SHAREHOLDING_PATTERN)
+        Log.logger.error("STOCK_SCORE_CALCULATOR_MODEL :: Error occurred while pre processing SHAREHOLDING_PATTERN info for buid: {}, data: {}", stock_id, data, e);
+    }
+}
+
+def setDefaultInfo(def property) {
+    try {
+        execution.setVariable(property + Constants.KEY, Constants.DEFAULT + "_" + property)
+        execution.setVariable(property + Constants.VALUE, null)
+        Log.logger.info("CAB_SCORE_CALCULATOR_MODEL :: Processing with default properties: {}", property);
+    } catch (Exception e) {
+        Log.logger.error("STOCK_SCORE_CALCULATOR_MODEL :: Error occurred while pre processing default property for: {}", property, e);
+    }
+}
+
+def init() {
+    try {
+        // logging the request
+        Log.logger.info("STOCK_SCORE_CALCULATOR_MODEL :: Request received for {}, {}, {}", execution.getVariable("stock_id"), execution.getVariable("data"), execution.getVariable("rules"), execution.getVariable("scoreInfo"))
+
+        def slurper = new JsonSlurper()
+        def data = slurper.parseText(execution.getVariable("data")) // Deserialize the JSON into a Groovy object
+        def stock_id = execution.getVariable("stock_id")
+
+        setMarketCapInfo(data, stock_id)
+        setPriceInfo(data, stock_id)
+        setPeInfo(data, stock_id)
+        setDividendYieldInfo(data, stock_id)
+        setRoceInfo(data, stock_id)
+        setRocInfo(data, stock_id)
+        setQuarterlyProfitInfo(data, stock_id)
+        setProfitAndLossInfo(data, stock_id)
+        setBalanceSheetInfo(data, stock_id)
+        setCashFlowInfo(data, stock_id)
+        setDebtorDaysInfo(data, stock_id)
+        setYearlyRoceInfo(data, stock_id)
+        setShareholdingPatternInfo(data, stock_id)
+    } catch (Exception e) {
+        Log.logger.error("STOCK_SCORE_CALCULATOR_MODEL :: Error occurred while pre processing STOCKScoreCalculatorModel data.");
+    }
+}
+
+init();</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:parallelGateway id="Gateway_1vg1j97" name="Parallel">
+      <bpmn:incoming>Flow_0tb9xf3</bpmn:incoming>
+      <bpmn:outgoing>Flow_0e5d4h8</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0o0y8is</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1gar8z6</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1dokigs</bpmn:outgoing>
+      <bpmn:outgoing>Flow_087cppj</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1bjf6np</bpmn:outgoing>
+      <bpmn:outgoing>Flow_13nktss</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0d1hj3w</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0ev6vz7</bpmn:outgoing>
+      <bpmn:outgoing>Flow_07qiq0n</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0ukpozh</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0c8byvk</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0wiug5f</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:businessRuleTask id="Activity_1rxhm2w" name="Market Cap Rule" camunda:resultVariable="market_cap_score" camunda:decisionRef="MarketCapRuleTableId" camunda:mapDecisionResult="singleEntry" camunda:decisionRefTenantId="MarketCapRuleTable">
+      <bpmn:incoming>Flow_0e5d4h8</bpmn:incoming>
+      <bpmn:outgoing>Flow_1gg4cr5</bpmn:outgoing>
+    </bpmn:businessRuleTask>
+    <bpmn:sequenceFlow id="Flow_0e5d4h8" sourceRef="Gateway_1vg1j97" targetRef="Activity_1rxhm2w" />
+    <bpmn:endEvent id="Event_1v94uui">
+      <bpmn:incoming>Flow_1sac7ir</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:scriptTask id="Activity_0cvuago" name="Cumulate Score" scriptFormat="groovy">
+      <bpmn:incoming>Flow_0z5uxlq</bpmn:incoming>
+      <bpmn:outgoing>Flow_1sac7ir</bpmn:outgoing>
+      <bpmn:script>package com.moveinsync.camunda.engine.securitydashboard.scripts.mightybull.scorecumulator
+
+import groovy.json.JsonSlurper
+import groovy.json.internal.LazyMap
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
+// Logger
+class Log {
+
+    static final Logger logger = LoggerFactory.getLogger(getClass())
+}
+
+// App Constants
+class Constants {
+
+    static final def DEFAULT = "default"
+    static final def KEY = "_key"
+    static final def VALUE = "_value"
+    static final def SCORE = "_score"
+    static final def MARKET_CAP = "market_cap"
+    static final def PRICE = "price"
+    static final def PE = "pe";
+    static final def DIVIDEND_YIELD = "dividend_yield";
+    static final def ROCE = "roce";
+    static final def ROC = "roc";
+    static final def QUARTERLY_PROFIT = "quarterly_profit";
+    static final def PROFIT_AND_LOSS = "profit_and_loss";
+    static final def BALANCE_SHEET = "balance_sheet";
+    static final def CASH_FLOW = "cash_flow";
+    static final def DEBTOR_DAYS = "debtor_days";
+    static final def YEARLY_ROCE = "yearly_roce";
+    static final def SHAREHOLDING_PATTERN = "shareholding_pattern";
+}
+
+def init() {
+    try {
+        def slurper = new JsonSlurper()
+        def data = slurper.parseText(execution.getVariable("data")) // Deserialize the JSON into a Groovy object
+        def scoreInfo = slurper.parseText(execution.getVariable("scoreInfo"))
+        def rules = slurper.parseText(execution.getVariable("rules"))
+        long score = data.score != null ? data.score : 0L
+
+        def marketCapScore = execution.getVariable(Constants.MARKET_CAP + Constants.SCORE)
+        if (Boolean.valueOf(rules.marketCapScoreEnable) &amp;&amp; Objects.nonNull(marketCapScore)) {
+            score += marketCapScore
+            scoreInfo.marketCapScore = marketCapScore
+        }
+
+        def priceScore= execution.getVariable(Constants.PRICE + Constants.SCORE)
+        if (Boolean.valueOf(rules.priceScoreEnable) &amp;&amp; Objects.nonNull(priceScore)) {
+            score += priceScore
+            scoreInfo.priceScore = priceScore
+        }
+
+        def peScore = execution.getVariable(Constants.PE + Constants.SCORE)
+        if (Boolean.valueOf(rules.peScoreEnable) &amp;&amp; Objects.nonNull(peScore)) {
+            score += peScore
+            scoreInfo.peScore = peScore
+        }
+
+        def dividendYieldScore= execution.getVariable(Constants.DIVIDEND_YIELD + Constants.SCORE)
+        if (Boolean.valueOf(rules.dividendYieldScoreEnable) &amp;&amp; Objects.nonNull(dividendYieldScore)) {
+            score += dividendYieldScore
+            scoreInfo.dividendYieldScore = dividendYieldScore
+        }
+
+        def roceScore = execution.getVariable(Constants.ROCE + Constants.SCORE)
+        if (Boolean.valueOf(rules.roceScoreEnable) &amp;&amp; Objects.nonNull(roceScore)) {
+            score += roceScore
+            scoreInfo.roceScore = roceScore
+        }
+
+        def rocScore= execution.getVariable(Constants.ROC + Constants.SCORE)
+        if (Boolean.valueOf(rules.rocScoreEnable) &amp;&amp; Objects.nonNull(rocScore)) {
+            score += rocScore
+            scoreInfo.rocScore = rocScore
+        }
+
+        def quarterlyProfitScore = execution.getVariable(Constants.QUARTERLY_PROFIT + Constants.SCORE)
+        if (Boolean.valueOf(rules.quarterlyProfitScoreEnable) &amp;&amp; Objects.nonNull(quarterlyProfitScore)) {
+            score += quarterlyProfitScore
+            scoreInfo.quarterlyProfitScore = quarterlyProfitScore
+        }
+
+        def profitAndLossScore= execution.getVariable(Constants.PROFIT_AND_LOSS + Constants.SCORE)
+        if (Boolean.valueOf(rules.profitAndLossScoreEnable) &amp;&amp; Objects.nonNull(profitAndLossScore)) {
+            score += profitAndLossScore
+            scoreInfo.profitAndLossScore = profitAndLossScore
+        }
+
+        def balanceSheetScore = execution.getVariable(Constants.BALANCE_SHEET + Constants.SCORE)
+        if (Boolean.valueOf(rules.balanceSheetScoreEnable) &amp;&amp; Objects.nonNull(balanceSheetScore)) {
+            score += balanceSheetScore
+            scoreInfo.balanceSheetScore = balanceSheetScore
+        }
+
+        def cashFlowScore= execution.getVariable(Constants.CASH_FLOW + Constants.SCORE)
+        if (Boolean.valueOf(rules.cashFlowScoreEnable) &amp;&amp; Objects.nonNull(cashFlowScore)) {
+            score += cashFlowScore
+            scoreInfo.cashFlowScore = cashFlowScore
+        }
+
+        def debtorDaysScore= execution.getVariable(Constants.DEBTOR_DAYS + Constants.SCORE)
+        if (Boolean.valueOf(rules.debtorDaysScoreEnable) &amp;&amp; Objects.nonNull(debtorDaysScore)) {
+            score += debtorDaysScore
+            scoreInfo.debtorDaysScore = debtorDaysScore
+        }
+
+        def yearlyRoceScore= execution.getVariable(Constants.YEARLY_ROCE + Constants.SCORE)
+        if (Boolean.valueOf(rules.yearlyRoceScoreEnable) &amp;&amp; Objects.nonNull(yearlyRoceScore)) {
+            score += yearlyRoceScore
+            scoreInfo.yearlyRoceScore = yearlyRoceScore
+        }
+
+        def shareholdingPatternScore= execution.getVariable(Constants.SHAREHOLDING_PATTERN + Constants.SCORE)
+        if (Boolean.valueOf(rules.shareholdingPatternScoreEnable) &amp;&amp; Objects.nonNull(shareholdingPatternScore)) {
+            score += shareholdingPatternScore
+            scoreInfo.shareholdingPatternScore = shareholdingPatternScore
+        }
+
+        Log.logger.info("STOCK_SCORE_CUMULATOR_MODEL :: total score: {}, {}", score);
+        scoreInfo.score = score
+        def kafkaEvent = new LazyMap();
+        kafkaEvent.put("data", data)
+        kafkaEvent.put("scoreInfo", scoreInfo)
+        kafkaEvent.put("rules", rules)
+        execution.setVariable("kafkaEvent", kafkaEvent)
+    } catch (Exception e) {
+        Log.logger.error("STOCK_SCORE_CUMULATOR_MODEL :: Error occurred while cumulating stock Score data.", e);
+    }
+}
+
+init();
+</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:businessRuleTask id="Activity_1tojpym" name="Price Rule " camunda:resultVariable="price_score" camunda:decisionRef="PriceRuleTableId" camunda:mapDecisionResult="singleEntry" camunda:decisionRefTenantId="PriceRuleTable">
+      <bpmn:incoming>Flow_0o0y8is</bpmn:incoming>
+      <bpmn:outgoing>Flow_1rjzd2o</bpmn:outgoing>
+    </bpmn:businessRuleTask>
+    <bpmn:sequenceFlow id="Flow_0o0y8is" sourceRef="Gateway_1vg1j97" targetRef="Activity_1tojpym" />
+    <bpmn:parallelGateway id="Gateway_0xl2jz6">
+      <bpmn:incoming>Flow_1rjzd2o</bpmn:incoming>
+      <bpmn:incoming>Flow_1gg4cr5</bpmn:incoming>
+      <bpmn:incoming>Flow_1bs3y6m</bpmn:incoming>
+      <bpmn:incoming>Flow_1q6fiwj</bpmn:incoming>
+      <bpmn:incoming>Flow_0ogr389</bpmn:incoming>
+      <bpmn:incoming>Flow_02vml46</bpmn:incoming>
+      <bpmn:incoming>Flow_1ko6yxl</bpmn:incoming>
+      <bpmn:incoming>Flow_0mzlylr</bpmn:incoming>
+      <bpmn:incoming>Flow_12qsh1k</bpmn:incoming>
+      <bpmn:incoming>Flow_0soq8en</bpmn:incoming>
+      <bpmn:incoming>Flow_05v7bi9</bpmn:incoming>
+      <bpmn:incoming>Flow_02g4cuu</bpmn:incoming>
+      <bpmn:incoming>Flow_0o0xkrb</bpmn:incoming>
+      <bpmn:outgoing>Flow_0z5uxlq</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_1rjzd2o" sourceRef="Activity_1tojpym" targetRef="Gateway_0xl2jz6" />
+    <bpmn:sequenceFlow id="Flow_0tb9xf3" sourceRef="Activity_1xqenzs" targetRef="Gateway_1vg1j97" />
+    <bpmn:sequenceFlow id="Flow_1gg4cr5" sourceRef="Activity_1rxhm2w" targetRef="Gateway_0xl2jz6" />
+    <bpmn:sequenceFlow id="Flow_0z5uxlq" sourceRef="Gateway_0xl2jz6" targetRef="Activity_0cvuago" />
+    <bpmn:sequenceFlow id="Flow_1sac7ir" sourceRef="Activity_0cvuago" targetRef="Event_1v94uui" />
+    <bpmn:businessRuleTask id="Activity_1h3v75o" name="PE Rule " camunda:resultVariable="pe_score" camunda:decisionRef="PEScoreRuleTableId" camunda:mapDecisionResult="singleEntry" camunda:decisionRefTenantId="PEScoreRuleTable">
+      <bpmn:incoming>Flow_1gar8z6</bpmn:incoming>
+      <bpmn:outgoing>Flow_1bs3y6m</bpmn:outgoing>
+    </bpmn:businessRuleTask>
+    <bpmn:sequenceFlow id="Flow_1gar8z6" sourceRef="Gateway_1vg1j97" targetRef="Activity_1h3v75o" />
+    <bpmn:sequenceFlow id="Flow_1bs3y6m" sourceRef="Activity_1h3v75o" targetRef="Gateway_0xl2jz6" />
+    <bpmn:businessRuleTask id="Activity_0epee5l" name="Dividend Yield Rule " camunda:resultVariable="dividend_yield_score" camunda:decisionRef="DividendYieldScoreRuleTableId" camunda:mapDecisionResult="singleEntry" camunda:decisionRefTenantId="DividendYieldScoreRuleTable">
+      <bpmn:incoming>Flow_1dokigs</bpmn:incoming>
+      <bpmn:outgoing>Flow_1q6fiwj</bpmn:outgoing>
+    </bpmn:businessRuleTask>
+    <bpmn:businessRuleTask id="Activity_035rn1n" name="Roce Rule " camunda:resultVariable="roce_score" camunda:decisionRef="RoceScoreRuleTableId" camunda:mapDecisionResult="singleEntry" camunda:decisionRefTenantId="RoceScoreRuleTable">
+      <bpmn:incoming>Flow_087cppj</bpmn:incoming>
+      <bpmn:outgoing>Flow_0ogr389</bpmn:outgoing>
+    </bpmn:businessRuleTask>
+    <bpmn:businessRuleTask id="Activity_0w6zjju" name="Roc Rule " camunda:resultVariable="roc_score" camunda:decisionRef="RocScoreRuleTableId" camunda:mapDecisionResult="singleEntry" camunda:decisionRefTenantId="RocScoreRuleTable">
+      <bpmn:incoming>Flow_1bjf6np</bpmn:incoming>
+      <bpmn:outgoing>Flow_02vml46</bpmn:outgoing>
+    </bpmn:businessRuleTask>
+    <bpmn:sequenceFlow id="Flow_1dokigs" sourceRef="Gateway_1vg1j97" targetRef="Activity_0epee5l" />
+    <bpmn:sequenceFlow id="Flow_087cppj" sourceRef="Gateway_1vg1j97" targetRef="Activity_035rn1n" />
+    <bpmn:sequenceFlow id="Flow_1bjf6np" sourceRef="Gateway_1vg1j97" targetRef="Activity_0w6zjju" />
+    <bpmn:sequenceFlow id="Flow_1q6fiwj" sourceRef="Activity_0epee5l" targetRef="Gateway_0xl2jz6" />
+    <bpmn:sequenceFlow id="Flow_0ogr389" sourceRef="Activity_035rn1n" targetRef="Gateway_0xl2jz6" />
+    <bpmn:sequenceFlow id="Flow_02vml46" sourceRef="Activity_0w6zjju" targetRef="Gateway_0xl2jz6" />
+    <bpmn:businessRuleTask id="Activity_0krtq6h" name="Quarterly Profit Rule " camunda:resultVariable="quarterly_profit_score" camunda:decisionRef="QuarterlyProfitScoreRuleTableId" camunda:mapDecisionResult="singleEntry" camunda:decisionRefTenantId="QuarterlyProfitScoreRuleTable">
+      <bpmn:incoming>Flow_13nktss</bpmn:incoming>
+      <bpmn:outgoing>Flow_1ko6yxl</bpmn:outgoing>
+    </bpmn:businessRuleTask>
+    <bpmn:businessRuleTask id="Activity_1jrl20p" name="Profit And Loss Rule " camunda:resultVariable="profit_and_loss_score" camunda:decisionRef="ProfitAndLossScoreRuleTableId" camunda:mapDecisionResult="singleEntry" camunda:decisionRefTenantId="ProfitAndLossScoreRuleTable">
+      <bpmn:incoming>Flow_0d1hj3w</bpmn:incoming>
+      <bpmn:outgoing>Flow_0mzlylr</bpmn:outgoing>
+    </bpmn:businessRuleTask>
+    <bpmn:businessRuleTask id="Activity_04etdnc" name="Balance Sheet Rule " camunda:resultVariable="balance_sheet_score" camunda:decisionRef="BalanceSheetScoreRuleTableId" camunda:mapDecisionResult="singleEntry" camunda:decisionRefTenantId="BalanceSheetScoreRuleTable">
+      <bpmn:incoming>Flow_0ev6vz7</bpmn:incoming>
+      <bpmn:outgoing>Flow_12qsh1k</bpmn:outgoing>
+    </bpmn:businessRuleTask>
+    <bpmn:businessRuleTask id="Activity_0cooxp3" name="CashF lows Rule " camunda:resultVariable="cash_flow_score" camunda:decisionRef="CashFlowsScoreRuleTableId" camunda:mapDecisionResult="singleEntry" camunda:decisionRefTenantId="CashFlowsScoreRuleTable">
+      <bpmn:incoming>Flow_07qiq0n</bpmn:incoming>
+      <bpmn:outgoing>Flow_0soq8en</bpmn:outgoing>
+    </bpmn:businessRuleTask>
+    <bpmn:businessRuleTask id="Activity_0hyha2c" name="Debtor Days Rule " camunda:resultVariable="debtor_days_score" camunda:decisionRef="DebtorDaysScoreRuleTableId" camunda:mapDecisionResult="singleEntry" camunda:decisionRefTenantId="DebtorDaysScoreRuleTable">
+      <bpmn:incoming>Flow_0ukpozh</bpmn:incoming>
+      <bpmn:outgoing>Flow_05v7bi9</bpmn:outgoing>
+    </bpmn:businessRuleTask>
+    <bpmn:businessRuleTask id="Activity_0asx1jc" name="Yearly ROCE Rule " camunda:resultVariable="yearly_roce_score" camunda:decisionRef="YearlyROCEScoreRuleTableId" camunda:mapDecisionResult="singleEntry" camunda:decisionRefTenantId="YearlyROCEScoreRuleTable">
+      <bpmn:incoming>Flow_0c8byvk</bpmn:incoming>
+      <bpmn:outgoing>Flow_02g4cuu</bpmn:outgoing>
+    </bpmn:businessRuleTask>
+    <bpmn:businessRuleTask id="Activity_15k53fl" name="Shareholding Pattern Rule " camunda:resultVariable="shareholding_pattern_score" camunda:decisionRef="ShareholdingPatternScoreRuleTableId" camunda:mapDecisionResult="singleEntry" camunda:decisionRefTenantId="ShareholdingPatternScoreRuleTable">
+      <bpmn:incoming>Flow_0wiug5f</bpmn:incoming>
+      <bpmn:outgoing>Flow_0o0xkrb</bpmn:outgoing>
+    </bpmn:businessRuleTask>
+    <bpmn:sequenceFlow id="Flow_13nktss" sourceRef="Gateway_1vg1j97" targetRef="Activity_0krtq6h" />
+    <bpmn:sequenceFlow id="Flow_0d1hj3w" sourceRef="Gateway_1vg1j97" targetRef="Activity_1jrl20p" />
+    <bpmn:sequenceFlow id="Flow_0ev6vz7" sourceRef="Gateway_1vg1j97" targetRef="Activity_04etdnc" />
+    <bpmn:sequenceFlow id="Flow_07qiq0n" sourceRef="Gateway_1vg1j97" targetRef="Activity_0cooxp3" />
+    <bpmn:sequenceFlow id="Flow_0ukpozh" sourceRef="Gateway_1vg1j97" targetRef="Activity_0hyha2c" />
+    <bpmn:sequenceFlow id="Flow_0c8byvk" sourceRef="Gateway_1vg1j97" targetRef="Activity_0asx1jc" />
+    <bpmn:sequenceFlow id="Flow_0wiug5f" sourceRef="Gateway_1vg1j97" targetRef="Activity_15k53fl" />
+    <bpmn:sequenceFlow id="Flow_1ko6yxl" sourceRef="Activity_0krtq6h" targetRef="Gateway_0xl2jz6" />
+    <bpmn:sequenceFlow id="Flow_0mzlylr" sourceRef="Activity_1jrl20p" targetRef="Gateway_0xl2jz6" />
+    <bpmn:sequenceFlow id="Flow_12qsh1k" sourceRef="Activity_04etdnc" targetRef="Gateway_0xl2jz6" />
+    <bpmn:sequenceFlow id="Flow_0soq8en" sourceRef="Activity_0cooxp3" targetRef="Gateway_0xl2jz6" />
+    <bpmn:sequenceFlow id="Flow_05v7bi9" sourceRef="Activity_0hyha2c" targetRef="Gateway_0xl2jz6" />
+    <bpmn:sequenceFlow id="Flow_02g4cuu" sourceRef="Activity_0asx1jc" targetRef="Gateway_0xl2jz6" />
+    <bpmn:sequenceFlow id="Flow_0o0xkrb" sourceRef="Activity_15k53fl" targetRef="Gateway_0xl2jz6" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="StockScoreCalculatorModel">
+      <bpmndi:BPMNShape id="Gateway_05iw1c6_di" bpmnElement="Gateway_1vg1j97">
+        <dc:Bounds x="695" y="75" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="701" y="51" width="37" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_00wtsp5_di" bpmnElement="Activity_1rxhm2w">
+        <dc:Bounds x="890" y="60" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_141gatj" bpmnElement="Gateway_0xl2jz6">
+        <dc:Bounds x="1165" y="75" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1tcbd4k" bpmnElement="Activity_1tojpym">
+        <dc:Bounds x="890" y="180" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_095yjja_di" bpmnElement="Event_095yjja">
+        <dc:Bounds x="152" y="82" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="158" y="125" width="25" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1udjaic_di" bpmnElement="Activity_0cvuago">
+        <dc:Bounds x="1400" y="60" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1v94uui_di" bpmnElement="Event_1v94uui">
+        <dc:Bounds x="1712" y="82" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0cz1du3_di" bpmnElement="Activity_1xqenzs">
+        <dc:Bounds x="370" y="60" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1vyqipt" bpmnElement="Activity_1h3v75o">
+        <dc:Bounds x="890" y="310" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1anv3dt" bpmnElement="Activity_0epee5l">
+        <dc:Bounds x="890" y="420" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1hyqjq8" bpmnElement="Activity_035rn1n">
+        <dc:Bounds x="890" y="550" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1ej2d9p" bpmnElement="Activity_0w6zjju">
+        <dc:Bounds x="890" y="670" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_080bkvt" bpmnElement="Activity_0krtq6h">
+        <dc:Bounds x="890" y="780" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1j82c9j" bpmnElement="Activity_1jrl20p">
+        <dc:Bounds x="890" y="900" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_005ovcf" bpmnElement="Activity_04etdnc">
+        <dc:Bounds x="890" y="1020" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0028lws" bpmnElement="Activity_0cooxp3">
+        <dc:Bounds x="890" y="1140" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_105yrj6" bpmnElement="Activity_0hyha2c">
+        <dc:Bounds x="890" y="1250" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1b1m959" bpmnElement="Activity_0asx1jc">
+        <dc:Bounds x="890" y="1360" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_06gu20k" bpmnElement="Activity_15k53fl">
+        <dc:Bounds x="890" y="1470" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0e5d4h8_di" bpmnElement="Flow_0e5d4h8">
+        <di:waypoint x="745" y="100" />
+        <di:waypoint x="890" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0o0y8is_di" bpmnElement="Flow_0o0y8is">
+        <di:waypoint x="720" y="125" />
+        <di:waypoint x="720" y="220" />
+        <di:waypoint x="890" y="220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1rjzd2o_di" bpmnElement="Flow_1rjzd2o">
+        <di:waypoint x="990" y="220" />
+        <di:waypoint x="1190" y="220" />
+        <di:waypoint x="1190" y="125" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_10w03on_di" bpmnElement="Flow_10w03on">
+        <di:waypoint x="188" y="100" />
+        <di:waypoint x="370" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0tb9xf3_di" bpmnElement="Flow_0tb9xf3">
+        <di:waypoint x="470" y="100" />
+        <di:waypoint x="695" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1gg4cr5_di" bpmnElement="Flow_1gg4cr5">
+        <di:waypoint x="990" y="100" />
+        <di:waypoint x="1165" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0z5uxlq_di" bpmnElement="Flow_0z5uxlq">
+        <di:waypoint x="1215" y="100" />
+        <di:waypoint x="1400" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1sac7ir_di" bpmnElement="Flow_1sac7ir">
+        <di:waypoint x="1500" y="100" />
+        <di:waypoint x="1712" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1gar8z6_di" bpmnElement="Flow_1gar8z6">
+        <di:waypoint x="720" y="125" />
+        <di:waypoint x="720" y="350" />
+        <di:waypoint x="890" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1bs3y6m_di" bpmnElement="Flow_1bs3y6m">
+        <di:waypoint x="990" y="350" />
+        <di:waypoint x="1190" y="350" />
+        <di:waypoint x="1190" y="125" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1dokigs_di" bpmnElement="Flow_1dokigs">
+        <di:waypoint x="720" y="125" />
+        <di:waypoint x="720" y="460" />
+        <di:waypoint x="890" y="460" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_087cppj_di" bpmnElement="Flow_087cppj">
+        <di:waypoint x="720" y="125" />
+        <di:waypoint x="720" y="590" />
+        <di:waypoint x="890" y="590" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1bjf6np_di" bpmnElement="Flow_1bjf6np">
+        <di:waypoint x="720" y="125" />
+        <di:waypoint x="720" y="710" />
+        <di:waypoint x="890" y="710" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1q6fiwj_di" bpmnElement="Flow_1q6fiwj">
+        <di:waypoint x="990" y="460" />
+        <di:waypoint x="1190" y="460" />
+        <di:waypoint x="1190" y="125" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ogr389_di" bpmnElement="Flow_0ogr389">
+        <di:waypoint x="990" y="590" />
+        <di:waypoint x="1190" y="590" />
+        <di:waypoint x="1190" y="125" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_02vml46_di" bpmnElement="Flow_02vml46">
+        <di:waypoint x="990" y="710" />
+        <di:waypoint x="1190" y="710" />
+        <di:waypoint x="1190" y="125" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_13nktss_di" bpmnElement="Flow_13nktss">
+        <di:waypoint x="720" y="125" />
+        <di:waypoint x="720" y="820" />
+        <di:waypoint x="890" y="820" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0d1hj3w_di" bpmnElement="Flow_0d1hj3w">
+        <di:waypoint x="720" y="125" />
+        <di:waypoint x="720" y="940" />
+        <di:waypoint x="890" y="940" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ev6vz7_di" bpmnElement="Flow_0ev6vz7">
+        <di:waypoint x="720" y="125" />
+        <di:waypoint x="720" y="1060" />
+        <di:waypoint x="890" y="1060" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_07qiq0n_di" bpmnElement="Flow_07qiq0n">
+        <di:waypoint x="720" y="125" />
+        <di:waypoint x="720" y="1180" />
+        <di:waypoint x="890" y="1180" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ukpozh_di" bpmnElement="Flow_0ukpozh">
+        <di:waypoint x="720" y="125" />
+        <di:waypoint x="720" y="1290" />
+        <di:waypoint x="890" y="1290" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0c8byvk_di" bpmnElement="Flow_0c8byvk">
+        <di:waypoint x="720" y="125" />
+        <di:waypoint x="720" y="1400" />
+        <di:waypoint x="890" y="1400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0wiug5f_di" bpmnElement="Flow_0wiug5f">
+        <di:waypoint x="720" y="125" />
+        <di:waypoint x="720" y="1510" />
+        <di:waypoint x="890" y="1510" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1ko6yxl_di" bpmnElement="Flow_1ko6yxl">
+        <di:waypoint x="990" y="820" />
+        <di:waypoint x="1190" y="820" />
+        <di:waypoint x="1190" y="125" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0mzlylr_di" bpmnElement="Flow_0mzlylr">
+        <di:waypoint x="990" y="940" />
+        <di:waypoint x="1190" y="940" />
+        <di:waypoint x="1190" y="125" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_12qsh1k_di" bpmnElement="Flow_12qsh1k">
+        <di:waypoint x="990" y="1060" />
+        <di:waypoint x="1190" y="1060" />
+        <di:waypoint x="1190" y="125" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0soq8en_di" bpmnElement="Flow_0soq8en">
+        <di:waypoint x="990" y="1180" />
+        <di:waypoint x="1190" y="1180" />
+        <di:waypoint x="1190" y="125" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_05v7bi9_di" bpmnElement="Flow_05v7bi9">
+        <di:waypoint x="990" y="1290" />
+        <di:waypoint x="1190" y="1290" />
+        <di:waypoint x="1190" y="125" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_02g4cuu_di" bpmnElement="Flow_02g4cuu">
+        <di:waypoint x="990" y="1400" />
+        <di:waypoint x="1190" y="1400" />
+        <di:waypoint x="1190" y="125" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0o0xkrb_di" bpmnElement="Flow_0o0xkrb">
+        <di:waypoint x="990" y="1510" />
+        <di:waypoint x="1190" y="1510" />
+        <di:waypoint x="1190" y="125" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
