@@ -25,10 +25,7 @@ public class MongoUserDao implements UserDao {
 
     @Override
     public Optional<UserEntity> get(@NonNull Long id) {
-        return repository.findAll().stream()
-                .filter(document -> id.equals(document.getSqlId()))
-                .findFirst()
-                .map(this::toEntity);
+        return repository.findBySqlId(id).map(this::toEntity);
     }
 
     @Override
@@ -61,8 +58,7 @@ public class MongoUserDao implements UserDao {
     }
 
     private UserDocument toDocument(UserEntity entity) {
-
-        return UserDocument.builder()
+        UserDocument.UserDocumentBuilder b = UserDocument.builder()
                 .sqlId(entity.getId())
                 .name(entity.getName())
                 .email(entity.getEmail())
@@ -71,8 +67,11 @@ public class MongoUserDao implements UserDao {
                 .role(entity.getRole())
                 .status(entity.getStatus())
                 .otp(entity.getOtp())
-                .otpExpiry(entity.getOtpExpiry())
-                .build();
+                .otpExpiry(entity.getOtpExpiry());
+        if (entity.getId() != null) {
+            repository.findBySqlId(entity.getId()).ifPresent(existing -> b.id(existing.getId()));
+        }
+        return b.build();
     }
 
     private UserEntity toEntity(UserDocument document) {
