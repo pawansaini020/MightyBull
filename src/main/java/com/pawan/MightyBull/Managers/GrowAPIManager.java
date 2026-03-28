@@ -76,8 +76,9 @@ public class GrowAPIManager {
 
         Map<String, List<String>> bse = new HashMap<>();
         bse.put("priceSymbolList", new ArrayList<>());
-        bse.put("indexSymbolList", List.of("1",
-                "14",
+        bse.put("indexSymbolList", List.of(
+                "SENSEX",
+                "BANKEX",
                 "2",
                 "19",
                 "23"));

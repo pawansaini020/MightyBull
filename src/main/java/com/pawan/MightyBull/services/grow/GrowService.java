@@ -91,6 +91,7 @@ public class GrowService {
                 .forEach(dto -> {
                     dto.setType(IndexType.INDIAN.name());
                     dto.setName(dto.getSymbol());
+                    dto.setCountry(IndexType.INDIAN.name());
                     indexService.syncIndex(dto);
                 });
         growIndexResponse.getExchangeAggRespMap()
@@ -100,6 +101,7 @@ public class GrowService {
                 .forEach(dto -> {
                     dto.setType(IndexType.INDIAN.name());
                     dto.setName(dto.getSymbol());
+                    dto.setCountry(IndexType.INDIAN.name());
                     indexService.syncIndex(dto);
                 });
         GrowIndexResponse globalIndexDetails = growAPIManager.getGlobalIndexDetails();

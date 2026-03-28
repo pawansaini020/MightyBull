@@ -7,6 +7,7 @@ import com.pawan.MightyBull.entity.mongo.IndexDocument;
 import com.pawan.MightyBull.enums.IndexType;
 import com.pawan.MightyBull.repository.mongo.IndexMongoRepository;
 import lombok.NonNull;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
@@ -32,7 +33,7 @@ public class MongoIndexDao implements IndexDao {
 
     @Override
     public Optional<IndexEntity> getBySymbol(@NonNull String name) {
-        return repository.findBySymbol(name).map(this::toEntity);
+        return repository.findFirstBySymbolOrderBySqlIdAsc(name).map(this::toEntity);
     }
 
     @Override
@@ -62,7 +63,7 @@ public class MongoIndexDao implements IndexDao {
 
     @Override
     public Optional<IndexEntity> getByIndexId(@NonNull String name) {
-        return repository.findByIndexId(name).map(this::toEntity);
+        return repository.findFirstByIndexIdOrderBySqlIdAsc(name).map(this::toEntity);
     }
 
     private IndexDocument toDocument(IndexEntity entity) {
@@ -84,10 +85,30 @@ public class MongoIndexDao implements IndexDao {
                 .yearHighPrice(entity.getYearHighPrice())
                 .logoUrl(entity.getLogoUrl())
                 .companies(entity.getCompanies());
+        attachExistingMongoDocumentId(entity, b);
+        return b.build();
+    }
+
+    /**
+     * Reuse the same Mongo {@code _id} on update. Do not use business {@code indexId} as {@code _id} (that caused a new
+     * insert whenever {@code sqlId} was null).
+     */
+    private void attachExistingMongoDocumentId(IndexEntity entity, IndexDocument.IndexDocumentBuilder b) {
+        if (StringUtils.isNotBlank(entity.getMongoId())) {
+            b.id(entity.getMongoId());
+            return;
+        }
         if (entity.getId() != null) {
             repository.findBySqlId(entity.getId()).ifPresent(existing -> b.id(existing.getId()));
+            return;
         }
-        return b.build();
+        if (StringUtils.isNotBlank(entity.getIndexId())) {
+            repository.findFirstByIndexIdOrderBySqlIdAsc(entity.getIndexId()).ifPresent(existing -> b.id(existing.getId()));
+            return;
+        }
+        if (StringUtils.isNotBlank(entity.getSymbol())) {
+            repository.findFirstBySymbolOrderBySqlIdAsc(entity.getSymbol()).ifPresent(existing -> b.id(existing.getId()));
+        }
     }
 
     private IndexEntity toEntity(IndexDocument document) {
@@ -112,6 +133,7 @@ public class MongoIndexDao implements IndexDao {
         entity.setId(document.getSqlId());
         entity.setCreatedTime(document.getCreatedTime());
         entity.setUpdatedTime(document.getUpdatedTime());
+        entity.setMongoId(document.getId());
         return entity;
     }
 }
