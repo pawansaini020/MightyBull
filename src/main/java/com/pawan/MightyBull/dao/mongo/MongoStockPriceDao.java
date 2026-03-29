@@ -6,6 +6,7 @@ import com.pawan.MightyBull.entity.StockPriceEntity;
 import com.pawan.MightyBull.entity.mongo.StockPriceDocument;
 import com.pawan.MightyBull.repository.mongo.StockPriceMongoRepository;
 import lombok.NonNull;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
@@ -31,7 +32,7 @@ public class MongoStockPriceDao implements StockPriceDao {
 
     @Override
     public Optional<StockPriceEntity> getByStockId(@NonNull String stockId) {
-        return repository.findByStockId(stockId).map(this::toEntity);
+        return repository.findFirstByStockIdOrderBySqlIdAsc(stockId).map(this::toEntity);
     }
 
     @Override
@@ -77,10 +78,22 @@ public class MongoStockPriceDao implements StockPriceDao {
                 .oiDayChangePerc(entity.getOiDayChangePerc())
                 .lastTradeQty(entity.getLastTradeQty())
                 .lastTradeTime(entity.getLastTradeTime());
+        attachExistingMongoDocumentId(entity, b);
+        return b.build();
+    }
+
+    private void attachExistingMongoDocumentId(StockPriceEntity entity, StockPriceDocument.StockPriceDocumentBuilder b) {
+        if (StringUtils.isNotBlank(entity.getMongoId())) {
+            b.id(entity.getMongoId());
+            return;
+        }
         if (entity.getId() != null) {
             repository.findBySqlId(entity.getId()).ifPresent(existing -> b.id(existing.getId()));
+            return;
         }
-        return b.build();
+        if (StringUtils.isNotBlank(entity.getStockId())) {
+            repository.findFirstByStockIdOrderBySqlIdAsc(entity.getStockId()).ifPresent(existing -> b.id(existing.getId()));
+        }
     }
 
     private StockPriceEntity toEntity(StockPriceDocument document) {
@@ -109,6 +122,7 @@ public class MongoStockPriceDao implements StockPriceDao {
         entity.setId(document.getSqlId());
         entity.setCreatedTime(document.getCreatedTime());
         entity.setUpdatedTime(document.getUpdatedTime());
+        entity.setMongoId(document.getId());
         return entity;
     }
 }

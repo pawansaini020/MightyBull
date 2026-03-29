@@ -6,6 +6,7 @@ import com.pawan.MightyBull.entity.ConstanceEntity;
 import com.pawan.MightyBull.entity.mongo.ConstanceDocument;
 import com.pawan.MightyBull.repository.mongo.ConstanceMongoRepository;
 import lombok.NonNull;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
@@ -59,10 +60,22 @@ public class MongoConstanceDao implements ConstanceDao {
                 .sqlId(entity.getId())
                 .key(entity.getKey())
                 .value(entity.getValue());
+        attachExistingMongoDocumentId(entity, b);
+        return b.build();
+    }
+
+    private void attachExistingMongoDocumentId(ConstanceEntity entity, ConstanceDocument.ConstanceDocumentBuilder b) {
+        if (StringUtils.isNotBlank(entity.getMongoId())) {
+            b.id(entity.getMongoId());
+            return;
+        }
         if (entity.getId() != null) {
             repository.findBySqlId(entity.getId()).ifPresent(existing -> b.id(existing.getId()));
+            return;
         }
-        return b.build();
+        if (StringUtils.isNotBlank(entity.getKey())) {
+            repository.findFirstByKey(entity.getKey()).ifPresent(existing -> b.id(existing.getId()));
+        }
     }
 
     private ConstanceEntity toEntity(ConstanceDocument document) {
@@ -72,6 +85,7 @@ public class MongoConstanceDao implements ConstanceDao {
         entity.setId(document.getSqlId());
         entity.setCreatedTime(document.getCreatedTime());
         entity.setUpdatedTime(document.getUpdatedTime());
+        entity.setMongoId(document.getId());
         return entity;
     }
 }

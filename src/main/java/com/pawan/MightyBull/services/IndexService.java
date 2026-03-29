@@ -39,6 +39,7 @@ public class IndexService {
         Optional<IndexEntity> indexEntity = indexDao.getBySymbol(indexDto.getSymbol());
         if(indexEntity.isPresent()) {
             IndexEntity entity = indexEntity.get();
+            entity.setCountry(indexDto.getCountry());
             entity.setValue(indexDto.getValue());
             entity.setOpen(indexDto.getOpen());
             entity.setClose(indexDto.getClose());

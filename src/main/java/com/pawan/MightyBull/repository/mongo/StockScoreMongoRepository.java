@@ -12,4 +12,6 @@ public interface StockScoreMongoRepository extends MongoRepository<StockScoreDoc
     Optional<StockScoreDocument> findBySqlId(Long sqlId);
 
     Optional<StockScoreDocument> findByStockId(String stockId);
+
+    Optional<StockScoreDocument> findFirstByStockIdOrderBySqlIdAsc(String stockId);
 }

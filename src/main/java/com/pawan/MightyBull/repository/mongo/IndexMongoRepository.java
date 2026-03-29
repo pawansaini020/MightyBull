@@ -13,9 +13,9 @@ public interface IndexMongoRepository extends MongoRepository<IndexDocument, Str
 
     Optional<IndexDocument> findBySqlId(Long sqlId);
 
-    Optional<IndexDocument> findBySymbol(String name);
+    Optional<IndexDocument> findFirstBySymbolOrderBySqlIdAsc(String name);
 
     List<IndexDocument> findAllByType(IndexType type);
 
-    Optional<IndexDocument> findByIndexId(String name);
+    Optional<IndexDocument> findFirstByIndexIdOrderBySqlIdAsc(String name);
 }

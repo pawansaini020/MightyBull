@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Transient;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -31,6 +32,10 @@ public abstract class BaseEntity<T extends Serializable> {
 
     @Column(name = "created_time", nullable = false)
     protected Date createdTime;
+
+    /** MongoDB document _id; not stored in PostgreSQL. */
+    @Transient
+    protected String mongoId;
 
     @Column(name = "updated_time", nullable = false)
     protected Date updatedTime;
