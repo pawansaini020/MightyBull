@@ -10,12 +10,14 @@ import com.pawan.MightyBull.dto.stock.StockWidgetDto;
 import com.pawan.MightyBull.entity.ScreenerStockDetailsEntity;
 import com.pawan.MightyBull.entity.StockScoreEntity;
 import com.pawan.MightyBull.mapper.StockScoreMapper;
+import com.pawan.MightyBull.services.scrapper.ScrapperService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -28,12 +30,15 @@ public class StockService {
 
     private final ScreenerStockDetailsDao stockDetailsDao;
     private final StockScoreDao stockScoreDao;
+    private final ScrapperService scrapperService;
 
     @Autowired
     public StockService(ScreenerStockDetailsDao stockDetailsDao,
-                        StockScoreDao stockScoreDao) {
+                        StockScoreDao stockScoreDao,
+                        ScrapperService scrapperService) {
         this.stockDetailsDao = stockDetailsDao;
         this.stockScoreDao = stockScoreDao;
+        this.scrapperService = scrapperService;
     }
 
     public SuccessResponse<?> getStockWidgets(List<String> scoreRange, List<String> stockIds, String sector, String sortBy, Integer pageNumber, Integer pageSize) {
@@ -59,6 +64,7 @@ public class StockService {
     }
 
     public StockWidgetDetailsDto getStockWidgetDetails(String stockId) {
+        scrapperService.triggerScreenerStockScrapper(Collections.singletonList(stockId));
         StockWidgetDetailsDto.StockWidgetDetailsDtoBuilder detailsDtoBuilder = StockWidgetDetailsDto.builder();
         ScreenerStockDetailsEntity stockDetailsEntity = stockDetailsDao.getByStockId(stockId).orElse(null);
         if(stockDetailsEntity != null) {
