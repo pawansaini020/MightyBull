@@ -85,4 +85,9 @@ public class ApiEndpointConstant {
         public static final String WIDGETS = "/widgets";
         public static final String WIDGET_DETAILS = "/widget-details/{mutual_fund_id}";
     }
+
+    public static class Scrapper {
+        public static final String BASE = "/v1/api/scrap";
+        public static final String SCREENER_STOCK = "/screener-stock";
+    }
 }
