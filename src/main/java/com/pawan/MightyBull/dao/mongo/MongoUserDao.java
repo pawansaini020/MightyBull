@@ -5,6 +5,7 @@ import com.pawan.MightyBull.entity.UserEntity;
 import com.pawan.MightyBull.entity.mongo.UserDocument;
 import com.pawan.MightyBull.repository.mongo.UserMongoRepository;
 import lombok.NonNull;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
@@ -68,10 +69,22 @@ public class MongoUserDao implements UserDao {
                 .status(entity.getStatus())
                 .otp(entity.getOtp())
                 .otpExpiry(entity.getOtpExpiry());
+        attachExistingMongoDocumentId(entity, b);
+        return b.build();
+    }
+
+    private void attachExistingMongoDocumentId(UserEntity entity, UserDocument.UserDocumentBuilder b) {
+        if (StringUtils.isNotBlank(entity.getMongoId())) {
+            b.id(entity.getMongoId());
+            return;
+        }
         if (entity.getId() != null) {
             repository.findBySqlId(entity.getId()).ifPresent(existing -> b.id(existing.getId()));
+            return;
         }
-        return b.build();
+        if (StringUtils.isNotBlank(entity.getEmail())) {
+            repository.findByEmail(entity.getEmail()).ifPresent(existing -> b.id(existing.getId()));
+        }
     }
 
     private UserEntity toEntity(UserDocument document) {
@@ -88,6 +101,7 @@ public class MongoUserDao implements UserDao {
         user.setId(document.getSqlId());
         user.setCreatedTime(document.getCreatedTime());
         user.setUpdatedTime(document.getUpdatedTime());
+        user.setMongoId(document.getId());
         return user;
     }
 }

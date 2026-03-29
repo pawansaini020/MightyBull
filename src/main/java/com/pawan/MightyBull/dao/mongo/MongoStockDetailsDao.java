@@ -6,6 +6,7 @@ import com.pawan.MightyBull.entity.StockDetailsEntity;
 import com.pawan.MightyBull.entity.mongo.StockDetailsDocument;
 import com.pawan.MightyBull.repository.mongo.StockDetailsMongoRepository;
 import lombok.NonNull;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -36,7 +37,7 @@ public class MongoStockDetailsDao implements StockDetailsDao {
 
     @Override
     public Optional<StockDetailsEntity> getByStockId(@NonNull String stockId) {
-        return repository.findByStockId(stockId).map(this::toEntity);
+        return repository.findFirstByStockIdOrderBySqlIdAsc(stockId).map(this::toEntity);
     }
 
     @Override
@@ -85,10 +86,22 @@ public class MongoStockDetailsDao implements StockDetailsDao {
                 .yearlyLowPrice(entity.getYearlyLowPrice())
                 .closePrice(entity.getClosePrice())
                 .marketCap(entity.getMarketCap());
+        attachExistingMongoDocumentId(entity, b);
+        return b.build();
+    }
+
+    private void attachExistingMongoDocumentId(StockDetailsEntity entity, StockDetailsDocument.StockDetailsDocumentBuilder b) {
+        if (StringUtils.isNotBlank(entity.getMongoId())) {
+            b.id(entity.getMongoId());
+            return;
+        }
         if (entity.getId() != null) {
             repository.findBySqlId(entity.getId()).ifPresent(existing -> b.id(existing.getId()));
+            return;
         }
-        return b.build();
+        if (StringUtils.isNotBlank(entity.getStockId())) {
+            repository.findFirstByStockIdOrderBySqlIdAsc(entity.getStockId()).ifPresent(existing -> b.id(existing.getId()));
+        }
     }
 
     private StockDetailsEntity toEntity(StockDetailsDocument document) {
@@ -110,6 +123,7 @@ public class MongoStockDetailsDao implements StockDetailsDao {
         entity.setId(document.getSqlId());
         entity.setCreatedTime(document.getCreatedTime());
         entity.setUpdatedTime(document.getUpdatedTime());
+        entity.setMongoId(document.getId());
         return entity;
     }
 }

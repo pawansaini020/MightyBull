@@ -6,6 +6,7 @@ import com.pawan.MightyBull.entity.MutualFundDetailsEntity;
 import com.pawan.MightyBull.entity.mongo.MutualFundDetailsDocument;
 import com.pawan.MightyBull.repository.mongo.MutualFundDetailsMongoRepository;
 import lombok.NonNull;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
@@ -31,7 +32,7 @@ public class MongoMutualFundDetailsDao implements MutualFundDetailsDao {
 
     @Override
     public Optional<MutualFundDetailsEntity> getByMutualFundId(@NonNull String mutualFundId) {
-        return repository.findByMutualFundId(mutualFundId).map(this::toEntity);
+        return repository.findFirstByMutualFundIdOrderBySqlIdAsc(mutualFundId).map(this::toEntity);
     }
 
     @Override
@@ -72,10 +73,23 @@ public class MongoMutualFundDetailsDao implements MutualFundDetailsDao {
                 .returnStats(entity.getReturnStats())
                 .holdings(entity.getHoldings())
                 .lockIn(entity.getLockIn());
+        attachExistingMongoDocumentId(entity, b);
+        return b.build();
+    }
+
+    private void attachExistingMongoDocumentId(MutualFundDetailsEntity entity,
+                                               MutualFundDetailsDocument.MutualFundDetailsDocumentBuilder b) {
+        if (StringUtils.isNotBlank(entity.getMongoId())) {
+            b.id(entity.getMongoId());
+            return;
+        }
         if (entity.getId() != null) {
             repository.findBySqlId(entity.getId()).ifPresent(existing -> b.id(existing.getId()));
+            return;
         }
-        return b.build();
+        if (StringUtils.isNotBlank(entity.getMutualFundId())) {
+            repository.findFirstByMutualFundIdOrderBySqlIdAsc(entity.getMutualFundId()).ifPresent(existing -> b.id(existing.getId()));
+        }
     }
 
     private MutualFundDetailsEntity toEntity(MutualFundDetailsDocument document) {
@@ -99,6 +113,7 @@ public class MongoMutualFundDetailsDao implements MutualFundDetailsDao {
         entity.setId(document.getSqlId());
         entity.setCreatedTime(document.getCreatedTime());
         entity.setUpdatedTime(document.getUpdatedTime());
+        entity.setMongoId(document.getId());
         return entity;
     }
 }

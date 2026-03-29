@@ -12,4 +12,6 @@ public interface StockDetailsMongoRepository extends MongoRepository<StockDetail
     Optional<StockDetailsDocument> findBySqlId(Long sqlId);
 
     Optional<StockDetailsDocument> findByStockId(String stockId);
+
+    Optional<StockDetailsDocument> findFirstByStockIdOrderBySqlIdAsc(String stockId);
 }

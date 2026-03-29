@@ -12,4 +12,6 @@ public interface MutualFundDetailsMongoRepository extends MongoRepository<Mutual
     Optional<MutualFundDetailsDocument> findBySqlId(Long sqlId);
 
     Optional<MutualFundDetailsDocument> findByMutualFundId(String mutualFundId);
+
+    Optional<MutualFundDetailsDocument> findFirstByMutualFundIdOrderBySqlIdAsc(String mutualFundId);
 }

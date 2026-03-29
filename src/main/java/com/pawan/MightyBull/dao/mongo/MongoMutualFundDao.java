@@ -43,7 +43,7 @@ public class MongoMutualFundDao implements MutualFundDao {
 
     @Override
     public Optional<MutualFundEntity> getByMutualFundId(@NonNull String mutualFundId) {
-        return repository.findByMutualFundId(mutualFundId).map(this::toEntity);
+        return repository.findFirstByMutualFundIdOrderBySqlIdAsc(mutualFundId).map(this::toEntity);
     }
 
     @Override
@@ -111,10 +111,22 @@ public class MongoMutualFundDao implements MutualFundDao {
                 .minInvestmentAmount(entity.getMinInvestmentAmount())
                 .minSipInvestment(entity.getMinSipInvestment())
                 .aum(entity.getAum());
+        attachExistingMongoDocumentId(entity, b);
+        return b.build();
+    }
+
+    private void attachExistingMongoDocumentId(MutualFundEntity entity, MutualFundDocument.MutualFundDocumentBuilder b) {
+        if (StringUtils.isNotBlank(entity.getMongoId())) {
+            b.id(entity.getMongoId());
+            return;
+        }
         if (entity.getId() != null) {
             repository.findBySqlId(entity.getId()).ifPresent(existing -> b.id(existing.getId()));
+            return;
         }
-        return b.build();
+        if (StringUtils.isNotBlank(entity.getMutualFundId())) {
+            repository.findFirstByMutualFundIdOrderBySqlIdAsc(entity.getMutualFundId()).ifPresent(existing -> b.id(existing.getId()));
+        }
     }
 
     private MutualFundEntity toEntity(MutualFundDocument document) {
@@ -143,6 +155,7 @@ public class MongoMutualFundDao implements MutualFundDao {
         entity.setId(document.getSqlId());
         entity.setCreatedTime(document.getCreatedTime());
         entity.setUpdatedTime(document.getUpdatedTime());
+        entity.setMongoId(document.getId());
         return entity;
     }
 }

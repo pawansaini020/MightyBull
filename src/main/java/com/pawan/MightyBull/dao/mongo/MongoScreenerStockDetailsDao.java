@@ -48,7 +48,7 @@ public class MongoScreenerStockDetailsDao implements ScreenerStockDetailsDao {
 
     @Override
     public Optional<ScreenerStockDetailsEntity> getByStockId(@NonNull String stockId) {
-        return repository.findByStockId(stockId).map(this::toEntity);
+        return repository.findFirstByStockIdOrderBySqlIdAsc(stockId).map(this::toEntity);
     }
 
     @Override
@@ -147,10 +147,23 @@ public class MongoScreenerStockDetailsDao implements ScreenerStockDetailsDao {
                 .ratios(entity.getRatios())
                 .shareholdingPattern(entity.getShareholdingPattern())
                 .score(entity.getScore());
+        attachExistingMongoDocumentId(entity, b);
+        return b.build();
+    }
+
+    private void attachExistingMongoDocumentId(ScreenerStockDetailsEntity entity,
+                                               ScreenerStockDetailsDocument.ScreenerStockDetailsDocumentBuilder b) {
+        if (StringUtils.isNotBlank(entity.getMongoId())) {
+            b.id(entity.getMongoId());
+            return;
+        }
         if (entity.getId() != null) {
             repository.findBySqlId(entity.getId()).ifPresent(existing -> b.id(existing.getId()));
+            return;
         }
-        return b.build();
+        if (StringUtils.isNotBlank(entity.getStockId())) {
+            repository.findFirstByStockIdOrderBySqlIdAsc(entity.getStockId()).ifPresent(existing -> b.id(existing.getId()));
+        }
     }
 
     private ScreenerStockDetailsEntity toEntity(ScreenerStockDetailsDocument document) {
@@ -185,6 +198,7 @@ public class MongoScreenerStockDetailsDao implements ScreenerStockDetailsDao {
         entity.setId(document.getSqlId());
         entity.setCreatedTime(document.getCreatedTime());
         entity.setUpdatedTime(document.getUpdatedTime());
+        entity.setMongoId(document.getId());
         return entity;
     }
 }

@@ -14,6 +14,8 @@ public interface ScreenerStockDetailsMongoRepository extends MongoRepository<Scr
 
     Optional<ScreenerStockDetailsDocument> findByStockId(String stockId);
 
+    Optional<ScreenerStockDetailsDocument> findFirstByStockIdOrderBySqlIdAsc(String stockId);
+
     List<ScreenerStockDetailsDocument> findByNameContainingIgnoreCase(String name);
 
     List<ScreenerStockDetailsDocument> findByStockIdContainingIgnoreCase(String stockId);
