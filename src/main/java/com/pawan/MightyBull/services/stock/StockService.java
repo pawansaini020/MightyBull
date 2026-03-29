@@ -93,7 +93,7 @@ public class StockService {
     }
 
     public List<StockSearchDto> searchStocks(String stockName) {
-        List<ScreenerStockDetailsEntity> entities = stockDetailsDao.getStocksByName(stockName);
+        List<ScreenerStockDetailsEntity> entities = new ArrayList<>(stockDetailsDao.getStocksByName(stockName));
         entities.addAll(stockDetailsDao.getStocksByStockId(stockName));
         List<StockSearchDto> stockSearchList = new ArrayList<>();
         Set<String> stockSet = new HashSet<>();
