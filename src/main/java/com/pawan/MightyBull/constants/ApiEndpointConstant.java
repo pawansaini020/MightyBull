@@ -85,4 +85,8 @@ public class ApiEndpointConstant {
         public static final String WIDGETS = "/widgets";
         public static final String WIDGET_DETAILS = "/widget-details/{mutual_fund_id}";
     }
+
+    public static class Kickerxi {
+        public static final String PING = "/ping";
+    }
 }
