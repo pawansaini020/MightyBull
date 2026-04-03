@@ -20,6 +20,6 @@ public class AwakeService {
 
     @Async
     public void awakeKickerxiServer1() {
-        kickerxiWebClient.awakeKickerxiServer();
+        kickerxiWebClient.awakeKickerxiServer1();
     }
 }
