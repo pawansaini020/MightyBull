@@ -14,7 +14,12 @@ public class AwakeService {
     private KickerxiWebClient kickerxiWebClient;
 
     @Async
-    public void awakeMightBullServer() {
+    public void awakeKickerxiServer() {
+        kickerxiWebClient.awakeKickerxiServer();
+    }
+
+    @Async
+    public void awakeKickerxiServer1() {
         kickerxiWebClient.awakeKickerxiServer();
     }
 }

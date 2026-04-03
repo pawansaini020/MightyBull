@@ -17,7 +17,8 @@ public class AwakeScheduler {
 
     @Scheduled(fixedDelayString = "${kickerxi.awake.scheduler.poll-interval-ms:600000}")
     public void tick() {
-        awakeService.awakeMightBullServer();
-        log.info("Successfully awake mightybull server.");
+        awakeService.awakeKickerxiServer();
+        awakeService.awakeKickerxiServer1();
+        log.info("Successfully awake kicker server.");
     }
 }
